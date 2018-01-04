@@ -10,9 +10,10 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 /**
- * 配置文件信息读取类
- * @author Administrator
- *
+ * @ClassName: PropertiesUtil
+ * @Description: 配置文件信息读取类
+ * @author: Jinlong He
+ * @date: 2017年6月4日 上午10:27:20
  */
 public class PropertiesUtil {
 	private static Logger log = Logger.getLogger(PropertiesUtil.class);

@@ -9,6 +9,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @ClassName: DBUtil
+ * @Description: TODO
+ * @author: Jinlong He
+ * @date: 2017年6月4日 上午10:27:10
+ */
 public class DBUtil {
 	private String devier;
 	/**

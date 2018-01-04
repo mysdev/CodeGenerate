@@ -3,6 +3,12 @@ package com.jl.utils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @ClassName: CGUtil
+ * @Description: TODO
+ * @author: Jinlong He
+ * @date: 2017年6月4日 上午10:26:52
+ */
 public class CGUtil {
 	
 	public static final String UNDERLINE = "_";

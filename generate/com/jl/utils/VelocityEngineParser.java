@@ -13,6 +13,12 @@ import org.apache.velocity.app.VelocityEngine;
 
 import com.jl.CGConfig;
 
+/**
+ * @ClassName: VelocityEngineParser
+ * @Description: 
+ * @author: Jinlong He
+ * @date: 2017年6月4日 上午10:27:36
+ */
 public class VelocityEngineParser {
 	private static VelocityEngine ve;
 	private static String CONTENT_ENCODING = "UTF-8";
