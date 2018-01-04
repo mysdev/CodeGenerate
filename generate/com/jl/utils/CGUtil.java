@@ -79,8 +79,13 @@ public class CGUtil {
 	}
 
 	/**
-	 * @Title: getJavaTypeFromDBType @Description: DB类型转换为java类型 @param dataType
-	 * DB类型 @param precision 精度 @param scale 范围 @return String 返回类型 @throws
+	 * @Title: getJavaTypeFromDBType 
+	 * @Description: DB类型转换为java类型 
+	 * @param dataType DB类型 
+	 * @param precision 精度
+	 * @param scale 范围
+	 * @return String 返回类型
+	 * @throws
 	 */
 	public static String getJavaTypeFromDBType(String dataType, Long precision, Long scale) {
 		dataType = dataType.toLowerCase();
@@ -140,7 +145,10 @@ public class CGUtil {
 	}
 
 	/**
-	 * @Title: getProjectPath @Description: 获取系统路径 @return String 返回类型 @throws
+	 * @Title: getProjectPath 
+	 * @Description: 获取系统路径 
+	 * @return String 返回类型 
+	 * @throws
 	 */
 	public static String getProjectSystemPath() {
 		String path = System.getProperty("user.dir").replace("\\", "/") + "/";

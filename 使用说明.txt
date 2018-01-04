@@ -1,0 +1,56 @@
+一、开发起源
+系统开发初期，大量重复枯燥的工作正如字面的含义一样，同种工作且同一种流程需要反复地操作磨练，并且在这一过程中容易使人感到枯燥和无趣。如何快速、精确、统一格式并减少错误？
+
+二、设想思路
+1、根据DB生成相关代码，取数据中表名、字段名称、字段描述、字段类型、字段长度、字段必填等信息来完成相关的类映射以及相关的验证、操作；
+2、生成的代码不限于java，包括xml\html等与表结构相关的所有代码类型，代码内容通过模板来实现；
+3、模板采用、文件目录结构、作者等相关信息通过配置文件灵活配置；
+4、数据库不限于现有的mysql，通用扩充到ms_sql\oracle等；
+
+三、使用说明
+1、数据库配置：resources/code_database.properties 目前支持mysql\ms_sql\oracle
+2、模板配置：resources/code_config.properties 
+				source_root_package 源码根目录
+				business_package 代码包结构
+				templatepath 采用模板目录
+				system_encoding 文件生成时编码
+				author 作者
+				email 邮件
+				table_info 将生成数据的表名以及对应实体类名 格式(表名,类名)多个表类之间以分号间隔 
+											如ts_config,系统配置;ts_dictionary_group,字典分组;ts_dictionary,字典值
+											注：此处会取头一个下划线前的字串长度，如果长度小于3个将忽略，只取后面的用作类名等
+				template_info 模板名称以对应文件目录 格式(模板名,目录,生成文件结尾)多个模板之间以分号间隔
+											如DaoTemplate.ftl,/model/dao,Mapper.java;EntityTemplate.ftl,/model/entity,.java;MapperTemplate.xml,/model/mapper,Mapper.xml
+											注：目录是基于business_package的，此处文件结尾包括文件扩展名
+3、启动类：com.jl.MainApplication 
+
+四、目录结构及类解读
+----resources 
+    |----template 模板文件
+    |----code_database.properties 数据库配置
+    |----code_config.properties 模板配置
+----generate 
+    |----com.jl
+    		|----CGConfig.java 模板生成路径等配置缺省定义
+				|----MainApplication.java 启动类\核心实现类 参数初始、数据查询、表列信息组装、可用属性拼装、文件生成等调用
+		|----com.jl.model
+				|----ColumnData.java 表列配置及转换后对应的实体属性名称等配置
+				|----TableData.java 表信息配置及转换后对应的实体类名称等配置
+		|----com.jl.utils
+				|----CGUtil.java 表名\字段名向实体类\属性名称转换方法 DB类型与属性类型映射配置 系统路径转换方法
+				|----DBUtil.java 数据库连接及数据读取基本方法
+				|----PropertiesUtil.java 配置文件读取基本方法
+				|----VelocityEngineParser.java 输出文件生成核心类
+				
+
+20171220更新
+表结构首字段按类型区别处理 int取下一自动增长值，string取UUID；
+
+20171209更新
+新增列表查询对外接口；
+
+20171116更新
+新增对oracle库支持；
+
+20171114更新
+新增对MS_sql库支持；
