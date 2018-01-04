@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${package}.model.dao.${className}Mapper">
+
+<!-- Result Map-->
+<resultMap id="${className}ResultMap" type="${package}.model.entity.${className}">
+#set($i=0)
+#foreach($item in $!{columnList})
+#if($i==0)
+	<id column="$!item.columnName" property="$!item.classParam"/>
+#else
+	<result column="$!item.columnName" property="$!item.classParam"/>
+#end
+#set($i=$i+1)
+#end
+</resultMap>
+
+<sql id="sql_${entityName}_item">
+	${columnItem}
+</sql>
+       
+<!-- 查询条件 无WHERE -->
+<sql id="sql_${entityName}_query_nowhere">
+#foreach($item in $!{columnList})
+#if($!item.classType == 'String')
+		<if test="${entityName}.${item.classParam} != null">AND $!item.columnName like concat(#{${entityName}.${item.classParam}}, '%') </if>
+#end
+#if($!item.classType == 'Integer')
+		<if test="${entityName}.${item.classParam} != null">AND $!item.columnName = #{${entityName}.${item.classParam}} </if>
+#end
+#end
+</sql>
+   
+<!-- 插入 ${businessName} -->
+<insert id="add${className}" parameterType="${package}.model.entity.${className}" > 	
+ 	INSERT INTO ${tableName}  	
+	<trim prefix=" (" suffix=")" suffixOverrides=",">
+#foreach($item in $!{columnList})
+		<if test="$!item.classParam != null"> $!item.columnName,</if>
+#end
+	</trim>	 	
+	<trim prefix="values (" suffix=")" suffixOverrides=",">
+#foreach($item in $!{columnList})
+		<if test="$!item.classParam != null"> #{$!item.classParam},</if>
+#end
+	</trim>
+</insert>
+
+<!-- 根据标识，修改 ${businessName} -->  
+<update id="modify${className}" parameterType="${package}.model.entity.${className}" >
+  	UPDATE ${tableName} SET
+	<trim suffixOverrides=",">
+#set($i=0)
+#foreach($item in $!{columnList})
+#if($i!=0)	
+		<if test="${item.classParam} != null"> $!item.columnName = #{${item.classParam}}, </if>
+#end	
+#set($i=$i+1)
+#end
+	</trim>
+	WHERE ${keyColumn.columnName} = #{${keyColumn.classParam}}
+</update>
+ 
+<!-- 删除 ${businessName} -->
+<delete id="drop${className}By${keyColumn.classMethod}" parameterType="java.lang.${keyColumn.classType}">
+	DELETE FROM ${tableName} WHERE ${keyColumn.columnName} = #{${keyColumn.classParam}}
+</delete> 
+
+<!-- 根据标识查询 ${businessName} -->
+<select id="query${className}By${keyColumn.classMethod}"  resultMap="${className}ResultMap" parameterType="java.lang.${keyColumn.classType}">
+	SELECT 
+	<include refid="sql_${entityName}_item"/>
+	FROM ${tableName} WHERE ${keyColumn.columnName} = #{${keyColumn.classParam}}
+</select>
+
+<!-- 根据属性查询${businessName} -->
+<select id="query${className}ByProperty"  resultMap="${className}ResultMap" parameterType="java.util.Map">
+	SELECT 
+	<include refid="sql_${entityName}_item"/>
+	FROM ${tableName} 
+	<where>
+		<include refid="sql_${entityName}_query_nowhere"/>
+	</where>
+</select>
+
+<!-- 根据${businessName}属性与分页信息分页查询${businessName}信息 -->
+<select id="query${className}ForPage"  resultMap="${className}ResultMap" >
+	SELECT 
+	<include refid="sql_${entityName}_item"/>
+	FROM ${tableName} 
+	<where>
+		<include refid="sql_${entityName}_query_nowhere"/>
+	</where>
+</select>
+
+<!-- 清空表 -->
+<delete id="clearTableData" >
+	DELETE FROM ${tableName}
+</delete> 
+
+</mapper>   
