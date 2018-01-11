@@ -43,12 +43,20 @@
  	INSERT INTO ${tableName} 
 	<trim prefix=" (" suffix=")" suffixOverrides=",">
 #foreach($item in $!{columnList})
+#if($!{item.columnName}==$!{insertCloumn} || $!{item.columnName}==$!{updateCloumn})
+		$!{item.columnName},
+#else
 		<if test="$!item.classParam != null"> $!item.columnName,</if>
+#end
 #end
 	</trim>	 	
 	<trim prefix="values (" suffix=")" suffixOverrides=",">
 #foreach($item in $!{columnList})
-		<if test="$!item.classParam != null"> #{$!item.classParam},</if>	
+#if($!{item.columnName}==$!{insertCloumn} || $!{item.columnName}==$!{updateCloumn})
+		now(),
+#else
+		<if test="$!item.classParam != null"> #{$!item.classParam},</if>
+#end
 #end
 	</trim>
 </insert>
@@ -58,9 +66,14 @@
   	UPDATE ${tableName} SET
 	<trim suffixOverrides=",">
 #set($i=0)
-#foreach($item in $!{columnList})	
+#foreach($item in $!{columnList})
 #if($i!=0)	
+#if($!{item.columnName}==$!{updateCloumn})
+		$!item.columnName = now(),
+#elseif($!{item.columnName}==$!{insertCloumn})
+#else
 		<if test="${item.classParam} != null"> $!item.columnName = #{${item.classParam}},</if>
+#end
 #end	
 #set($i=$i+1)
 #end

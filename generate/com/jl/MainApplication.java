@@ -35,8 +35,23 @@ public class MainApplication {
 		
 		String tables = PropertiesUtil.Util(null).readValue("table_info");
 		if(tables==null || tables.length()==0){
-			log.error("error: table_info can not be null!");
-			System.exit(0);
+			//20180111 升级，从DB中查全量 --mysql
+			DBUtil db = new DBUtil();
+			List<Map<String, Object>> tablelist = null;
+			if(db.getDbtype().equals("mysql")){
+				tablelist= db.QueryTableToListMapObject("Select table_name tableName,TABLE_COMMENT tableComment from INFORMATION_SCHEMA.TABLES Where table_schema = '"+db.getDbname()+"' order by table_name asc");
+			}
+			if(tablelist!=null && tablelist.size()>0){
+				for(Map<String, Object> map : tablelist){
+					if(map!=null && map.containsKey("tablename")){
+						String tn = (String)map.get("tablecomment");
+						ma.doCodeGenerate((String)map.get("tablename"), tn!=null&&tn.length()>0?tn:"表"+(String)map.get("tablename"));
+					}
+				}
+			}else{			
+				log.error("error: table_info can not be null!");
+				System.exit(0);
+			}
 		}
 		tables = tables.replaceAll("，", ",");
 		tables = tables.replaceAll("；", ";");
@@ -151,6 +166,8 @@ public class MainApplication {
 		context.put("datetime", format.format(System.currentTimeMillis()));
 		context.put("author", PropertiesUtil.Util(null).readValue("author"));
 		context.put("email", PropertiesUtil.Util(null).readValue("email"));
+		context.put("insertCloumn", PropertiesUtil.Util(null).readValue("insertCloumn"));
+		context.put("updateCloumn", PropertiesUtil.Util(null).readValue("updateCloumn"));
 		context.put("tableName", td.getTableName());	//表名
 		context.put("className", td.getClassName());	//类名
 		context.put("entityName", td.getEntityName());	//实体名
