@@ -1,6 +1,5 @@
 package ${package}#if($!packageExt)${packageExt}#end;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
@@ -11,6 +10,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
+import com.jing.utils.BaseEntity;
 
 /**
  * @ClassName: ${className}
@@ -19,10 +19,12 @@ import org.hibernate.validator.constraints.Range;
  * @email: mailto:$!{email}
  * @date: ${datetime}
  */
-public class ${className} implements Serializable {
+public class ${className} extends BaseEntity {
 	private static final long serialVersionUID = 1L;
+	
 #set ($i=0)
 #foreach($item in $!{columnList})
+#if(${item.columnName}!='created_date' && ${item.columnName}!='created_by' && ${item.columnName}!='updated_date' && ${item.columnName}!='updated_by')
 
 #if(!${item.columnNullable} && $i!=0)
 #if($item.classType == 'String')
@@ -48,10 +50,13 @@ public class ${className} implements Serializable {
 	@Email(message="{org.hibernate.validator.constraints.Email.message}")
 #end
 	private ${item.classType} ${item.classParam};	//${tableName}:${item.columnName}  $!{item.columnComment}  
+#end
 #set($i=$i+1)
 #end
 
+
 #foreach($item in $!{columnList})
+#if(${item.columnName}!='created_date' && ${item.columnName}!='created_by' && ${item.columnName}!='updated_date' && ${item.columnName}!='updated_by')
 	/**
 	* @DatabasetableColumnName: ${tableName}:${item.columnName}
 	* @Description: 获取属性        $!{item.columnComment}
@@ -68,8 +73,8 @@ public class ${className} implements Serializable {
 	*/
 	public void set${item.classMethod}(${item.classType} ${item.classParam}){
 		this.${item.classParam} = ${item.classParam};	
-	}
-	
+	}	
+#end
 #end
 	
 	
