@@ -88,6 +88,7 @@ public class VelocityEngineParser {
 			FileOutputStream fos = new FileOutputStream(file);
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fos, CONTENT_ENCODING));
 			template.merge(context, writer);
+			
 			writer.flush();
 			writer.close();
 			fos.close();

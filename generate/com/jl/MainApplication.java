@@ -27,6 +27,7 @@ public class MainApplication {
 	
 	private static final Log log = LogFactory.getLog(MainApplication.class);
 	
+	private static List<TableData> tableList = new ArrayList<TableData>();
 	
 	
 	public static void main(String[] arg){		
@@ -64,7 +65,44 @@ public class MainApplication {
 				ma.doCodeGenerate(t[0], (t.length<2|| t[1]==null || t[1].length()==0)?"表"+t[0]:t[1]);
 			}
 		}
+		log.info("***************   CODE GENERATE table item OVER   ********************");
+		ma.doTotalGenerate();
 		log.info("***************   CODE GENERATE OVER   ********************");	
+	}
+	
+	/** 
+	* @Title: doTotalGenerate 
+	* @Description: 全体统计
+	* @return  boolean    返回类型 
+	* @throws 
+	*/
+	public boolean doTotalGenerate(){
+		if(tableList.size()>0){
+			VelocityContext context = new VelocityContext();
+			context.put("tableList", tableList);
+			
+			String codes = PropertiesUtil.Util(null).readValue("template_info_total");
+			if(codes==null || codes.length()<5){
+				log.info("info: template_info_total can not be null!");	
+				return true;
+			}
+			codes = codes.replaceAll("，", ",");
+			codes = codes.replaceAll("；", ";");
+			String[] template = codes.split(";");
+			for(int i=0; i<template.length; i++){
+				String[] ts = template[i].split(",");
+				if(ts==null || ts.length!=3){
+					log.error("error: template_info_total can not read("+template[i]+")");
+					continue;
+				}
+				Map<String, String> mapDao = new HashMap<String, String>();
+				mapDao.put("templateFile", ts[0]);
+				mapDao.put("filePath", ts[1]);
+				mapDao.put("fileName", ts[2]);		
+				VelocityEngineParser.writerPage(context, ts[0], ts[1], ts[2]);
+			}
+		}
+		return true;		
 	}
 	
 	public boolean doCodeGenerate(String tableName, String businessName){
@@ -142,6 +180,7 @@ public class MainApplication {
 	*/
 	public boolean createFile(String tableName, String businessName, List<Map<String, String>> list){
 		TableData td = makeTableGenerate(tableName, businessName);
+		tableList.add(td);//加入表格信息
 		if(td==null || td.getClassName()==null){
 			log.info("get table info from db is error!");
 			return false;
