@@ -41,7 +41,7 @@ public class MainApplication {
 			List<Map<String, Object>> tablelist = null;
 			if(db.getDbtype().equals("mysql")){
 				tablelist= db.QueryTableToListMapObject("Select table_name tableName,TABLE_COMMENT tableComment from INFORMATION_SCHEMA.TABLES Where table_schema = '"
-						+db.getDbname()+"' order by table_name asc");
+						+db.getDbname()+"' and table_name like 'tc_%'  order by table_name asc");
 			}
 			if(tablelist!=null && tablelist.size()>0){
 				for(Map<String, Object> map : tablelist){

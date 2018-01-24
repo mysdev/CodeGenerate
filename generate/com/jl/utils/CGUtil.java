@@ -66,7 +66,7 @@ public class CGUtil {
 		if (names.length > 1) {
 			// 有下划线
 			for (int i = 0; i < names.length; i++) {
-				if (i == 0 && names[0].length() < 3) {
+				if (i == 0 && names[0].length() < 5) {
 					continue; // 忽略头字符不够3位的信息
 				}
 				if (names[i].length() > 1) {

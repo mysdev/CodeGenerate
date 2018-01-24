@@ -47,10 +47,6 @@ public class ${className}Controller{
 	@RequestMapping(value = "/${pathName}", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public Object add${className}(HttpServletResponse response,
 			@ApiParam(value = "${entityName}") @RequestBody ${className} ${entityName}) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
-		List<Map<String, String>> errors = beanValidator.validateClassAuto(${entityName}, true);
-		if(!errors.isEmpty()){
-			throw new ParameterException(errors);
-		}
 		${entityName}.set$!{keyColumn.classMethod}(null);
 		${entityName}Service.add${className}(${entityName});
 		return ${entityName};
@@ -63,10 +59,6 @@ public class ${className}Controller{
 			@PathVariable $!{keyColumn.classType} $!{keyColumn.classParam},
 			@ApiParam(value = "${entityName}", required = true) @RequestBody ${className} ${entityName}
 			) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
-		List<Map<String, String>> errors = beanValidator.validateClassAuto(${entityName}, false);
-		if(!errors.isEmpty()){
-			throw new ParameterException(errors);
-		}
 		${className} temp${className} = ${entityName}Service.query${className}By${keyColumn.classMethod}($!{keyColumn.classParam});
 		${entityName}.set$!{keyColumn.classMethod}($!{keyColumn.classParam});
 		if(null == temp${className}){
