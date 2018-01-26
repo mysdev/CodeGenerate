@@ -1,4 +1,4 @@
-package com.jl.model;
+ï»¿package com.jl.model;
 
 import java.util.List;
 
@@ -6,22 +6,22 @@ import com.jl.utils.CGUtil;
 
 /**
  * @ClassName: TableData
- * @Description: ±íĞÅÏ¢
+ * @Description: è¡¨ä¿¡æ¯
  * @author: Jinlong He
- * @date: 2017Äê6ÔÂ27ÈÕ ÏÂÎç2:38:29
+ * @date: 2017å¹´6æœˆ27æ—¥ ä¸‹åˆ2:38:29
  */
 public class TableData {
 	
-	private String tableName;	//±íÃû  
-	private String className;	//ÀàÃû ±íÃû×ªÀàÃû
-	private String entityName;	//ÊµÌåÃû ÀàÃûÊ××ÖÄ¸Ğ¡Ğ´
-	private String businessName;	//ÒµÎñÃû³Æ 
-	private String pathName;//Â·¾¶Ãû³Æ ÀàÃûÈ«Ğ¡Ğ´
-	private List<ColumnData> columnData;	//ÁĞĞÅÏ¢
+	private String tableName;	//è¡¨å  
+	private String className;	//ç±»å è¡¨åè½¬ç±»å
+	private String entityName;	//å®ä½“å ç±»åé¦–å­—æ¯å°å†™
+	private String businessName;	//ä¸šåŠ¡åç§° 
+	private String pathName;//è·¯å¾„åç§° ç±»åå…¨å°å†™
+	private List<ColumnData> columnData;	//åˆ—ä¿¡æ¯
 	
-//	PRIVATE STRING TABLEKEY;	//±íKEY	
-//	PRIVATE STRING CLASSKEY;	//ÀàKEY
-//	PRIVATE STRING CLASSKEYTYPE;	//KEYÀàĞÍ
+//	PRIVATE STRING TABLEKEY;	//è¡¨KEY	
+//	PRIVATE STRING CLASSKEY;	//ç±»KEY
+//	PRIVATE STRING CLASSKEYTYPE;	//KEYç±»å‹
 	
 	
 	

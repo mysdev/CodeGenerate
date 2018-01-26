@@ -2,14 +2,16 @@
 var ${className}EditViewModel = function () {  
 	var self=this;
 #foreach($item in $!{columnList})
+#if(${item.columnName}!='created_date' && ${item.columnName}!='created_by' && ${item.columnName}!='updated_date' && ${item.columnName}!='updated_by')
 	self.${item.classParam} = ko.observable(''); 
+#end
 #end
 
     var opFalg=getQueryString('action');
     
     if(opFalg!="Add"){
     	var opid=getQueryString('id');
-    	\$.ajax({
+    	jQuery.ajax({
 	        type: 'GET',
 	        url: homeUrl+"/${pathName}/"+opid,
 	        cache: false,
@@ -17,7 +19,9 @@ var ${className}EditViewModel = function () {
 	        dataType: "json",
 	        success: function (result) {
 #foreach($item in $!{columnList})
+#if(${item.columnName}!='created_date' && ${item.columnName}!='created_by' && ${item.columnName}!='updated_date' && ${item.columnName}!='updated_by')
 				self.${item.classParam}(result.${item.classParam});
+#end
 #end
 	        }
 	    });
@@ -28,7 +32,7 @@ var ${className}EditViewModel = function () {
     	if(opFalg=="Add"){
     		var vStartTime=self.ondutyTime.toString();
     		var vEndTime=self.ondutyTime.toString();
-	        \$.ajax({
+	        jQuery.ajax({
 	            type: "POST",
 	            url: homeUrl+"/${pathName}",  //新增接口
 	            dataType: "json",
@@ -36,7 +40,9 @@ var ${className}EditViewModel = function () {
 #set($i=0)
 #foreach($item in $!{columnList})
 #if($i!=0)
+#if(${item.columnName}!='created_date' && ${item.columnName}!='created_by' && ${item.columnName}!='updated_date' && ${item.columnName}!='updated_by')
 					${item.classParam}:self.${item.classParam} #if($i!=$!{columnList.size()}),#end
+#end
 #end
 #end
 					$!{keyColumn.classParam}:self.$!{keyColumn.classParam}
@@ -53,14 +59,16 @@ var ${className}EditViewModel = function () {
 		}
     	else{
     		var opid=getQueryString('id');
-    		\$.ajax({
+    		jQuery.ajax({
 	            type: "PUT",
 	            url: homeUrl+"/${pathName}/"+opid,  //修改接口
 	            data: {
 #set($i=0)
 #foreach($item in $!{columnList})
 #if($i!=0)
+#if(${item.columnName}!='created_date' && ${item.columnName}!='created_by' && ${item.columnName}!='updated_date' && ${item.columnName}!='updated_by')
 					${item.classParam}:self.${item.classParam},
+#end
 #end
 #end
 					$!{keyColumn.classParam}:opid
@@ -77,4 +85,4 @@ var ${className}EditViewModel = function () {
 $().ready(function(){
 	$("#txtName").focus();
     ko.applyBindings(new ${className}EditViewModel());
-})
+});

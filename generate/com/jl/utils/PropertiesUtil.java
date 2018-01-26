@@ -1,4 +1,4 @@
-package com.jl.utils;
+﻿package com.jl.utils;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;

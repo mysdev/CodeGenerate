@@ -1,36 +1,36 @@
-package com.jl.model;
+ï»¿package com.jl.model;
 
 import com.jl.utils.CGUtil;
 
 /**
  * @ClassName: ColumnData
- * @Description: ÁĞĞÅÏ¢
+ * @Description: åˆ—ä¿¡æ¯
  * @author: Jinlong He
- * @date: 2017Äê6ÔÂ27ÈÕ ÏÂÎç2:38:40
+ * @date: 2017å¹´6æœˆ27æ—¥ ä¸‹åˆ2:38:40
  */
 public class ColumnData {
 	public static final String OPTION_REQUIRED = "required:true";
 	public static final String OPTION_NUMBER_INSEX = "precision:2,groupSeparator:','";
-	// DBÁĞÃû
+	// DBåˆ—å
 	private String columnName;
-	// DBÁĞ×¢ÊÍ
+	// DBåˆ—æ³¨é‡Š
 	private String columnComment;
-	// DBÁĞÊı¾İÀàĞÍ
+	// DBåˆ—æ•°æ®ç±»å‹
 	private String columnType;
-	// DB×î´ó³¤¶È
+	// DBæœ€å¤§é•¿åº¦
 	private Long columnCharMaxLength;
-	// DBÊÇ·ñÎª¿Õ Y/N
+	// DBæ˜¯å¦ä¸ºç©º Y/N
 	private Boolean columnNullable;
-	// DB¹æÄ£
+	// DBè§„æ¨¡
 	private Long columnScale;
-	// DB¾«¶È
+	// DBç²¾åº¦
 	private Long columnPrecision;
 	
-	private String classMethod;//java·½·¨Ãû
-	private String classParam;//java²ÎÊı
-	private String classType;//javaÀàĞÍ
-	private String validationType; //¼ì²éÀàĞÍÔİÖ§³Ömobile,phone,email,fax
-	private String classLable; //ÁĞ±êÇ© ×¢ÊÍ¿Õ¸ñ·ûÇ°Ãæ×Ö·û
+	private String classMethod;//javaæ–¹æ³•å
+	private String classParam;//javaå‚æ•°
+	private String classType;//javaç±»å‹
+	private String validationType; //æ£€æŸ¥ç±»å‹æš‚æ”¯æŒmobile,phone,email,fax
+	private String classLable; //åˆ—æ ‡ç­¾ æ³¨é‡Šç©ºæ ¼ç¬¦å‰é¢å­—ç¬¦
 	
 	private void checkValidationType(String columnName){
 		if(columnName==null) return;

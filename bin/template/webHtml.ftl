@@ -58,6 +58,7 @@
 #set ($i=0)
 #foreach($item in $!{columnList})
 #if($i!=0)
+#if(${item.columnName}!='created_date' && ${item.columnName}!='created_by' && ${item.columnName}!='updated_date' && ${item.columnName}!='updated_by')
 #if($!item.classType == 'Integer')
 				<dl>
 					<dt>${item.classLable}</dt>
@@ -68,7 +69,7 @@
 					<dt>${item.classLable}</dt>
 					<dd>
 						<input name="${item.classParam}" type="text" id="${item.classParam}" data-bind="value:${item.classParam}" class="input rule-date-input flatpickr" data-enable-time="true" data-no-calendar="true" data-time_24hr="true" datatype="/^(\d{1,2}:){1}\d{1,2}$/" errormsg="请选择正确的时间" sucmsg=" " />
-						#if(!${item.columnNullable})<span class="Validform_checktip">*选择${item.classLable}</span>#end
+#if(!${item.columnNullable})<span class="Validform_checktip">*选择${item.classLable}</span>#end
 					</dd>
 				</dl>
 #else
@@ -76,6 +77,7 @@
 					<dt>${item.classLable}</dt>
 					<dd><input name="${item.classParam}" type="text" id="${item.classParam}" class="input normal" datatype="*3-20" sucmsg=" " data-bind="value:${item.classParam}" /> #if(!${item.columnNullable})<span class="Validform_checktip">*</span>#end </dd>
 				</dl>
+#end
 #end
 #end
 #set($i=$i+1)
@@ -93,7 +95,7 @@
 			<!--/工具栏-->
 		</form>
 		<!--列表数据绑定开始-->
-		<script src="./model/${className}Model.js"></script>
+		<script src="./model/${className}.js"></script>
 		<script type="text/javascript" charset="utf-8" src="../js/common.js"></script>
 		<!--列表数据绑定结束-->
 	</body>

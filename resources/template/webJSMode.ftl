@@ -2,7 +2,9 @@
 var ${className}EditViewModel = function () {  
 	var self=this;
 #foreach($item in $!{columnList})
+#if(${item.columnName}!='created_date' && ${item.columnName}!='created_by' && ${item.columnName}!='updated_date' && ${item.columnName}!='updated_by')
 	self.${item.classParam} = ko.observable(''); 
+#end
 #end
 
     var opFalg=getQueryString('action');
@@ -17,7 +19,9 @@ var ${className}EditViewModel = function () {
 	        dataType: "json",
 	        success: function (result) {
 #foreach($item in $!{columnList})
+#if(${item.columnName}!='created_date' && ${item.columnName}!='created_by' && ${item.columnName}!='updated_date' && ${item.columnName}!='updated_by')
 				self.${item.classParam}(result.${item.classParam});
+#end
 #end
 	        }
 	    });
@@ -36,7 +40,9 @@ var ${className}EditViewModel = function () {
 #set($i=0)
 #foreach($item in $!{columnList})
 #if($i!=0)
+#if(${item.columnName}!='created_date' && ${item.columnName}!='created_by' && ${item.columnName}!='updated_date' && ${item.columnName}!='updated_by')
 					${item.classParam}:self.${item.classParam} #if($i!=$!{columnList.size()}),#end
+#end
 #end
 #end
 					$!{keyColumn.classParam}:self.$!{keyColumn.classParam}
@@ -60,7 +66,9 @@ var ${className}EditViewModel = function () {
 #set($i=0)
 #foreach($item in $!{columnList})
 #if($i!=0)
+#if(${item.columnName}!='created_date' && ${item.columnName}!='created_by' && ${item.columnName}!='updated_date' && ${item.columnName}!='updated_by')
 					${item.classParam}:self.${item.classParam},
+#end
 #end
 #end
 					$!{keyColumn.classParam}:opid

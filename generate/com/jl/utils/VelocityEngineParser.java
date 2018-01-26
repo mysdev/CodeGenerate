@@ -1,4 +1,4 @@
-package com.jl.utils;
+ï»¿package com.jl.utils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,20 +17,20 @@ import com.jl.CGConfig;
  * @ClassName: VelocityEngineParser
  * @Description: 
  * @author: Jinlong He
- * @date: 2017Äê6ÔÂ4ÈÕ ÉÏÎç10:27:36
+ * @date: 2017å¹´6æœˆ4æ—¥ ä¸Šåˆ10:27:36
  */
 public class VelocityEngineParser {
 	private static VelocityEngine ve;
 	private static String CONTENT_ENCODING = "UTF-8";
 	private static final Log log = LogFactory.getLog(VelocityEngineParser.class);
 
-	private static boolean isReplace = true; //¸²¸ÇÎÄ¼ş
+	private static boolean isReplace = true; //è¦†ç›–æ–‡ä»¶
 
 	static {
 		try {
 			CONTENT_ENCODING = CGConfig.system_encoding;
 			String templateBasePath = CGConfig.projectSystemPath() + CGConfig.template_path;
-			;
+			
 			Properties properties = new Properties();
 			properties.setProperty("resource.loader", "file");
 			properties.setProperty("file.resource.loader.description", "Velocity File Resource Loader");
@@ -51,11 +51,11 @@ public class VelocityEngineParser {
 	/** 
 	* @Title: writerPage 
 	* @Description: 
-	* @param context Êı¾İ
-	* @param templateFile	Ä£°å
-	* @param filePath À©Õ¹Â·¾¶
-	* @param fileName ÎÄ¼şÃû³Æ
-	* @return  boolean    ·µ»ØÀàĞÍ 
+	* @param context æ•°æ®
+	* @param templateFile	æ¨¡æ¿
+	* @param filePath æ‰©å±•è·¯å¾„
+	* @param fileName æ–‡ä»¶åç§°
+	* @return  boolean    è¿”å›ç±»å‹ 
 	* @throws 
 	*/
 	public static boolean writerPage(VelocityContext context, String templateFile, String filePath, String fileName) {
@@ -72,7 +72,7 @@ public class VelocityEngineParser {
 			sysPath += filePath;
 			context.put("packageExt", filePath.replaceAll("/", "\\."));
 		}
-		//²ÎÊıÅäÖÃ
+		//å‚æ•°é…ç½®
 		context.put("package", CGConfig.business_package);
 		
 		

@@ -1,4 +1,4 @@
-package com.jl.utils;
+ï»¿package com.jl.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -7,14 +7,14 @@ import java.util.regex.Pattern;
  * @ClassName: CGUtil
  * @Description: TODO
  * @author: Jinlong He
- * @date: 2017Äê6ÔÂ4ÈÕ ÉÏÎç10:26:52
+ * @date: 2017å¹´6æœˆ4æ—¥ ä¸Šåˆ10:26:52
  */
 public class CGUtil {
 	
 	public static final String UNDERLINE = "_";
 	
 	/**
-	 * ×Ö·û´®µÄÏÂ»®Ïß×ªÍÕ·å
+	 * å­—ç¬¦ä¸²çš„ä¸‹åˆ’çº¿è½¬é©¼å³°
 	 * @param underline
 	 * @return
 	 */
@@ -32,9 +32,9 @@ public class CGUtil {
 	
 	/** 
 	* @Title: camelToUnderline 
-	* @Description: ÍÕ·å¸ñÊ½×ªÏÂ»®Ïß 
+	* @Description: é©¼å³°æ ¼å¼è½¬ä¸‹åˆ’çº¿ 
 	* @param param
-	* @return  String    ·µ»ØÀàĞÍ 
+	* @return  String    è¿”å›ç±»å‹ 
 	* @throws 
 	*/
 	public static String camel2Underline(String param) {
@@ -56,21 +56,21 @@ public class CGUtil {
 	}
 
 	/**
-	 * @Title: tableNameToClassName @Description: ±íÃû×ª»»³ÉÀàÃû
-	 * Ê××Ö·û´®Ğ¡ÓÚ2¸ö×Ö·ûÊ±ºöÂÔ£¬ÆäËüÎ»ÖÃ1¸ö×Ö·ûºöÂÔ @param tableName @return String ·µ»ØÀàĞÍ @throws
+	 * @Title: tableNameToClassName @Description: è¡¨åè½¬æ¢æˆç±»å
+	 * é¦–å­—ç¬¦ä¸²å°äº2ä¸ªå­—ç¬¦æ—¶å¿½ç•¥ï¼Œå…¶å®ƒä½ç½®1ä¸ªå­—ç¬¦å¿½ç•¥ @param tableName @return String è¿”å›ç±»å‹ @throws
 	 */
 	public static String tableName2ClassName(String tableName) {
 		tableName = tableName.toLowerCase();
 		String[] names = tableName.split("_");
 		StringBuffer sbf = new StringBuffer();
 		if (names.length > 1) {
-			// ÓĞÏÂ»®Ïß
+			// æœ‰ä¸‹åˆ’çº¿
 			for (int i = 0; i < names.length; i++) {
 				if (i == 0 && names[0].length() < 5) {
-					continue; // ºöÂÔÍ·×Ö·û²»¹»3Î»µÄĞÅÏ¢
+					continue; // å¿½ç•¥å¤´å­—ç¬¦ä¸å¤Ÿ3ä½çš„ä¿¡æ¯
 				}
 				if (names[i].length() > 1) {
-					// ·ÇÍ·×Ö·û£¬Ö»Òª³¤¶È²»Îª1
+					// éå¤´å­—ç¬¦ï¼Œåªè¦é•¿åº¦ä¸ä¸º1
 					sbf.append(names[i].substring(0, 1).toUpperCase());
 					sbf.append(names[i].substring(1, names[i].length()).toLowerCase());
 				}
@@ -78,19 +78,19 @@ public class CGUtil {
 			if (sbf.toString().length() > 0) {
 				return sbf.toString();
 			}
-			tableName = tableName.replaceAll("_", "");// È«²»·ûºÏ¹æ·¶£¬È¥µôÏÂ»®Ïß
+			tableName = tableName.replaceAll("_", "");// å…¨ä¸ç¬¦åˆè§„èŒƒï¼Œå»æ‰ä¸‹åˆ’çº¿
 		}
-		// ÎŞÏÂ»®Ïß»òÕß×Ö·û´®²»·ûºÏ¹æ·¶-Ê××ÖÄ¸´óĞ´
+		// æ— ä¸‹åˆ’çº¿æˆ–è€…å­—ç¬¦ä¸²ä¸ç¬¦åˆè§„èŒƒ-é¦–å­—æ¯å¤§å†™
 		return tableName.substring(0, 1).toUpperCase() + tableName.substring(1, tableName.length());
 	}
 
 	/**
 	 * @Title: getJavaTypeFromDBType 
-	 * @Description: DBÀàĞÍ×ª»»ÎªjavaÀàĞÍ 
-	 * @param dataType DBÀàĞÍ 
-	 * @param precision ¾«¶È
-	 * @param scale ·¶Î§
-	 * @return String ·µ»ØÀàĞÍ
+	 * @Description: DBç±»å‹è½¬æ¢ä¸ºjavaç±»å‹ 
+	 * @param dataType DBç±»å‹ 
+	 * @param precision ç²¾åº¦
+	 * @param scale èŒƒå›´
+	 * @return String è¿”å›ç±»å‹
 	 * @throws
 	 */
 	public static String getJavaTypeFromDBType(String dataType, Long precision, Long scale) {
@@ -130,9 +130,9 @@ public class CGUtil {
 
 	/** 
 	* @Title: packagePath2WindowPath 
-	* @Description:  linuxÂ·¾¶×ªwin
+	* @Description:  linuxè·¯å¾„è½¬win
 	* @param packagePath
-	* @return  String    ·µ»ØÀàĞÍ 
+	* @return  String    è¿”å›ç±»å‹ 
 	* @throws 
 	*/
 	public static String packagePath2WindowPath(String packagePath) {
@@ -141,9 +141,9 @@ public class CGUtil {
 
 	/** 
 	* @Title: windowPath2PackagePath 
-	* @Description: winÂ·¾¶×ªlinux
+	* @Description: winè·¯å¾„è½¬linux
 	* @param packagePath
-	* @return  String    ·µ»ØÀàĞÍ 
+	* @return  String    è¿”å›ç±»å‹ 
 	* @throws 
 	*/
 	public static String windowPath2PackagePath(String packagePath) {
@@ -152,8 +152,8 @@ public class CGUtil {
 
 	/**
 	 * @Title: getProjectPath 
-	 * @Description: »ñÈ¡ÏµÍ³Â·¾¶ 
-	 * @return String ·µ»ØÀàĞÍ 
+	 * @Description: è·å–ç³»ç»Ÿè·¯å¾„ 
+	 * @return String è¿”å›ç±»å‹ 
 	 * @throws
 	 */
 	public static String getProjectSystemPath() {

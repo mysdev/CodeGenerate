@@ -1,4 +1,4 @@
-package com.jl.utils;
+ï»¿package com.jl.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,26 +13,26 @@ import java.util.Map;
  * @ClassName: DBUtil
  * @Description: TODO
  * @author: Jinlong He
- * @date: 2017Äê6ÔÂ4ÈÕ ÉÏÎç10:27:10
+ * @date: 2017å¹´6æœˆ4æ—¥ ä¸Šåˆ10:27:10
  */
 public class DBUtil {
 	private String devier;
 	/**
-	 * Êı¾İ¿âÁ¬½Ó×Ö·û´®
+	 * æ•°æ®åº“è¿æ¥å­—ç¬¦ä¸²
 	 */
 	private String connstr;	
 	/**
-	 * ÓÃ»§Ãû
+	 * ç”¨æˆ·å
 	 */
 	private String username;
 	/**
-	 * ÃÜÂë
+	 * å¯†ç 
 	 */
 	private String password;	
 	/**
 	 * @fieldName: dbname
 	 * @fieldType: String
-	 * @Description: Êı¾İ¿â´æ
+	 * @Description: æ•°æ®åº“å­˜
 	 */
 	private String dbname;
 	public String getDbname() {
@@ -42,7 +42,7 @@ public class DBUtil {
 	/**
 	 * @fieldName: dbtype
 	 * @fieldType: String
-	 * @Description: Êı¾İ¿âÀàĞÍ£¬È«Ğ¡Ğ´
+	 * @Description: æ•°æ®åº“ç±»å‹ï¼Œå…¨å°å†™
 	 */
 	private String dbtype;
 	
@@ -51,7 +51,7 @@ public class DBUtil {
 	}
 	
 	/**
-	 * Ö´ĞĞSQL²éÑ¯Óï¾ä£¬²¢µÃµ½Ò»¸öintĞÍ½á¹û
+	 * æ‰§è¡ŒSQLæŸ¥è¯¢è¯­å¥ï¼Œå¹¶å¾—åˆ°ä¸€ä¸ªintå‹ç»“æœ
 	 * @param sql
 	 * @return
 	 */
@@ -80,7 +80,7 @@ public class DBUtil {
 	}
 	
 	/**
-	 * Ö´ĞĞSQL²éÑ¯Óï¾ä£¬²¢µÃµ½Ò»¸öStringĞÍ½á¹û
+	 * æ‰§è¡ŒSQLæŸ¥è¯¢è¯­å¥ï¼Œå¹¶å¾—åˆ°ä¸€ä¸ªStringå‹ç»“æœ
 	 * 
 	 * @param sql
 	 * @return
@@ -108,7 +108,7 @@ public class DBUtil {
 		return ret;
 	}
 	/**
-	 * ²éÑ¯½á¹ûµ½ListMapĞÎÊ½
+	 * æŸ¥è¯¢ç»“æœåˆ°ListMapå½¢å¼
 	 * 
 	 * @param sql
 	 * @param arg
@@ -146,7 +146,7 @@ public class DBUtil {
 	}
 	
 	/**
-	 * ²éÑ¯½á¹ûµ½ListMapĞÎÊ½
+	 * æŸ¥è¯¢ç»“æœåˆ°ListMapå½¢å¼
 	 * 
 	 * @param sql
 	 * @param arg
@@ -178,12 +178,12 @@ public class DBUtil {
 	
 	/** 
 	* @Title: initConnection 
-	* @Description: »ñÈ¡DBÁ´½Ó 
+	* @Description: è·å–DBé“¾æ¥ 
 	* @return
 	* @throws InstantiationException
 	* @throws IllegalAccessException
 	* @throws ClassNotFoundException
-	* @throws SQLException  Connection    ·µ»ØÀàĞÍ 
+	* @throws SQLException  Connection    è¿”å›ç±»å‹ 
 	* @throws 
 	*/
 	public Connection initConnection() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException{
@@ -207,8 +207,8 @@ public class DBUtil {
 	
 	/** 
 	* @Title: closeConnection 
-	* @Description: ¹Ø±ÕDBÁ¬½Ó 
-	* @param conn  void    ·µ»ØÀàĞÍ 
+	* @Description: å…³é—­DBè¿æ¥ 
+	* @param conn  void    è¿”å›ç±»å‹ 
 	* @throws 
 	*/
 	public void closeConnection(Connection conn){
@@ -225,8 +225,8 @@ public class DBUtil {
 	
 	/** 
 	* @Title: initConfig 
-	* @Description: ¼ÓÔØÅäÖÃ²ÎÊı 
-	* @return void    ·µ»ØÀàĞÍ 
+	* @Description: åŠ è½½é…ç½®å‚æ•° 
+	* @return void    è¿”å›ç±»å‹ 
 	* @throws 
 	*/
 	private void initConfig(){

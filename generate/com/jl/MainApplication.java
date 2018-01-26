@@ -1,4 +1,4 @@
-package com.jl;
+ï»¿package com.jl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,9 +19,9 @@ import com.jl.utils.VelocityEngineParser;
 
 /**
  * @ClassName: MainApplication
- * @Description: ×Ô¶¯´úÂëÖ÷Àà
+ * @Description: è‡ªåŠ¨ä»£ç ä¸»ç±»
  * @author: Jinlong He
- * @date: 2017Äê6ÔÂ16ÈÕ ÉÏÎç9:45:06
+ * @date: 2017å¹´6æœˆ16æ—¥ ä¸Šåˆ9:45:06
  */
 public class MainApplication {
 	
@@ -36,7 +36,7 @@ public class MainApplication {
 		
 		String tables = PropertiesUtil.Util(null).readValue("table_info");
 		if(tables==null || tables.length()==0){
-			//20180111 Éı¼¶£¬´ÓDBÖĞ²éÈ«Á¿ --mysql
+			//20180111 å‡çº§ï¼Œä»DBä¸­æŸ¥å…¨é‡ --mysql
 			DBUtil db = new DBUtil();
 			List<Map<String, Object>> tablelist = null;
 			if(db.getDbtype().equals("mysql")){
@@ -47,7 +47,7 @@ public class MainApplication {
 				for(Map<String, Object> map : tablelist){
 					if(map!=null && map.containsKey("tablename")){
 						String tn = (String)map.get("tablecomment");
-						ma.doCodeGenerate((String)map.get("tablename"), tn!=null&&tn.length()>0?tn:"±í"+(String)map.get("tablename"));
+						ma.doCodeGenerate((String)map.get("tablename"), tn!=null&&tn.length()>0?tn:"è¡¨"+(String)map.get("tablename"));
 					}
 				}
 			}else{			
@@ -55,14 +55,14 @@ public class MainApplication {
 				System.exit(0);
 			}
 		}
-		tables = tables.replaceAll("£¬", ",");
-		tables = tables.replaceAll("£»", ";");
+		tables = tables.replaceAll("ï¼Œ", ",");
+		tables = tables.replaceAll("ï¼›", ";");
 		String[] ts = tables.split(";");
 		for(int i=0 ; i<ts.length; i++){
 			if(ts[i]!=null && ts[i].length()>0){
 				String[] t = ts[i].split(",");
 				System.out.println(t[1]);
-				ma.doCodeGenerate(t[0], (t.length<2|| t[1]==null || t[1].length()==0)?"±í"+t[0]:t[1]);
+				ma.doCodeGenerate(t[0], (t.length<2|| t[1]==null || t[1].length()==0)?"è¡¨"+t[0]:t[1]);
 			}
 		}
 		log.info("***************   CODE GENERATE table item OVER   ********************");
@@ -72,8 +72,8 @@ public class MainApplication {
 	
 	/** 
 	* @Title: doTotalGenerate 
-	* @Description: È«ÌåÍ³¼Æ
-	* @return  boolean    ·µ»ØÀàĞÍ 
+	* @Description: å…¨ä½“ç»Ÿè®¡
+	* @return  boolean    è¿”å›ç±»å‹ 
 	* @throws 
 	*/
 	public boolean doTotalGenerate(){
@@ -86,8 +86,8 @@ public class MainApplication {
 				log.info("info: template_info_total can not be null!");	
 				return true;
 			}
-			codes = codes.replaceAll("£¬", ",");
-			codes = codes.replaceAll("£»", ";");
+			codes = codes.replaceAll("ï¼Œ", ",");
+			codes = codes.replaceAll("ï¼›", ";");
 			String[] template = codes.split(";");
 			for(int i=0; i<template.length; i++){
 				String[] ts = template[i].split(",");
@@ -113,8 +113,8 @@ public class MainApplication {
 			log.error("error: template_info can not be null!");
 			System.exit(0);
 		}
-		codes = codes.replaceAll("£¬", ",");
-		codes = codes.replaceAll("£»", ";");
+		codes = codes.replaceAll("ï¼Œ", ",");
+		codes = codes.replaceAll("ï¼›", ";");
 		String[] template = codes.split(";");
 		for(int i=0; i<template.length; i++){
 			String[] ts = template[i].split(",");
@@ -171,16 +171,16 @@ public class MainApplication {
 	
 	/** 
 	* @Title: createFile 
-	* @Description: Éú³É´úÂë
+	* @Description: ç”Ÿæˆä»£ç 
 	* @param tableName
 	* @param businessName
 	* @param list
-	* @return  boolean    ·µ»ØÀàĞÍ 
+	* @return  boolean    è¿”å›ç±»å‹ 
 	* @throws 
 	*/
 	public boolean createFile(String tableName, String businessName, List<Map<String, String>> list){
 		TableData td = makeTableGenerate(tableName, businessName);
-		tableList.add(td);//¼ÓÈë±í¸ñĞÅÏ¢
+		tableList.add(td);//åŠ å…¥è¡¨æ ¼ä¿¡æ¯
 		if(td==null || td.getClassName()==null){
 			log.info("get table info from db is error!");
 			return false;
@@ -194,13 +194,13 @@ public class MainApplication {
 	
 	/** 
 	* @Title: makeVelocityContext 
-	* @Description: Æ´×°ÊôĞÔ
+	* @Description: æ‹¼è£…å±æ€§
 	* @param td
-	* @return  VelocityContext    ·µ»ØÀàĞÍ 
+	* @return  VelocityContext    è¿”å›ç±»å‹ 
 	* @throws 
 	*/
 	public VelocityContext makeVelocityContext(TableData td){
-		SimpleDateFormat format = new SimpleDateFormat("yyyyÄêMMÔÂddÈÕ HHÊ±mm·Ö");
+		SimpleDateFormat format = new SimpleDateFormat("yyyyå¹´MMæœˆddæ—¥ HHæ—¶mmåˆ†");
 		
 		VelocityContext context = new VelocityContext();
 		context.put("datetime", format.format(System.currentTimeMillis()));
@@ -208,18 +208,18 @@ public class MainApplication {
 		context.put("email", PropertiesUtil.Util(null).readValue("email"));
 		context.put("insertCloumn", PropertiesUtil.Util(null).readValue("insertCloumn"));
 		context.put("updateCloumn", PropertiesUtil.Util(null).readValue("updateCloumn"));
-		context.put("tableName", td.getTableName());	//±íÃû
-		context.put("className", td.getClassName());	//ÀàÃû
-		context.put("entityName", td.getEntityName());	//ÊµÌåÃû
-		context.put("pathName", td.getPathName());	//Â·¾¶Ãû		
-		context.put("businessName", td.getBusinessName());	//ÒµÎñÃû³Æ
+		context.put("tableName", td.getTableName());	//è¡¨å
+		context.put("className", td.getClassName());	//ç±»å
+		context.put("entityName", td.getEntityName());	//å®ä½“å
+		context.put("pathName", td.getPathName());	//è·¯å¾„å		
+		context.put("businessName", td.getBusinessName());	//ä¸šåŠ¡åç§°
 		if(td.getColumnData()!=null && td.getColumnData().size()>0){
 			context.put("keyColumn", td.getColumnData().get(0)); //key
 		}		
-//		context.put("tableKey", td.getTableKey());	//±íKEY	W
-//		context.put("classKey", td.getClassKey());	//ÀàKEY
-//		context.put("classKeyType", td.getClassKeyType());	//KEYÀàĞÍ		
-		context.put("columnList", td.getColumnData()); //ÁĞĞÅÏ¢
+//		context.put("tableKey", td.getTableKey());	//è¡¨KEY	W
+//		context.put("classKey", td.getClassKey());	//ç±»KEY
+//		context.put("classKeyType", td.getClassKeyType());	//KEYç±»å‹		
+		context.put("columnList", td.getColumnData()); //åˆ—ä¿¡æ¯
 		String tableItem = "";
 		for(ColumnData c : td.getColumnData()){
 			tableItem += (c.getColumnName()+", ");
@@ -227,7 +227,7 @@ public class MainApplication {
 		if(tableItem.endsWith(", ")){
 			context.put("columnItem", tableItem.substring(0, tableItem.length()-2));
 		}
-		//TODO ºóÆÚ¸ÄÔìÎªÖ÷¶¯·¢ÏÖ
+		//TODO åæœŸæ”¹é€ ä¸ºä¸»åŠ¨å‘ç°
 		
 		return context;
 	}
@@ -235,10 +235,10 @@ public class MainApplication {
 	
 	/** 
 	* @Title: makeTableGenerate 
-	* @Description: ×é×°±íĞÅÏ¢ 
-	* @param tableName ±íÃû³Æ
-	* @param businessName  ÒµÎñÃû³Æ
-	* @return TableData  ·µ»ØÀàĞÍ 
+	* @Description: ç»„è£…è¡¨ä¿¡æ¯ 
+	* @param tableName è¡¨åç§°
+	* @param businessName  ä¸šåŠ¡åç§°
+	* @return TableData  è¿”å›ç±»å‹ 
 	* @throws 
 	*/
 	public TableData makeTableGenerate(String tableName, String businessName){
@@ -250,7 +250,7 @@ public class MainApplication {
 //				&& table.getColumnData().get(0)!=null && table.getColumnData().get(0).getColumnName()!=null
 //				//&& table.getColumnData().get(0).getColumnName().toLowerCase().endsWith("id")
 //				){
-//			//ÉèÖÃKEY×Ö¶Î
+//			//è®¾ç½®KEYå­—æ®µ
 //			table.setTableKey(table.getColumnData().get(0).getColumnName());
 //			table.setClassKey(table.getColumnData().get(0).getClassParam());
 //			table.setClassKeyType(table.getColumnData().get(0).getClassType());
@@ -262,9 +262,9 @@ public class MainApplication {
 	
 	/** 
 	* @Title: mssqlDataType 
-	* @Description: MSSQLÊı¾İÀàĞÍ
+	* @Description: MSSQLæ•°æ®ç±»å‹
 	* @param dtype
-	* @return  String    ·µ»ØÀàĞÍ 
+	* @return  String    è¿”å›ç±»å‹ 
 	* @throws 
 	*/
 	private String mssqlDataType(Short dtype){
@@ -302,9 +302,9 @@ public class MainApplication {
 	
 	/** 
 	* @Title: getColumnByTableName 
-	* @Description: »ñÈ¡
+	* @Description: è·å–
 	* @param tableName
-	* @return  List<ColumnData>    ·µ»ØÀàĞÍ 
+	* @return  List<ColumnData>    è¿”å›ç±»å‹ 
 	* @throws 
 	*/
 	public List<ColumnData> getColumnByTableName(String tableName){
@@ -338,15 +338,15 @@ public class MainApplication {
 		if(list!=null && list.size()>0){
 			for(Map<String, Object> map : list){
 				ColumnData cd = new ColumnData();
-				cd.setColumnName((String)map.get("column_name"));//ÁĞÃû
+				cd.setColumnName((String)map.get("column_name"));//åˆ—å
 				if(!isMSsql){
-					cd.setColumnType((String)map.get("data_type"));//Êı¾İÀàĞÍ
+					cd.setColumnType((String)map.get("data_type"));//æ•°æ®ç±»å‹
 				}else{
-					cd.setColumnType(mssqlDataType((Short)map.get("data_type")));//Êı¾İÀàĞÍ
+					cd.setColumnType(mssqlDataType((Short)map.get("data_type")));//æ•°æ®ç±»å‹
 				}
-				cd.setColumnComment((String)map.get("column_comment"));//×¢ÊÍ
+				cd.setColumnComment((String)map.get("column_comment"));//æ³¨é‡Š
 				if(map.containsKey("data_precision") && map.get("data_precision")!=null){
-					//¾«¶È 
+					//ç²¾åº¦ 
 					if(map.get("data_precision") instanceof Long){
 						//mysql
 						cd.setColumnPrecision((Long)map.get("data_precision"));
@@ -359,7 +359,7 @@ public class MainApplication {
 					}
 				}
 				if(map.containsKey("data_scale") && map.get("data_scale")!=null){
-					//·¶Î§ 
+					//èŒƒå›´ 
 					if(map.get("data_scale") instanceof Long){
 						//mysql
 						cd.setColumnScale((Long)map.get("data_scale"));
@@ -372,7 +372,7 @@ public class MainApplication {
 					}
 				}
 				if(map.containsKey("data_length") && map.get("data_length")!=null){
-					//×Ö¶Î³¤¶È  
+					//å­—æ®µé•¿åº¦  
 					if(map.get("data_length") instanceof java.math.BigInteger){
 						//mysql
 						cd.setColumnCharMaxLength(Long.parseLong(""+(java.math.BigInteger)map.get("data_length"))); 
@@ -390,12 +390,12 @@ public class MainApplication {
 						//mssql
 						cd.setColumnNullable((Boolean)map.get("nullable"));
 					}else {
-						cd.setColumnNullable(((String)map.get("nullable")).toLowerCase().startsWith("y")?true:false);//¿É¿Õ
+						cd.setColumnNullable(((String)map.get("nullable")).toLowerCase().startsWith("y")?true:false);//å¯ç©º
 					}
 				}
 				
-				cd.setClassType(CGUtil.getJavaTypeFromDBType(cd.getColumnType(), cd.getColumnPrecision(), cd.getColumnScale())); //javaÀàĞÍ
-				//cd.setClassParam(CGUtil.underline2Camel(cd.getColumnName()));	 //setColumnName×Ô¶¯´¦Àí				
+				cd.setClassType(CGUtil.getJavaTypeFromDBType(cd.getColumnType(), cd.getColumnPrecision(), cd.getColumnScale())); //javaç±»å‹
+				//cd.setClassParam(CGUtil.underline2Camel(cd.getColumnName()));	 //setColumnNameè‡ªåŠ¨å¤„ç†				
 //				for(String key : map.keySet()){
 //					System.out.print(" "+cd.getClassName());
 //				}
