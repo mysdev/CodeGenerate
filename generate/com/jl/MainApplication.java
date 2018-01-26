@@ -137,7 +137,14 @@ public class MainApplication {
 				}				
 			}
 		}
+		//处理Velocity与jQuery $符号冲突问题 
+		
+		
 		return true;
+	}
+	
+	private static void repalceJquery(){
+		
 	}
 
 

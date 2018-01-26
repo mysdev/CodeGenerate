@@ -2,3 +2,6 @@
 /clock/
 /template/
 **/*.class
+/html-menu.sql
+/mysql-html.sql
+/mysql-menu.sql
