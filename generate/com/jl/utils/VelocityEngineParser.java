@@ -53,28 +53,30 @@ public class VelocityEngineParser {
 	* @Description: 
 	* @param context 数据
 	* @param templateFile	模板
-	* @param filePath 扩展路径
+	* @param filePath 文件扩展路径
 	* @param fileName 文件名称
+	* @param packagePath 一级配置目录
 	* @return  boolean    返回类型 
 	* @throws 
 	*/
-	public static boolean writerPage(VelocityContext context, String templateFile, String filePath, String fileName) {
-		String sysPath = CGConfig.projectSystemPath();
-		sysPath += CGConfig.source_root_package;
-		sysPath += ("/" + CGConfig.business_package.replaceAll("\\.", "/"));
-		if (filePath != null && filePath.trim().length() > 0) {
-			filePath = filePath.trim();
-			if (!filePath.startsWith("/")) {
-				filePath = "/" + filePath;
-			}
+	public static boolean writerPage(VelocityContext context, String templateFile, String filePath, String fileName, String packagePath) {
+		String sysPath = CGConfig.projectSystemPath();  //系统目录
+		if(CGConfig.source_root_package.length()>0 && !CGConfig.source_root_package.startsWith("/")){
+			sysPath +="/";
 		}
-		if (filePath != null) {
-			sysPath += filePath;
-			context.put("packageExt", filePath.replaceAll("/", "\\."));
+		sysPath += CGConfig.source_root_package; //根目录
+		if(packagePath==null){
+			packagePath = "";
+		}else if(packagePath.length()>0 && !packagePath.startsWith("/")){
+			packagePath = "/"+packagePath;
+		}	
+		sysPath += packagePath;
+		if(filePath==null){
+			filePath = "";
+		}else if(filePath.length()>0 && !filePath.startsWith("/")){
+			filePath = "/"+filePath;
 		}
-		//参数配置
-		context.put("package", CGConfig.business_package);
-		
+		sysPath +=filePath;
 		
 		try {
 			File file = new File(sysPath +"/"+ fileName);

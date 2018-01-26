@@ -24,13 +24,34 @@ public class ColumnData {
 	// DB规模
 	private Long columnScale;
 	// DB精度
-	private Long columnPrecision;
+	private Long columnPrecision;	
+	
 	
 	private String classMethod;//java方法名
 	private String classParam;//java参数
-	private String classType;//java类型
-	private String validationType; //检查类型暂支持mobile,phone,email,fax
+	private String classType;//java类型	
 	private String classLable; //列标签 注释空格符前面字符
+	private String validationType; //检查类型暂支持mobile,phone,email,fax
+	
+	
+	/**
+	 * @fieldName: isInsertColumn
+	 * @fieldType: Boolean
+	 * @Description: 是否写入时间
+	 */
+	private Boolean isInsertColumn = false;
+	/**
+	 * @fieldName: isUpdateColumn
+	 * @fieldType: Boolean
+	 * @Description: 是否更新时间
+	 */
+	private Boolean isUpdateColumn = false;
+	/**
+	 * @fieldName: isBaseColumn
+	 * @fieldType: Boolean
+	 * @Description: 是否基本字段
+	 */
+	private Boolean isBaseColumn = false;
 	
 	private void checkValidationType(String columnName){
 		if(columnName==null) return;
@@ -43,6 +64,11 @@ public class ColumnData {
 			validationType = "email";
 		}else if(temp.endsWith("fax")){
 			validationType = "fax";
+		}		
+		this.setIsBaseColumn(CGUtil.isBaseCloumnCloumn(columnName));
+		if(classType!=null && "Date".equals(classType)){
+			this.setIsInsertColumn(CGUtil.isInsertCloumn(columnName));
+			this.setIsInsertColumn(CGUtil.isUpdateCloumn(columnName));
 		}
 	}
 	
@@ -109,6 +135,13 @@ public class ColumnData {
 	}
 	public void setClassType(String classType) {
 		this.classType = classType;
+		if(columnName!=null){
+			this.setIsBaseColumn(CGUtil.isBaseCloumnCloumn(columnName));
+			if("Date".equals(classType)){
+				this.setIsInsertColumn(CGUtil.isInsertCloumn(columnName));
+				this.setIsInsertColumn(CGUtil.isUpdateCloumn(columnName));
+			}	
+		}
 	}
 	public String getClassMethod() {
 		return classMethod;
@@ -130,6 +163,30 @@ public class ColumnData {
 
 	public void setClassLable(String classLable) {
 		this.classLable = classLable;
+	}
+
+	public Boolean getIsInsertColumn() {
+		return isInsertColumn;
+	}
+
+	public void setIsInsertColumn(Boolean isInsertColumn) {
+		this.isInsertColumn = isInsertColumn;
+	}
+
+	public Boolean getIsUpdateColumn() {
+		return isUpdateColumn;
+	}
+
+	public void setIsUpdateColumn(Boolean isUpdateColumn) {
+		this.isUpdateColumn = isUpdateColumn;
+	}
+
+	public Boolean getIsBaseColumn() {
+		return isBaseColumn;
+	}
+
+	public void setIsBaseColumn(Boolean isBaseColumn) {
+		this.isBaseColumn = isBaseColumn;
 	}
 	
 }

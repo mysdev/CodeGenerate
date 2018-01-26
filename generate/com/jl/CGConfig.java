@@ -81,49 +81,7 @@ public class CGConfig {
 	public static String templateInfoWeb = "";
 	public static String templateInfoTotal = "";
 	
-	/** 
-	* @Title: isInsertCloumn 
-	* @Description: 是否新增时间字段
-	* @param cloumnName
-	* @return  boolean    返回类型 
-	* @throws 
-	*/
-	public static boolean isInsertCloumn(String cloumnName){
-		if(insertCloumn!=null && insertCloumn.length()>0 && insertCloumn.toLowerCase().equals(cloumnName.toLowerCase())){
-			return true;
-		}
-		return false;
-	}
 	
-	/** 
-	* @Title: isUpdateCloumnCloumn 
-	* @Description: 是否更新时间字段
-	* @param cloumnName
-	* @return  boolean    返回类型 
-	* @throws 
-	*/
-	public static boolean isUpdateCloumnCloumn(String cloumnName){
-		if(updateCloumn!=null && updateCloumn.length()>0 && updateCloumn.toLowerCase().equals(cloumnName.toLowerCase())){
-			return true;
-		}
-		return false;
-	}
-	
-	/** 
-	* @Title: isBaseCloumnCloumn
-	* @Description: 是否基本字段
-	* @param cloumnName
-	* @return  boolean    返回类型 
-	* @throws 
-	*/
-	public static boolean isBaseCloumnCloumn(String cloumnName){
-		if(baseCloumn!=null && baseCloumn.length()>0){
-			if((","+baseCloumn.toLowerCase()+",").indexOf(","+cloumnName.toLowerCase()+",")!=-1){
-				return true;
-			}
-		}
-		return false;
-	}
 	
 	//初始化加载
 	static {

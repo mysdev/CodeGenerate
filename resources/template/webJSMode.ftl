@@ -49,7 +49,7 @@ var ${className}EditViewModel = function () {
 	            },
 	            success: function (result) {
 	                if(result.code==200){
-	                	$("#mainframe", parent.window.document).attr("src","/${package}/${className}List.html");
+	                	$("#mainframe", parent.window.document).attr("src","${webPackage}/${className}List.html");
 	                }
 	                else{
 	                	parent.dialog(result.message).showModal();
@@ -75,7 +75,7 @@ var ${className}EditViewModel = function () {
 	            },
 	            success: function (json) {
 	                alert(json.result);
-	                $("#mainframe", parent.window.document).attr("src","/${package}/${className}List.html");
+	                $("#mainframe", parent.window.document).attr("src","${webPackage}/${className}List.html");
 	            }
 	        });
     	}

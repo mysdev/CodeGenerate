@@ -3,6 +3,8 @@
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.jl.CGConfig;
+
 /**
  * @ClassName: CGUtil
  * @Description: TODO
@@ -159,6 +161,50 @@ public class CGUtil {
 	public static String getProjectSystemPath() {
 		String path = System.getProperty("user.dir").replace("\\", "/") + "/";
 		return path;
+	}
+	
+	/** 
+	* @Title: isInsertCloumn 
+	* @Description: 是否新增时间字段
+	* @param cloumnName
+	* @return  boolean    返回类型 
+	* @throws 
+	*/
+	public static boolean isInsertCloumn(String cloumnName){
+		if(CGConfig.insertCloumn!=null && CGConfig.insertCloumn.length()>0 && CGConfig.insertCloumn.toLowerCase().equals(cloumnName.toLowerCase())){
+			return true;
+		}
+		return false;
+	}
+	
+	/** 
+	* @Title: isUpdateCloumnCloumn 
+	* @Description: 是否更新时间字段
+	* @param cloumnName
+	* @return  boolean    返回类型 
+	* @throws 
+	*/
+	public static boolean isUpdateCloumn(String cloumnName){
+		if(CGConfig.updateCloumn!=null && CGConfig.updateCloumn.length()>0 && CGConfig.updateCloumn.toLowerCase().equals(cloumnName.toLowerCase())){
+			return true;
+		}
+		return false;
+	}
+	
+	/** 
+	* @Title: isBaseCloumnCloumn
+	* @Description: 是否基本字段
+	* @param cloumnName
+	* @return  boolean    返回类型 
+	* @throws 
+	*/
+	public static boolean isBaseCloumnCloumn(String cloumnName){
+		if(CGConfig.baseCloumn!=null && CGConfig.baseCloumn.length()>0){
+			if((","+CGConfig.baseCloumn.toLowerCase()+",").indexOf(","+cloumnName.toLowerCase()+",")!=-1){
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

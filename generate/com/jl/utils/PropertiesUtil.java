@@ -4,7 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+//import java.io.UnsupportedEncodingException;
 //import java.util.Enumeration;
 import java.util.Properties;
 import org.apache.log4j.Logger;
@@ -80,14 +80,14 @@ public class PropertiesUtil {
 			loadPropertiesInfo();
 		}
 		String ret = props.getProperty(key);
-		try {
-			//System.out.println("PU:"+ret);
-			ret = new String(ret.getBytes("ISO8859_1"),"utf-8");
-		}catch (UnsupportedEncodingException e) {
-			log.error("获取配置参数"+key+"时转码出错："+e.getMessage());
-		}catch(Exception e){
-			log.error("获取配置参数"+key+"时出错："+e.getMessage());
-		}
+//		try {
+//			//System.out.println("PU:"+ret);
+//			ret = new String(ret.getBytes("ISO8859_1"),"utf-8");
+//		}catch (UnsupportedEncodingException e) {
+//			log.error("获取配置参数"+key+"时转码出错："+e.getMessage());
+//		}catch(Exception e){
+//			log.error("获取配置参数"+key+"时出错："+e.getMessage());
+//		}
 		return ret==null?"":ret;
 	}
 	
@@ -137,24 +137,5 @@ public class PropertiesUtil {
 	}
  */
 	
-//	public static void main(String[] args) {		
-//		//PropertiesUtil.Util().readProperties();
-//		RobotLog.LogSystem.info("测试开始");
-//		RobotLog.LogSystem.error("测试开始");
-//		RobotLog.LogDeviceInfo.info("LogDeviceInfo测试开始");
-//		RobotLog.LogDeviceMove.info("LogDeviceMove测试开始");
-//		RobotLog.LogDeviceError.info("LogDeviceError测试开始");
-//		RobotLog.LogOrderInfo.info("测试开始");
-//		RobotLog.LogOrderError.info("测试开始");
-//		PropertiesUtil.Util().readProperties();
-//		RobotLog.LogSystem.info("测试结束");
-//		RobotLog.LogSystem.error("测试结束");
-//		RobotLog.LogDeviceInfo.info("测试结束");
-//		RobotLog.LogDeviceMove.info("测试结束");
-//		RobotLog.LogDeviceError.info("测试结束");
-//		RobotLog.LogOrderInfo.info("测试结束");
-//		RobotLog.LogOrderError.info("测试结束");
-//		
-//	}
 	
 }

@@ -20,7 +20,7 @@ var ${className}ViewModel = function () {
 	    bindPage();
 	    
 	    $("table tbody td .tomodify").bind(function(){
-	    	$("#mainframe", parent.window.document).attr("src",'./${package}/${className}.html?action=Edit&id='+$(this).attr('data'));
+	    	$("#mainframe", parent.window.document).attr("src",'.${webPackage}/${className}.html?action=Edit&id='+$(this).attr('data'));
 	    });
 	});
 	
@@ -36,12 +36,12 @@ var ${className}ViewModel = function () {
     
     //新增
     self.add = function(obj) {
-    	$("#mainframe", parent.window.document).attr("src",'./${package}/${className}.html?action=Add');
+    	$("#mainframe", parent.window.document).attr("src",'.${webPackage}/${className}.html?action=Add');
     };
     
     //修改
     self.modify=function(obj){
-    	$("#mainframe", parent.window.document).attr("src",'./${package}/${className}.html?action=Edit&id='+obj.${keyColumn.classParam});
+    	$("#mainframe", parent.window.document).attr("src",'.${webPackage}/${className}.html?action=Edit&id='+obj.${keyColumn.classParam});
     };
     
     //删除
@@ -111,7 +111,7 @@ var bindPage =function(){
         currentPage: myPage.page,
         onPageChange: function (num, type) {
             if (type != 'init') {
-            	$("#mainframe", parent.window.document).attr("src",'./${package}/${className}List.html?page=' + num);
+            	$("#mainframe", parent.window.document).attr("src",'.${webPackage}/${className}List.html?page=' + num);
             }
         }
     });

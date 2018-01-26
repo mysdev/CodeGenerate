@@ -13,8 +13,8 @@ import org.apache.velocity.VelocityContext;
 import com.jl.model.ColumnData;
 import com.jl.model.TableData;
 import com.jl.utils.CGUtil;
+import com.jl.utils.ClassUtil;
 import com.jl.utils.DBUtil;
-import com.jl.utils.PropertiesUtil;
 import com.jl.utils.VelocityEngineParser;
 
 /**
@@ -27,287 +27,247 @@ public class MainApplication {
 	
 	private static final Log log = LogFactory.getLog(MainApplication.class);
 	
+	private static SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分");
+	
+	/**
+	 * @fieldName: tableList
+	 * @fieldType: List<TableData>
+	 * @Description: 读取到的库表信息
+	 */
 	private static List<TableData> tableList = new ArrayList<TableData>();
 	
+	/**
+	 * @fieldName: velocityList
+	 * @fieldType: List<VelocityContext>
+	 * @Description: 变量数据
+	 */
+	private static List<VelocityContext> velocityList = new ArrayList<VelocityContext>();
 	
+	
+	/** 
+	* @Title: main 
+	* @Description: 程序主入口
+	* @param arg  void    返回类型 
+	* @throws 
+	*/
 	public static void main(String[] arg){		
 		log.info("***************   CODE GENERATE START   ********************");			
-		MainApplication ma = new MainApplication();
 		
-		String tables = PropertiesUtil.Util(null).readValue("table_info");
+		//加载待处理表信息
+		String tables = CGConfig.table_info;
 		if(tables==null || tables.length()==0){
-			//20180111 升级，从DB中查全量 --mysql
-			DBUtil db = new DBUtil();
-			List<Map<String, Object>> tablelist = null;
-			if(db.getDbtype().equals("mysql")){
-				tablelist= db.QueryTableToListMapObject("Select table_name tableName,TABLE_COMMENT tableComment from INFORMATION_SCHEMA.TABLES Where table_schema = '"
-						+db.getDbname()+"' and table_name like 'tc_%'  order by table_name asc");
-			}
-			if(tablelist!=null && tablelist.size()>0){
-				for(Map<String, Object> map : tablelist){
-					if(map!=null && map.containsKey("tablename")){
-						String tn = (String)map.get("tablecomment");
-						ma.doCodeGenerate((String)map.get("tablename"), tn!=null&&tn.length()>0?tn:"表"+(String)map.get("tablename"));
+			readAllTableFromDB();
+		}else{
+			tables = tables.replaceAll("，", ",");
+			tables = tables.replaceAll("；", ";");
+			String[] ts = tables.split(";");
+			for(int i=0 ; i<ts.length; i++){
+				if(ts[i]!=null && ts[i].length()>0){
+					String[] t = ts[i].split(",");
+					TableData td = new TableData();
+					td.setTableName(t[0]);
+					if(t.length>1 && t[1]!=null && t[1].length()>0){
+						td.setBusinessName(t[1]);
 					}
 				}
-			}else{			
-				log.error("error: table_info can not be null!");
-				System.exit(0);
 			}
+		}		
+		
+		if(tableList.size()==0){
+			log.error("error: can not read table !");
+			System.exit(0);
 		}
-		tables = tables.replaceAll("，", ",");
-		tables = tables.replaceAll("；", ";");
-		String[] ts = tables.split(";");
-		for(int i=0 ; i<ts.length; i++){
-			if(ts[i]!=null && ts[i].length()>0){
-				String[] t = ts[i].split(",");
-				System.out.println(t[1]);
-				ma.doCodeGenerate(t[0], (t.length<2|| t[1]==null || t[1].length()==0)?"表"+t[0]:t[1]);
-			}
+		//加载表格列信息
+		loadTableColumnFromDB();
+		if(tableList.size()==0){
+			log.error("error: can not read table column!");
+			System.exit(0);
 		}
-		log.info("***************   CODE GENERATE table item OVER   ********************");
-		ma.doTotalGenerate();
+		
+		//整体数据文件生成
+		createTotalFile();
+		
+		//后台数据文件生成
+		createServiceFile();
+		
+		//前台数据文件生成
+		createWebFile();
+		
 		log.info("***************   CODE GENERATE OVER   ********************");	
 	}
 	
+	
 	/** 
-	* @Title: doTotalGenerate 
-	* @Description: 全体统计
+	* @Title: createWebFile 
+	* @Description: 前端代码生成
+	* @return  Boolean    返回类型 
+	* @throws 
+	*/
+	private static Boolean createWebFile() {
+		if(CGConfig.templateInfoWeb!=null && CGConfig.templateInfoWeb.length()>5){
+			if(velocityList.size()==0){
+				//转换表数据到velocity
+				changTableToVelocity();
+			}
+			String webPackage = CGConfig.business_package_web;
+			if(webPackage!=null && webPackage.length()>0 && !webPackage.startsWith("/")){
+				webPackage = "/"+webPackage;
+			}
+			String template = CGConfig.templateInfoWeb.replaceAll("，", ",");
+			template = template.replaceAll("；", ";");
+			String[] templates = template.split(";");
+			for(int i=0; i<templates.length; i++){
+				String[] ts = templates[i].split(",");
+				if(ts==null || ts.length!=3){
+					log.error("error: template_info_web can not read file ("+templates[i]+")");
+					continue;
+				}
+				for(VelocityContext context: velocityList){
+					//参数配置
+					context.put("webPackage", webPackage); //包结构
+					if(ts[1]!=null && ts[1].length()>0){
+						if(!ts[1].startsWith("/")){
+							ts[1] = "/"+ts[1];
+						}
+						context.put("webPackageExt", ts[1]); //子级目录
+					}else{
+						context.put("webPackageExt", null); //子级目录
+					}					
+					VelocityEngineParser.writerPage(context, ts[0], ts[1], context.get("className")+ts[2], webPackage);
+				}				
+			}
+		}
+		return true;
+	}
+
+
+	/** 
+	* @Title: createServiceFile 
+	* @Description: 后台代码生成 
+	* @throws 
+	*/
+	private static Boolean createServiceFile() {
+		if(CGConfig.templateInfo!=null && CGConfig.templateInfo.length()>5){
+			if(velocityList.size()==0){
+				//转换表数据到velocity
+				changTableToVelocity();
+			}
+			//后台配置以com.jing.*
+			String sysPath = ("/" + CGConfig.business_package.replaceAll("\\.", "/")); //一级目录
+			
+			String template = CGConfig.templateInfo.replaceAll("，", ",");
+			template = template.replaceAll("；", ";");
+			String[] templates = template.split(";");
+			for(int i=0; i<templates.length; i++){
+				String[] ts = templates[i].split(",");
+				if(ts==null || ts.length!=3){
+					log.error("error: template_info can not read file ("+templates[i]+")");
+					continue;
+				}
+				for(VelocityContext context: velocityList){
+					//参数配置
+					context.put("package", CGConfig.business_package); //包结构
+					if(ts[1]!=null && ts[1].length()>0){
+						if(!ts[1].startsWith("/")){
+							ts[1] = "/"+ts[1];
+						}
+						context.put("packageExt", ts[1].replaceAll("/", "\\.")); //子级目录
+					}else{
+						context.put("packageExt", null); //子级目录
+					}					
+					VelocityEngineParser.writerPage(context, ts[0], ts[1], context.get("className")+ts[2], sysPath);
+				}				
+			}
+		}
+		return true;	
+	}
+
+
+	
+	
+	/** 
+	* @Title: createTotalFile 
+	* @Description: 整体信息文件生成
 	* @return  boolean    返回类型 
 	* @throws 
 	*/
-	public boolean doTotalGenerate(){
-		if(tableList.size()>0){
+	public static boolean createTotalFile(){
+		if(CGConfig.templateInfoTotal!=null && CGConfig.templateInfoTotal.length()>5 && tableList.size()>0){
 			VelocityContext context = new VelocityContext();
 			context.put("tableList", tableList);
-			
-			String codes = PropertiesUtil.Util(null).readValue("template_info_total");
-			if(codes==null || codes.length()<5){
-				log.info("info: template_info_total can not be null!");	
-				return true;
-			}
-			codes = codes.replaceAll("，", ",");
-			codes = codes.replaceAll("；", ";");
-			String[] template = codes.split(";");
-			for(int i=0; i<template.length; i++){
-				String[] ts = template[i].split(",");
+			String template = CGConfig.templateInfoTotal.replaceAll("，", ",");
+			template = template.replaceAll("；", ";");
+			String[] templates = template.split(";");
+			for(int i=0; i<templates.length; i++){
+				String[] ts = templates[i].split(",");
 				if(ts==null || ts.length!=3){
-					log.error("error: template_info_total can not read("+template[i]+")");
+					log.error("error: template_info_total can not read file ("+templates[i]+")");
 					continue;
 				}
 				Map<String, String> mapDao = new HashMap<String, String>();
 				mapDao.put("templateFile", ts[0]);
 				mapDao.put("filePath", ts[1]);
 				mapDao.put("fileName", ts[2]);		
-				VelocityEngineParser.writerPage(context, ts[0], ts[1], ts[2]);
+				VelocityEngineParser.writerPage(context, ts[0], ts[1], ts[2], CGConfig.business_package_total);
 			}
 		}
 		return true;		
 	}
 	
-	public boolean doCodeGenerate(String tableName, String businessName){
-		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-		
-		String codes = PropertiesUtil.Util(null).readValue("template_info");
-		if(codes==null || codes.length()<5){
-			log.error("error: template_info can not be null!");
-			System.exit(0);
-		}
-		codes = codes.replaceAll("，", ",");
-		codes = codes.replaceAll("；", ";");
-		String[] template = codes.split(";");
-		for(int i=0; i<template.length; i++){
-			String[] ts = template[i].split(",");
-			if(ts==null || ts.length!=3){
-				log.error("error: template_info can not read("+template[i]+")");
-				continue;
-			}
-			Map<String, String> mapDao = new HashMap<String, String>();
-			mapDao.put("templateFile", ts[0]);
-			mapDao.put("filePath", ts[1]);
-			mapDao.put("fileName", ts[2]);		
-			list.add(mapDao);
-		}
-//		Map<String, String> mapDao = new HashMap<String, String>();
-//		mapDao.put("templateFile", "DaoTemplate.ftl");
-//		mapDao.put("filePath", "/model/dao");
-//		mapDao.put("fileName", "Mapper.java");		
-//		list.add(mapDao);
-//		
-//		Map<String, String> mapEntity = new HashMap<String, String>();
-//		mapEntity.put("templateFile", "EntityTemplate.ftl");
-//		mapEntity.put("filePath", "/model/entity");
-//		mapEntity.put("fileName", ".java");
-//		list.add(mapEntity);
-//		
-//		Map<String, String> mapXml = new HashMap<String, String>();
-//		mapXml.put("templateFile", "MapperTemplate.xml");
-//		mapXml.put("filePath", "/model/mapper");
-//		mapXml.put("fileName", "Mapper.xml");
-//		list.add(mapXml);
-//		
-//		Map<String, String> mapSvr = new HashMap<String, String>();
-//		mapSvr.put("templateFile", "ServiceTemplate.ftl");
-//		mapSvr.put("filePath", "/service");
-//		mapSvr.put("fileName", "Service.java");
-//		list.add(mapSvr);
-//		
-//		Map<String, String> mapImpl = new HashMap<String, String>();
-//		mapImpl.put("templateFile", "ServiceImplTemplate.ftl");
-//		mapImpl.put("filePath", "/service/impl");
-//		mapImpl.put("fileName", "ServiceImpl.java");
-//		list.add(mapImpl);
-//		
-//		
-//		Map<String, String> mapController = new HashMap<String, String>();
-//		mapController.put("templateFile", "ControllerTemplate.ftl");
-//		mapController.put("filePath", "/controller");
-//		mapController.put("fileName", "Controller.java");
-//		list.add(mapController);
-		
-		
-		return createFile(tableName, businessName, list);
-	}
 	
 	/** 
-	* @Title: createFile 
-	* @Description: 生成代码
-	* @param tableName
-	* @param businessName
-	* @param list
-	* @return  boolean    返回类型 
+	* @Title: changTableToVelocity 
+	* @Description: 管理VelocityContext属性，包括全局配置以及映射表格属性
 	* @throws 
 	*/
-	public boolean createFile(String tableName, String businessName, List<Map<String, String>> list){
-		TableData td = makeTableGenerate(tableName, businessName);
-		tableList.add(td);//加入表格信息
-		if(td==null || td.getClassName()==null){
-			log.info("get table info from db is error!");
-			return false;
-		}
-		VelocityContext vc = makeVelocityContext(td);
-		for(Map<String, String> map : list){
-			VelocityEngineParser.writerPage(vc, map.get("templateFile"), map.get("filePath"), td.getClassName()+map.get("fileName"));
-		}
-		return true;
-	}
-	
-	/** 
-	* @Title: makeVelocityContext 
-	* @Description: 拼装属性
-	* @param td
-	* @return  VelocityContext    返回类型 
-	* @throws 
-	*/
-	public VelocityContext makeVelocityContext(TableData td){
-		SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分");
-		
-		VelocityContext context = new VelocityContext();
-		context.put("datetime", format.format(System.currentTimeMillis()));
-		context.put("author", PropertiesUtil.Util(null).readValue("author"));
-		context.put("email", PropertiesUtil.Util(null).readValue("email"));
-		context.put("insertCloumn", PropertiesUtil.Util(null).readValue("insertCloumn"));
-		context.put("updateCloumn", PropertiesUtil.Util(null).readValue("updateCloumn"));
-		context.put("tableName", td.getTableName());	//表名
-		context.put("className", td.getClassName());	//类名
-		context.put("entityName", td.getEntityName());	//实体名
-		context.put("pathName", td.getPathName());	//路径名		
-		context.put("businessName", td.getBusinessName());	//业务名称
-		if(td.getColumnData()!=null && td.getColumnData().size()>0){
-			context.put("keyColumn", td.getColumnData().get(0)); //key
+	private static void changTableToVelocity() {
+		for(TableData table : tableList){
+			VelocityContext context = new VelocityContext();
+			//全局参数映射
+			context.put("datetime", format.format(System.currentTimeMillis()));
+			context.put("author", CGConfig.author);
+			context.put("email", CGConfig.email);			
+			//表格属性自动反射映射
+			try {
+				Map<String, Object> tmap = ClassUtil.transBean2Map(table, true);
+				for(String key : tmap.keySet()){
+					context.put(key, tmap.get(key));
+				}
+				velocityList.add(context);
+			} catch (Exception e) {
+				log.error("error: can not chang table column to Velocity Context!"+table.getTableName());
+			}			
 		}		
-//		context.put("tableKey", td.getTableKey());	//表KEY	W
-//		context.put("classKey", td.getClassKey());	//类KEY
-//		context.put("classKeyType", td.getClassKeyType());	//KEY类型		
-		context.put("columnList", td.getColumnData()); //列信息
-		String tableItem = "";
-		for(ColumnData c : td.getColumnData()){
-			tableItem += (c.getColumnName()+", ");
-		}
-		if(tableItem.endsWith(", ")){
-			context.put("columnItem", tableItem.substring(0, tableItem.length()-2));
-		}
-		//TODO 后期改造为主动发现
-		
-		return context;
 	}
-	
-	
-	/** 
-	* @Title: makeTableGenerate 
-	* @Description: 组装表信息 
-	* @param tableName 表名称
-	* @param businessName  业务名称
-	* @return TableData  返回类型 
-	* @throws 
-	*/
-	public TableData makeTableGenerate(String tableName, String businessName){
-		TableData table = new TableData();
-		table.setTableName(tableName);
-		table.setBusinessName(businessName);
-		table.setColumnData(getColumnByTableName(tableName));
-//		if(table.getColumnData()!=null && table.getColumnData().size()>0 
-//				&& table.getColumnData().get(0)!=null && table.getColumnData().get(0).getColumnName()!=null
-//				//&& table.getColumnData().get(0).getColumnName().toLowerCase().endsWith("id")
-//				){
-//			//设置KEY字段
-//			table.setTableKey(table.getColumnData().get(0).getColumnName());
-//			table.setClassKey(table.getColumnData().get(0).getClassParam());
-//			table.setClassKeyType(table.getColumnData().get(0).getClassType());
-//		}
-		return table;
-	}
-	
-	
-	
-	/** 
-	* @Title: mssqlDataType 
-	* @Description: MSSQL数据类型
-	* @param dtype
-	* @return  String    返回类型 
-	* @throws 
-	*/
-	private String mssqlDataType(Short dtype){
-		if(dtype==null){	return null;	}
-		if(dtype.intValue()==34){	return "image";	}
-		if(dtype.intValue()==35){	return "text";	}
-		if(dtype.intValue()==36){	return "uniqueidentifier";	}
-		if(dtype.intValue()==48){	return "tinyint";	}
-		if(dtype.intValue()==52){	return "smallint";	}
-		if(dtype.intValue()==56){	return "int";	}
-		if(dtype.intValue()==58){	return "smalldatetime";	}
-		if(dtype.intValue()==59){	return "real";	}
-		if(dtype.intValue()==60){	return "money";	}
-		if(dtype.intValue()==61){	return "datetime";	}
-		if(dtype.intValue()==62){	return "float";	}
-		if(dtype.intValue()==98){	return "sql_variant";	}
-		if(dtype.intValue()==99){	return "ntext";	}
-		if(dtype.intValue()==104){	return "bit";	}
-		if(dtype.intValue()==106){	return "decimal";	}
-		if(dtype.intValue()==108){	return "numeric";	}
-		if(dtype.intValue()==122){	return "smallmoney";	}
-		if(dtype.intValue()==127){	return "bigint";	}
-		if(dtype.intValue()==165){	return "varbinary";	}
-		if(dtype.intValue()==167){	return "varchar";	}
-		if(dtype.intValue()==173){	return "binary";	}
-		if(dtype.intValue()==175){	return "char";	}
-		if(dtype.intValue()==189){	return "timestamp";	}
-		if(dtype.intValue()==231){	return "sysname";	}
-		if(dtype.intValue()==231){	return "nvarchar";	}
-		if(dtype.intValue()==239){	return "nchar";	}
-		return null;
 
+
+	
+	/** 
+	* @Title: loadTableColumnFromDB 
+	* @Description: 加载表格的列信息
+	* @throws 
+	*/
+	private static void loadTableColumnFromDB() {
+		for(int i=tableList.size()-1; i>=0; i--){
+			 List<ColumnData> colData = getColumnByTableName(tableList.get(i).getTableName());
+			 if(colData!=null && colData.size()>0){
+				 tableList.get(i).setColumnList(colData);
+			 }else{
+				 log.error("error: can not read table column from ->"+tableList.get(i).getTableName());
+				 tableList.remove(i);
+			 }
+		}
 	}
 	
 	
 	/** 
 	* @Title: getColumnByTableName 
-	* @Description: 获取
+	* @Description: 获取表格列信息
 	* @param tableName
 	* @return  List<ColumnData>    返回类型 
 	* @throws 
 	*/
-	public List<ColumnData> getColumnByTableName(String tableName){
+	public static List<ColumnData> getColumnByTableName(String tableName){
 		tableName = tableName.toUpperCase();
 		DBUtil db = new DBUtil();
 		String sql = "";
@@ -405,5 +365,78 @@ public class MainApplication {
 		return ret;
 	}
 	
+	
+	
+	
+	/** 
+	* @Title: readAllTableFromDB 
+	* @Description: 从库中读取库表及备注信息
+  	* @return void    返回类型 
+	* @throws 
+	*/
+	private static void readAllTableFromDB(){
+		DBUtil db = new DBUtil();
+		List<Map<String, Object>> tList = null;
+		if(db.getDbtype().equals("mysql")){
+			tList= db.QueryTableToListMapObject("Select table_name tableName,TABLE_COMMENT tableComment from INFORMATION_SCHEMA.TABLES Where table_schema = '"
+					+db.getDbname()+"' and table_name like 'ts_%'  order by table_name asc");
+		}
+		// TODO 暂时只实现了mysql
+		
+		if(tList!=null && tList.size()>0){
+			for(Map<String, Object> map : tList){
+				if(map!=null && map.containsKey("tablename")){
+					TableData td = new TableData();
+					td.setTableName((String)map.get("tablename"));
+					String tn = (String)map.get("tablecomment");
+					if(tn!=null && tn.length()>0){
+						td.setBusinessName(tn);
+					}
+					tableList.add(td);
+				}
+			}
+		}else{			
+			log.error("error: table_info can not be null!");			
+		}
+	}
+	
 
+	/** 
+	* @Title: mssqlDataType 
+	* @Description: MSSQL数据类型
+	* @param dtype
+	* @return  String    返回类型 
+	* @throws 
+	*/
+	private static String mssqlDataType(Short dtype){
+		if(dtype==null){	return null;	}
+		if(dtype.intValue()==34){	return "image";	}
+		if(dtype.intValue()==35){	return "text";	}
+		if(dtype.intValue()==36){	return "uniqueidentifier";	}
+		if(dtype.intValue()==48){	return "tinyint";	}
+		if(dtype.intValue()==52){	return "smallint";	}
+		if(dtype.intValue()==56){	return "int";	}
+		if(dtype.intValue()==58){	return "smalldatetime";	}
+		if(dtype.intValue()==59){	return "real";	}
+		if(dtype.intValue()==60){	return "money";	}
+		if(dtype.intValue()==61){	return "datetime";	}
+		if(dtype.intValue()==62){	return "float";	}
+		if(dtype.intValue()==98){	return "sql_variant";	}
+		if(dtype.intValue()==99){	return "ntext";	}
+		if(dtype.intValue()==104){	return "bit";	}
+		if(dtype.intValue()==106){	return "decimal";	}
+		if(dtype.intValue()==108){	return "numeric";	}
+		if(dtype.intValue()==122){	return "smallmoney";	}
+		if(dtype.intValue()==127){	return "bigint";	}
+		if(dtype.intValue()==165){	return "varbinary";	}
+		if(dtype.intValue()==167){	return "varchar";	}
+		if(dtype.intValue()==173){	return "binary";	}
+		if(dtype.intValue()==175){	return "char";	}
+		if(dtype.intValue()==189){	return "timestamp";	}
+		if(dtype.intValue()==231){	return "sysname";	}
+		if(dtype.intValue()==231){	return "nvarchar";	}
+		if(dtype.intValue()==239){	return "nchar";	}
+		return null;
+
+	}
 }
