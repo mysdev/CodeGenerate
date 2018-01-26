@@ -93,7 +93,7 @@
 			<!--/工具栏-->
 		</form>
 		<!--列表数据绑定开始-->
-		<script src="./model/${className}Model.js"></script>
+		<script src="./model/${className}.js"></script>
 		<script type="text/javascript" charset="utf-8" src="../js/common.js"></script>
 		<!--列表数据绑定结束-->
 	</body>

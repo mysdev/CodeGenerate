@@ -76,7 +76,7 @@
 #end
 					</tr>
 				</thead>
-				<tbody data-bind="foreach: { data: dataList, as: 'obj' }">
+				<tbody data-bind="foreach: { data: ${entityName}List, as: 'obj' }">
 					<tr>
 						<td align="center">
 							<span class="checkall" style="vertical-align:middle;"><input id="chkid" type="checkbox" name="chkid"  data-bind="attr:{data: obj.${keyColumn.classParam}}" /></span>
@@ -89,8 +89,8 @@
 #set($i=$i+1)
 #end
 						<td align="center">
-							<a href="#" data-bind="click:$root.modify,attr:{data: obj.${keyColumn.classParam}}" >修改</a>&nbsp;
-							<a href="#" data-bind="click:$root.delete,attr:{data: obj.${keyColumn.classParam}}" >删除</a>
+							<a href="#" data-bind="click:$root.modify" >修改</a>&nbsp;
+							<a href="#" data-bind="click:$root.delete" >删除</a>
 						</td>
 					</tr>
 				</tbody>
@@ -109,7 +109,7 @@
 
 		</form>
 		<!--列表数据绑定开始-->
-		<script src="../${package}/model/${entityName}List.js"></script>
+		<script src="./model/${entityName}List.js"></script>
 		<!--列表数据绑定结束-->
 	</body>
 

@@ -9,7 +9,7 @@ var ${className}EditViewModel = function () {
     
     if(opFalg!="Add"){
     	var opid=getQueryString('id');
-    	\$.ajax({
+    	jQuery.ajax({
 	        type: 'GET',
 	        url: homeUrl+"/${pathName}/"+opid,
 	        cache: false,
@@ -28,7 +28,7 @@ var ${className}EditViewModel = function () {
     	if(opFalg=="Add"){
     		var vStartTime=self.ondutyTime.toString();
     		var vEndTime=self.ondutyTime.toString();
-	        \$.ajax({
+	        jQuery.ajax({
 	            type: "POST",
 	            url: homeUrl+"/${pathName}",  //新增接口
 	            dataType: "json",
@@ -53,7 +53,7 @@ var ${className}EditViewModel = function () {
 		}
     	else{
     		var opid=getQueryString('id');
-    		\$.ajax({
+    		jQuery.ajax({
 	            type: "PUT",
 	            url: homeUrl+"/${pathName}/"+opid,  //修改接口
 	            data: {
@@ -77,4 +77,4 @@ var ${className}EditViewModel = function () {
 $().ready(function(){
 	$("#txtName").focus();
     ko.applyBindings(new ${className}EditViewModel());
-})
+});
