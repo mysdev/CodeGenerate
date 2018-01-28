@@ -21,8 +21,11 @@
 			$(function() {
 				//初始化表单验证
 				$("#form1").initValidform();
-				$("#txtStartTime").flatpickr();
-				$("#txtEndTime").flatpickr();
+#foreach($item in $!{columnList})
+#if($!item.classType == 'Date' && !($!{item.isInsertColumn} || $!{item.isUpdateColumn}))
+				$("#${item.classParam}").flatpickr();
+#end
+#end
 			});
 		</script>
 	</head>
@@ -58,7 +61,7 @@
 #set ($i=0)
 #foreach($item in $!{columnList})
 #if($i!=0)
-#if(${item.columnName}!='created_date' && ${item.columnName}!='created_by' && ${item.columnName}!='updated_date' && ${item.columnName}!='updated_by')
+#if(!${item.isBaseColumn})
 #if($!item.classType == 'Integer')
 				<dl>
 					<dt>${item.classLable}</dt>

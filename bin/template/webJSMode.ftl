@@ -2,7 +2,7 @@
 var ${className}EditViewModel = function () {  
 	var self=this;
 #foreach($item in $!{columnList})
-#if(${item.columnName}!='created_date' && ${item.columnName}!='created_by' && ${item.columnName}!='updated_date' && ${item.columnName}!='updated_by')
+#if(!${item.isBaseColumn})
 	self.${item.classParam} = ko.observable(''); 
 #end
 #end
@@ -39,13 +39,14 @@ var ${className}EditViewModel = function () {
 	            data: {
 #set($i=0)
 #foreach($item in $!{columnList})
+#if(!${item.isBaseColumn})
 #if($i!=0)
-#if(${item.columnName}!='created_date' && ${item.columnName}!='created_by' && ${item.columnName}!='updated_date' && ${item.columnName}!='updated_by')
-					${item.classParam}:self.${item.classParam} #if($i!=$!{columnList.size()}),#end
+								${item.classParam}:self.${item.classParam}(),
 #end
 #end
+#set($i=$i+1)
 #end
-					$!{keyColumn.classParam}:self.$!{keyColumn.classParam}
+								$!{keyColumn.classParam}:null
 	            },
 	            success: function (result) {
 	                if(result.code==200){

@@ -65,11 +65,11 @@ public class ColumnData {
 		}else if(temp.endsWith("fax")){
 			validationType = "fax";
 		}		
-		this.setIsBaseColumn(CGUtil.isBaseCloumnCloumn(columnName));
-		if(classType!=null && "Date".equals(classType)){
-			this.setIsInsertColumn(CGUtil.isInsertCloumn(columnName));
-			this.setIsInsertColumn(CGUtil.isUpdateCloumn(columnName));
-		}
+//		this.setIsBaseColumn(CGUtil.isBaseCloumnCloumn(columnName));
+//		if(classType!=null && "Date".equals(classType)){
+//			this.setIsInsertColumn(CGUtil.isInsertCloumn(columnName));
+//			this.setIsInsertColumn(CGUtil.isUpdateCloumn(columnName));
+//		}
 	}
 	
 	public String getColumnName() {
@@ -77,6 +77,11 @@ public class ColumnData {
 	}
 	public void setColumnName(String columnName) {		
 		this.columnName = columnName;
+		this.setIsBaseColumn(CGUtil.isBaseCloumnCloumn(columnName));
+		//if(classType!=null && "Date".equals(classType)){
+			this.setIsInsertColumn(CGUtil.isInsertCloumn(columnName));
+			this.setIsUpdateColumn(CGUtil.isUpdateCloumn(columnName));
+		//}
 		checkValidationType(columnName);
 		classParam = CGUtil.underline2Camel(columnName);	
 		classMethod = classParam.substring(0, 1).toUpperCase()+classParam.substring(1);
@@ -135,13 +140,13 @@ public class ColumnData {
 	}
 	public void setClassType(String classType) {
 		this.classType = classType;
-		if(columnName!=null){
-			this.setIsBaseColumn(CGUtil.isBaseCloumnCloumn(columnName));
-			if("Date".equals(classType)){
-				this.setIsInsertColumn(CGUtil.isInsertCloumn(columnName));
-				this.setIsInsertColumn(CGUtil.isUpdateCloumn(columnName));
-			}	
-		}
+//		if(columnName!=null){
+//			this.setIsBaseColumn(CGUtil.isBaseCloumnCloumn(columnName));
+//			if("Date".equals(classType)){
+//				this.setIsInsertColumn(CGUtil.isInsertCloumn(columnName));
+//				this.setIsInsertColumn(CGUtil.isUpdateCloumn(columnName));
+//			}	
+//		}
 	}
 	public String getClassMethod() {
 		return classMethod;

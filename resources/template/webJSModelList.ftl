@@ -1,4 +1,5 @@
 var myPage;
+var
 
 function Node(obj) {
 #foreach($item in $!{columnList})
@@ -12,8 +13,13 @@ var ${className}ViewModel = function () {
     //添加动态监视数组对象
     self.${entityName}List = ko.observableArray([]);
     
+    var myurl=homeUrl+"/${pathName}s";
+    if(getQueryString('page')!=null){
+    	myurl+="?pageNo="+getQueryString('page');
+    }
+    	
     //初始化数据
-    ($).getJSON(homeUrl+"/${pathName}s",function(result){
+    ($).getJSON(myurl,function(result){
 		var mappedTasks = ($).map(result.data, function(item) { return new Node(item) });  
 	    self.${entityName}List(mappedTasks);
 	    myPage = result.page;

@@ -51,7 +51,8 @@ public class MainApplication {
 	* @throws 
 	*/
 	public static void main(String[] arg){		
-		log.info("***************   CODE GENERATE START   ********************");			
+		log.info("***************   CODE GENERATE START   ********************");	
+		System.out.println(CGConfig.getConfigAsJsonString());
 		
 		//加载待处理表信息
 		String tables = CGConfig.table_info;
@@ -386,7 +387,7 @@ public class MainApplication {
 		List<Map<String, Object>> tList = null;
 		if(db.getDbtype().equals("mysql")){
 			tList= db.QueryTableToListMapObject("Select table_name tableName,TABLE_COMMENT tableComment from INFORMATION_SCHEMA.TABLES Where table_schema = '"
-					+db.getDbname()+"' and table_name like 'ts_%'  order by table_name asc");
+					+db.getDbname()+"' and table_name like 'tc_%'  order by table_name asc");
 		}
 		// TODO 暂时只实现了mysql
 		

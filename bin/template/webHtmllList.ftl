@@ -73,6 +73,7 @@
 #if($i!=0)	
 						<th align="left">${item.classLable}</th>
 #end
+#set($i=$i+1)
 #end
 					</tr>
 				</thead>
