@@ -11,7 +11,7 @@ var ${className}EditViewModel = function () {
     
     if(opFalg!="Add"){
     	var opid=getQueryString('id');
-    	jQuery.ajax({
+    	($).ajax({
 	        type: 'GET',
 	        url: homeUrl+"/${pathName}/"+opid,
 	        cache: false,
@@ -30,9 +30,7 @@ var ${className}EditViewModel = function () {
 	//【提交】按钮押下处理
     self.Commit = function () {    	
     	if(opFalg=="Add"){
-    		var vStartTime=self.ondutyTime.toString();
-    		var vEndTime=self.ondutyTime.toString();
-	        jQuery.ajax({
+	        ($).ajax({
 	            type: "POST",
 	            url: homeUrl+"/${pathName}",  //新增接口
 	            dataType: "json",
@@ -60,7 +58,7 @@ var ${className}EditViewModel = function () {
 		}
     	else{
     		var opid=getQueryString('id');
-    		jQuery.ajax({
+    		($).ajax({
 	            type: "PUT",
 	            url: homeUrl+"/${pathName}/"+opid,  //修改接口
 	            data: {

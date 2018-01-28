@@ -1,5 +1,4 @@
 var myPage;
-var
 
 function Node(obj) {
 #foreach($item in $!{columnList})
@@ -53,7 +52,7 @@ var ${className}ViewModel = function () {
     //删除
     self.delete=function(obj){
     	var id = $(event.currentTarget).attr('data');
-    	jQuery.ajax({
+    	($).ajax({
 	        type: 'DELETE',
 	        url: homeUrl+'/${pathName}/'+id,
 	        cache: false,
@@ -83,7 +82,7 @@ var ${className}ViewModel = function () {
 	        okValue: '确定',
 	        ok: function () {
 	        	$(".checkall input:checked").each(function(i){
-	        		jQuery.ajax({
+	        		($).ajax({
 				        type: 'DELETE',
 				        url: homeUrl+'/${pathName}/'+$(this).attr('data'),
 				        cache: false,
@@ -111,7 +110,7 @@ $().ready(function(){
 
 var bindPage =function(){
 	//分页控件加载处理
-    jQuery.jqPaginator('#pagination', {
+    ($).jqPaginator('#pagination', {
         totalPages: myPage.totalPages,
         visiblePages: myPage.limit,
         currentPage: myPage.page,
