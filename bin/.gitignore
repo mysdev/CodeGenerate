@@ -1,7 +1,6 @@
 /com/
-/clock/
 /template/
-**/*.class
+/clock/
 /html-menu.sql
 /mysql-html.sql
 /mysql-menu.sql
