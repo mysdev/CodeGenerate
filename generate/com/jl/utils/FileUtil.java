@@ -8,6 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @ClassName: FileUtil
@@ -18,20 +20,6 @@ import java.util.List;
 public class FileUtil {
 	
 	public static void main(String[] arg){	
-		String a = "     ($).ajax({";
-		String from = "\\(\\$\\)";
-		String to = "\\$";
-		System.out.println(a);
-//		System.out.println(a.indexOf("($)"));
-		if(a.contains(from.replaceAll("\\\\", ""))){
-			System.out.println("in"+ from);			
-			System.out.println(a.replaceAll(from, to));
-		}else{
-			System.out.println("out");
-		}
-		
-//		System.out.println(a.indexOf("\\(\\$\\)"));
-//		System.out.println(a.replaceAll("\\(\\$\\)", "\\$"));
 //		
 //		 List<String> fileList = readFileInDir("D:\\workspace\\CodeGenerate\\src\\clock\\model");
 //		 for (String f1 : fileList) { 
@@ -98,14 +86,14 @@ public class FileUtil {
 
     public static void replaceFileByLines(String fileName, String oldString, String newString){  
         File file = new File(fileName);  
-        System.out.println(file.getAbsolutePath());
         boolean isRep = false;
      // tmpfile为缓存文件，代码运行完毕后此文件将重命名为源文件名字。  
         File tmpfile = new File(file.getParentFile().getAbsolutePath()  + "\\" + file.getName() + ".tmp");  
         BufferedWriter writer = null;
         BufferedReader reader = null;  
         try {  
-            System.out.println("以行为单位替换文件内容，一次读一整行："+oldString+" -> "+newString);  
+        	Pattern pattern = Pattern.compile(".*("+oldString+").*");
+//            System.out.println("以行为单位替换文件内容，一次读一整行："+oldString+" -> "+newString);  
             reader = new BufferedReader(new FileReader(file));  
             writer = new BufferedWriter(new FileWriter(tmpfile));
             String tempString = null;  
@@ -114,10 +102,11 @@ public class FileUtil {
             while ((tempString = reader.readLine()) != null) {  
                 // 显示行号  
                 //System.out.println("line " + line + ": " + tempString);  
-                if(tempString.contains(oldString.replaceAll("\\\\", ""))){                	
-                	System.out.println("FROM:"+tempString+  "    "+ oldString);
+                //if(tempString.contains(oldString.replaceAll("\\\\", ""))){
+         		if(pattern.matcher(tempString).matches()){
+//                	System.out.println("FROM:"+tempString+  "    "+ oldString);
                 	tempString = tempString.replaceAll(oldString, newString);
-                	System.out.println("TO:"+tempString);
+//                	System.out.println("TO:"+tempString);
                 	isRep = true;
                 }
                 writer.write(tempString + "\n");
