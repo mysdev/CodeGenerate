@@ -17,19 +17,32 @@ import java.util.List;
  */
 public class FileUtil {
 	
-	public static void main(String[] arg){
-		 List<String> fileList = readFileInDir("D:\\workspace\\CodeGenerate\\src\\clock\\model");
-		 for (String f1 : fileList) { 
-	     	System.out.println(f1);  
-	     } 
-		 
-		 readFileByLines(fileList.get(0));
-		 
-		 
-		 replaceFileByLines(fileList.get(0), "($)", "$");
+	public static void main(String[] arg){	
+		String a = "     ($).ajax({";
+		String from = "\\(\\$\\)";
+		String to = "\\$";
+		System.out.println(a);
+//		System.out.println(a.indexOf("($)"));
+		if(a.contains(from.replaceAll("\\\\", ""))){
+			System.out.println("in"+ from);			
+			System.out.println(a.replaceAll(from, to));
+		}else{
+			System.out.println("out");
+		}
+		
+//		System.out.println(a.indexOf("\\(\\$\\)"));
+//		System.out.println(a.replaceAll("\\(\\$\\)", "\\$"));
+//		
+//		 List<String> fileList = readFileInDir("D:\\workspace\\CodeGenerate\\src\\clock\\model");
+//		 for (String f1 : fileList) { 
+//	     	System.out.println(f1);  
+//	     }
+//		 replaceFileByLines(fileList.get(0), "(\\$)", "\\$");
+//		 
+//		 readFileByLines(fileList.get(0));
 	}
 
-	private static List<String> readFileInDir(String fileDir) {  
+	public static List<String> readFileInDir(String fileDir) {  
         List<String> fileList = new ArrayList<String>();  
         File file = new File(fileDir);  
         if(!file.isDirectory()){
@@ -85,13 +98,14 @@ public class FileUtil {
 
     public static void replaceFileByLines(String fileName, String oldString, String newString){  
         File file = new File(fileName);  
+        System.out.println(file.getAbsolutePath());
         boolean isRep = false;
      // tmpfile为缓存文件，代码运行完毕后此文件将重命名为源文件名字。  
         File tmpfile = new File(file.getParentFile().getAbsolutePath()  + "\\" + file.getName() + ".tmp");  
         BufferedWriter writer = null;
         BufferedReader reader = null;  
         try {  
-            System.out.println("以行为单位读取文件内容，一次读一整行：");  
+            System.out.println("以行为单位替换文件内容，一次读一整行："+oldString+" -> "+newString);  
             reader = new BufferedReader(new FileReader(file));  
             writer = new BufferedWriter(new FileWriter(tmpfile));
             String tempString = null;  
@@ -99,9 +113,11 @@ public class FileUtil {
             // 一次读入一行，直到读入null为文件结束  
             while ((tempString = reader.readLine()) != null) {  
                 // 显示行号  
-                System.out.println("line " + line + ": " + tempString);  
-                if(tempString.indexOf(oldString)!=-1){
+                //System.out.println("line " + line + ": " + tempString);  
+                if(tempString.contains(oldString.replaceAll("\\\\", ""))){                	
+                	System.out.println("FROM:"+tempString+  "    "+ oldString);
                 	tempString = tempString.replaceAll(oldString, newString);
+                	System.out.println("TO:"+tempString);
                 	isRep = true;
                 }
                 writer.write(tempString + "\n");

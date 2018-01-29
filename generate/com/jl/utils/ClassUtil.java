@@ -18,20 +18,20 @@ import java.util.regex.Pattern;
 
 /**
  * @ClassName: ClassUtil
- * @Description: ÀàÊµÌå²Ù×÷
+ * @Description: ç±»å®ä½“æ“ä½œ
  * @author: Jinlong He
- * @date: 2017Äê4ÔÂ11ÈÕ ÏÂÎç1:57:46
+ * @date: 2017å¹´4æœˆ11æ—¥ ä¸‹åˆ1:57:46
  */
 public class ClassUtil {
 
 	/**
-	 * »ñÈ¡ÀàÊµÀıµÄÊôĞÔÖµ
+	 * è·å–ç±»å®ä¾‹çš„å±æ€§å€¼
 	 * 
 	 * @param clazz
-	 *            ÀàÃû
+	 *            ç±»å
 	 * @param includeParentClass
-	 *            ÊÇ·ñ°üÀ¨¸¸ÀàµÄÊôĞÔÖµ
-	 * @return ÀàÃû.ÊôĞÔÃû=ÊôĞÔÀàĞÍ
+	 *            æ˜¯å¦åŒ…æ‹¬çˆ¶ç±»çš„å±æ€§å€¼
+	 * @return ç±»å.å±æ€§å=å±æ€§ç±»å‹
 	 * @author: li chao
 	 */
 	@SuppressWarnings("rawtypes")
@@ -48,13 +48,13 @@ public class ClassUtil {
 	}
 
 	/**
-	 * »ñÈ¡ÀàÊµÀıµÄ¸¸ÀàµÄÊôĞÔÖµ
+	 * è·å–ç±»å®ä¾‹çš„çˆ¶ç±»çš„å±æ€§å€¼
 	 * 
 	 * @param map
-	 *            ÀàÊµÀıµÄÊôĞÔÖµMap
+	 *            ç±»å®ä¾‹çš„å±æ€§å€¼Map
 	 * @param clazz
-	 *            ÀàÃû
-	 * @return ÀàÃû.ÊôĞÔÃû=ÊôĞÔÀàĞÍ
+	 *            ç±»å
+	 * @return ç±»å.å±æ€§å=å±æ€§ç±»å‹
 	 * @author: li chao
 	 */
 	@SuppressWarnings("rawtypes")
@@ -73,12 +73,12 @@ public class ClassUtil {
 	}
 
 	/**
-	 * »ñÈ¡ÀàÊµÀıµÄ·½·¨
+	 * è·å–ç±»å®ä¾‹çš„æ–¹æ³•
 	 * 
 	 * @param clazz
-	 *            ÀàÃû
+	 *            ç±»å
 	 * @param includeParentClass
-	 *            ÊÇ·ñ°üÀ¨¸¸ÀàµÄ·½·¨
+	 *            æ˜¯å¦åŒ…æ‹¬çˆ¶ç±»çš„æ–¹æ³•
 	 * @return List
 	 * @author: li chao
 	 */
@@ -96,12 +96,12 @@ public class ClassUtil {
 	}
 
 	/**
-	 * »ñÈ¡ÀàÊµÀıµÄ¸¸ÀàµÄ·½·¨
+	 * è·å–ç±»å®ä¾‹çš„çˆ¶ç±»çš„æ–¹æ³•
 	 * 
 	 * @param list
-	 *            ÀàÊµÀıµÄ·½·¨List
+	 *            ç±»å®ä¾‹çš„æ–¹æ³•List
 	 * @param clazz
-	 *            ÀàÃû
+	 *            ç±»å
 	 * @return List
 	 * @author: li chao
 	 */
@@ -121,7 +121,7 @@ public class ClassUtil {
 	/**
 	 * 
 	 * @Title: isNull
-	 * @Description: ÅĞ¶Ï¶ÔÏóÊÇ·ñNull
+	 * @Description: åˆ¤æ–­å¯¹è±¡æ˜¯å¦Null
 	 * @param obj
 	 * @return boolean
 	 * @author: li chao
@@ -145,7 +145,7 @@ public class ClassUtil {
 	/**
 	 * 
 	 * @Title: getClassFieldName
-	 * @Description:»ñÈ¡ÊôĞÔÖµÊôĞÔÃû³Æ
+	 * @Description:è·å–å±æ€§å€¼å±æ€§åç§°
 	 * @param obj
 	 * @param isNull
 	 * @return
@@ -176,13 +176,13 @@ public class ClassUtil {
 	
 	/** 
 	* @Title: beanIsNull 
-	* @Description: Í¨¹ıBEANµÄgetter·½·¨À´ÅĞ¶ÏbeanÊÇ·ñÎª¿Õ
+	* @Description: é€šè¿‡BEANçš„getteræ–¹æ³•æ¥åˆ¤æ–­beanæ˜¯å¦ä¸ºç©º
 	* @param bean
 	* @return
 	* @throws IllegalAccessException
 	* @throws IllegalArgumentException
 	* @throws InvocationTargetException
-	* @throws IntrospectionException  boolean    ·µ»ØÀàĞÍ 
+	* @throws IntrospectionException  boolean    è¿”å›ç±»å‹ 
 	* @throws 
 	* @author Jinlong He
 	*/
@@ -208,14 +208,14 @@ public class ClassUtil {
 
 	/** 
 	* @Title: transBean2Map 
-	* @Description: ½«BEANÍ¨¹ıgetter±©Â¶³öµÄÊı¾İ·â×°µ½MAP 
+	* @Description: å°†BEANé€šè¿‡getteræš´éœ²å‡ºçš„æ•°æ®å°è£…åˆ°MAP 
 	* @param obj 
-	* @param hasNull ¿ÕÊı¾İÊÇ·ñ·â×°
+	* @param hasNull ç©ºæ•°æ®æ˜¯å¦å°è£…
 	* @return
 	* @throws IntrospectionException
 	* @throws IllegalAccessException
 	* @throws IllegalArgumentException
-	* @throws InvocationTargetException  Map<String,Object>    ·µ»ØÀàĞÍ 
+	* @throws InvocationTargetException  Map<String,Object>    è¿”å›ç±»å‹ 
 	* @throws 
 	* @author Jinlong He
 	*/
@@ -229,9 +229,9 @@ public class ClassUtil {
 		PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
 		for (PropertyDescriptor property : propertyDescriptors) {
 			String key = property.getName();
-			// ¹ıÂËclassÊôĞÔ
+			// è¿‡æ»¤classå±æ€§
 			if (!key.equals("class")) {
-				// µÃµ½property¶ÔÓ¦µÄgetter·½·¨
+				// å¾—åˆ°propertyå¯¹åº”çš„getteræ–¹æ³•
 				Method getter = property.getReadMethod();
 				Object value = getter.invoke(bean);
 				if (value == null && !hasNull) {
@@ -245,13 +245,13 @@ public class ClassUtil {
 	
 	/** 
 	* @Title: transMap2Bean 
-	* @Description: ³õÊ¼»¯ÀàĞÍÊµÌå£¬²¢Í¨¹ısetter´ÓMAPÖĞÈ¡Öµ£¬×îºó·µ»ØÆäÊµÌå.×¢ÒâInteger×ªByte,Long×ªIntegerµÈ·Ç·¨×ª»»Ê±µÄÎÊÌâ
+	* @Description: åˆå§‹åŒ–ç±»å‹å®ä½“ï¼Œå¹¶é€šè¿‡setterä»MAPä¸­å–å€¼ï¼Œæœ€åè¿”å›å…¶å®ä½“.æ³¨æ„Integerè½¬Byte,Longè½¬Integerç­‰éæ³•è½¬æ¢æ—¶çš„é—®é¢˜
 	* @param map
 	* @param class1
 	* @return
 	* @throws InstantiationException
 	* @throws IllegalAccessException
-	* @throws IntrospectionException  T    ·µ»ØÀàĞÍ 
+	* @throws IntrospectionException  T    è¿”å›ç±»å‹ 
 	* @throws 
 	* @author Jinlong He
 	*/
@@ -277,7 +277,7 @@ public class ClassUtil {
 	/**
 	 * 
 	* @Title: transList2Map 
-	* @Description: ¼¯ºÏ×ªmap
+	* @Description: é›†åˆè½¬map
 	* @param list
 	* @param hasNull
 	* @return
@@ -299,9 +299,9 @@ public class ClassUtil {
 			PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
 			for (PropertyDescriptor property : propertyDescriptors) {
 				String key = property.getName();
-				// ¹ıÂËclassÊôĞÔ
+				// è¿‡æ»¤classå±æ€§
 				if (!key.equals("class")) {
-					// µÃµ½property¶ÔÓ¦µÄgetter·½·¨
+					// å¾—åˆ°propertyå¯¹åº”çš„getteræ–¹æ³•
 					Method getter = property.getReadMethod();
 					Object value = getter.invoke(object);
 					if (value == null && !hasNull) {
@@ -318,9 +318,9 @@ public class ClassUtil {
 	/**
 	 * 
 	* @Title: underline2Camel 
-	* @Description:  MapµÄÏÂ»®Ïß×ªÍÕ·å
+	* @Description:  Mapçš„ä¸‹åˆ’çº¿è½¬é©¼å³°
 	* @param map
-	* @param checknull true  false£º¹ıÂËµôÎªnull »ò""
+	* @param checknull true  falseï¼šè¿‡æ»¤æ‰ä¸ºnull æˆ–""
 	* @return Map<String,Object>
 	* @author: li chao
 	 */
@@ -342,7 +342,7 @@ public class ClassUtil {
 	
 
 	/**
-	 * MapµÄÏÂ»®Ïß×ªÍÕ·å
+	 * Mapçš„ä¸‹åˆ’çº¿è½¬é©¼å³°
 	 * 
 	 * @return
 	 */
@@ -355,7 +355,7 @@ public class ClassUtil {
 	}
 
 	/**
-	 * ×Ö·û´®µÄÏÂ»®Ïß×ªÍÕ·å
+	 * å­—ç¬¦ä¸²çš„ä¸‹åˆ’çº¿è½¬é©¼å³°
 	 * 
 	 * @param underline
 	 * @return
@@ -376,9 +376,9 @@ public class ClassUtil {
 	
 	/** 
 	* @Title: camelToUnderline 
-	* @Description: ÍÕ·å¸ñÊ½×ªÏÂ»®Ïß 
+	* @Description: é©¼å³°æ ¼å¼è½¬ä¸‹åˆ’çº¿ 
 	* @param param
-	* @return  String    ·µ»ØÀàĞÍ 
+	* @return  String    è¿”å›ç±»å‹ 
 	* @throws 
 	*/
 	public static String camel2Underline(String param) {

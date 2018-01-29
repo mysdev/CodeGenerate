@@ -15,6 +15,7 @@ import com.jl.model.TableData;
 import com.jl.utils.CGUtil;
 import com.jl.utils.ClassUtil;
 import com.jl.utils.DBUtil;
+import com.jl.utils.FileUtil;
 import com.jl.utils.VelocityEngineParser;
 
 /**
@@ -138,13 +139,32 @@ public class MainApplication {
 				}				
 			}
 		}
-		//处理Velocity与jQuery $符号冲突问题 
-		
-		
+		//处理Velocity与jQuery $符号冲突问题 		
+		repalceJquery();
 		return true;
 	}
 	
 	private static void repalceJquery(){
+		String webPath = CGConfig.projectSystemPath();
+		if(CGConfig.source_root_package!=null && CGConfig.source_root_package.length()>0 && !CGConfig.source_root_package.startsWith("/")){
+			webPath +="/";
+		}
+		if(CGConfig.source_root_package!=null){
+			webPath+=CGConfig.source_root_package;
+		}
+		if(CGConfig.business_package_web!=null && CGConfig.business_package_web.length()>0 && !CGConfig.business_package_web.startsWith("/")){
+			webPath += "/";
+		}
+		if(CGConfig.business_package_web!=null){
+			webPath+=CGConfig.business_package_web;
+		}
+		System.out.println(webPath);
+		List<String> fileList = FileUtil.readFileInDir(webPath);
+		if(fileList!=null && fileList.size()>0){
+			for(String file : fileList){
+				FileUtil.replaceFileByLines(file, "\\(\\$\\)", "\\$");
+			}			
+		}
 		
 	}
 
