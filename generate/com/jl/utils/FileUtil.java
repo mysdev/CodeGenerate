@@ -1,27 +1,32 @@
 package com.jl.utils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @ClassName: FileUtil
- * @Description: ÎÄ¼ş²Ù×÷¹¤¾ßÀà
+ * @Description: æ–‡ä»¶æ“ä½œå·¥å…·ç±»
  * @author: Jinlong He
- * @date: 2018Äê1ÔÂ26ÈÕ ÏÂÎç5:24:27
+ * @date: 2018å¹´1æœˆ26æ—¥ ä¸‹åˆ5:24:27
  */
 public class FileUtil {
 	
 	public static void main(String[] arg){
-		 List<String> fileList = readFileInDir("D:\\workspace\\CodeGenerate\\src\\clock");
+		 List<String> fileList = readFileInDir("D:\\workspace\\CodeGenerate\\src\\clock\\model");
 		 for (String f1 : fileList) { 
 	     	System.out.println(f1);  
 	     } 
 		 
 		 readFileByLines(fileList.get(0));
+		 
+		 
+		 replaceFileByLines(fileList.get(0), "($)", "$");
 	}
 
 	private static List<String> readFileInDir(String fileDir) {  
@@ -30,16 +35,16 @@ public class FileUtil {
         if(!file.isDirectory()){
         	return fileList;
         }
-        File[] files = file.listFiles();// »ñÈ¡Ä¿Â¼ÏÂµÄËùÓĞÎÄ¼ş»òÎÄ¼ş¼Ğ  
-        if (files == null) {// Èç¹ûÄ¿Â¼Îª¿Õ£¬Ö±½ÓÍË³ö  
+        File[] files = file.listFiles();// è·å–ç›®å½•ä¸‹çš„æ‰€æœ‰æ–‡ä»¶æˆ–æ–‡ä»¶å¤¹  
+        if (files == null) {// å¦‚æœç›®å½•ä¸ºç©ºï¼Œç›´æ¥é€€å‡º  
             return fileList;  
         }  
-        // ±éÀú£¬Ä¿Â¼ÏÂµÄËùÓĞÎÄ¼ş  
+        // éå†ï¼Œç›®å½•ä¸‹çš„æ‰€æœ‰æ–‡ä»¶  
         for (File f : files) {  
-            if (f.isFile()) {  
-                fileList.add(f.getAbsolutePath());  
+            if (f.isFile()) {             	
+            	fileList.add(f.getAbsolutePath());
             } else if (f.isDirectory()) {
-            	fileList.addAll(readFileInDir(f.getAbsolutePath()));  
+                fileList.addAll(readFileInDir(f.getAbsolutePath()));  
             }  
         }        
         return fileList;
@@ -47,20 +52,20 @@ public class FileUtil {
 	
 	
 	 /** 
-     * ÒÔĞĞÎªµ¥Î»¶ÁÈ¡ÎÄ¼ş£¬³£ÓÃÓÚ¶ÁÃæÏòĞĞµÄ¸ñÊ½»¯ÎÄ¼ş 
+     * ä»¥è¡Œä¸ºå•ä½è¯»å–æ–‡ä»¶ï¼Œå¸¸ç”¨äºè¯»é¢å‘è¡Œçš„æ ¼å¼åŒ–æ–‡ä»¶ 
      */  
     public static void readFileByLines(String fileName) {  
         File file = new File(fileName);  
         BufferedReader reader = null;  
         try {  
-            System.out.println("ÒÔĞĞÎªµ¥Î»¶ÁÈ¡ÎÄ¼şÄÚÈİ£¬Ò»´Î¶ÁÒ»ÕûĞĞ£º");  
+            System.out.println("ä»¥è¡Œä¸ºå•ä½è¯»å–æ–‡ä»¶å†…å®¹ï¼Œä¸€æ¬¡è¯»ä¸€æ•´è¡Œï¼š");  
             reader = new BufferedReader(new FileReader(file));  
             String tempString = null;  
             int line = 1;  
-            // Ò»´Î¶ÁÈëÒ»ĞĞ£¬Ö±µ½¶ÁÈënullÎªÎÄ¼ş½áÊø  
+            // ä¸€æ¬¡è¯»å…¥ä¸€è¡Œï¼Œç›´åˆ°è¯»å…¥nullä¸ºæ–‡ä»¶ç»“æŸ  
             while ((tempString = reader.readLine()) != null) {  
-                // ÏÔÊ¾ĞĞºÅ  
-            	tempString = new String(tempString.getBytes("UTF-8"), "UTF-8");
+                // æ˜¾ç¤ºè¡Œå·  
+            	//tempString = new String(tempString.getBytes("UTF-8"), "UTF-8");
                 System.out.println("line " + line + ": " + tempString);  
                 line++;  
             }  
@@ -71,6 +76,60 @@ public class FileUtil {
             if (reader != null) {  
                 try {  
                     reader.close();  
+                } catch (IOException e1) {  
+                }  
+            }  
+        }  
+    }  
+    
+
+    public static void replaceFileByLines(String fileName, String oldString, String newString){  
+        File file = new File(fileName);  
+        boolean isRep = false;
+     // tmpfileä¸ºç¼“å­˜æ–‡ä»¶ï¼Œä»£ç è¿è¡Œå®Œæ¯•åæ­¤æ–‡ä»¶å°†é‡å‘½åä¸ºæºæ–‡ä»¶åå­—ã€‚  
+        File tmpfile = new File(file.getParentFile().getAbsolutePath()  + "\\" + file.getName() + ".tmp");  
+        BufferedWriter writer = null;
+        BufferedReader reader = null;  
+        try {  
+            System.out.println("ä»¥è¡Œä¸ºå•ä½è¯»å–æ–‡ä»¶å†…å®¹ï¼Œä¸€æ¬¡è¯»ä¸€æ•´è¡Œï¼š");  
+            reader = new BufferedReader(new FileReader(file));  
+            writer = new BufferedWriter(new FileWriter(tmpfile));
+            String tempString = null;  
+            int line = 1;  
+            // ä¸€æ¬¡è¯»å…¥ä¸€è¡Œï¼Œç›´åˆ°è¯»å…¥nullä¸ºæ–‡ä»¶ç»“æŸ  
+            while ((tempString = reader.readLine()) != null) {  
+                // æ˜¾ç¤ºè¡Œå·  
+                System.out.println("line " + line + ": " + tempString);  
+                if(tempString.indexOf(oldString)!=-1){
+                	tempString = tempString.replaceAll(oldString, newString);
+                	isRep = true;
+                }
+                writer.write(tempString + "\n");
+                line++;  
+            }  
+            reader.close(); 
+            writer.flush();
+            writer.close();
+            
+            
+            if (isRep) {  
+                file.delete();  
+                tmpfile.renameTo(new File(file.getAbsolutePath()));  
+            } else{  
+                tmpfile.delete();  
+            }            
+        } catch (IOException e) {  
+            e.printStackTrace();  
+        } finally {  
+            if (reader != null) {  
+                try {  
+                    reader.close();  
+                } catch (IOException e1) {  
+                }  
+            }  
+            if (writer != null) {  
+                try {  
+                	writer.close();  
                 } catch (IOException e1) {  
                 }  
             }  
