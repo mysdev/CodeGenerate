@@ -11,7 +11,13 @@ var ${className}EditViewModel = function () {
     
     if(opFalg!="Add"){
     	var opid=getQueryString('id');
-    	myAjax("/${pathName}/"+opid, "GET", null, doQueryActionSuccess, true);
+    	myAjax("/${pathName}/"+opid, "GET", null, function (data){
+#foreach($item in $!{columnList})
+#if(!${item.isBaseColumn})
+			self.${item.classParam}(data.${item.classParam});
+#end
+#end
+		}, true);
 	}
 
 	//【提交】按钮押下处理
@@ -28,25 +34,18 @@ var ${className}EditViewModel = function () {
 #end
     	
     	if(opFalg=="Add"){
-    		myAjaxJson("/${pathName}", "POST", null, doActionSuccess, true);
+    		myAjaxJson("/${pathName}", "POST", submitPar, function (data){
+				ChangeUrl(".${webPackage}/${className}List.html");
+			}, true);
 		}else{
     		var opid=getQueryString('id');
-    		myAjaxJson("/${pathName}/"+opid, "PUT", null, doActionSuccess, true);
+    		myAjaxJson("/${pathName}/"+opid, "PUT", submitPar, function (data){
+				ChangeUrl(".${webPackage}/${className}List.html");
+			}, true);
     	}
     };
 };
 
-function doQueryActionSuccess(data){
-#foreach($item in $!{columnList})
-#if(!${item.isBaseColumn})
-	self.${item.classParam}(data.${item.classParam});
-#end
-#end
-}
-
-function doActionSuccess(data){
-	ChangeUrl(".${webPackage}/${className}List.html");
-}
 
 $().ready(function(){
 	$("#txtName").focus();

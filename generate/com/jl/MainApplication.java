@@ -223,6 +223,11 @@ public class MainApplication {
 		if(CGConfig.templateInfoTotal!=null && CGConfig.templateInfoTotal.length()>5 && tableList.size()>0){
 			VelocityContext context = new VelocityContext();
 			context.put("tableList", tableList);
+			String webPackage = CGConfig.business_package_web;
+			if(webPackage!=null && webPackage.length()>0 && !webPackage.startsWith("/")){
+				webPackage = "/"+webPackage;
+			}
+			context.put("webPackage", webPackage);
 			String template = CGConfig.templateInfoTotal.replaceAll("，", ",");
 			template = template.replaceAll("；", ";");
 			String[] templates = template.split(";");
@@ -407,7 +412,7 @@ public class MainApplication {
 		List<Map<String, Object>> tList = null;
 		if(db.getDbtype().equals("mysql")){
 			tList= db.QueryTableToListMapObject("Select table_name tableName,TABLE_COMMENT tableComment from INFORMATION_SCHEMA.TABLES Where table_schema = '"
-					+db.getDbname()+"' and table_name like 'tc_%'  order by table_name asc");
+					+db.getDbname()+"' and table_name like 'ts_%'  order by table_name asc");
 		}
 		// TODO 暂时只实现了mysql
 		

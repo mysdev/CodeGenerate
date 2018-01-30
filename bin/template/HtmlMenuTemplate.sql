@@ -6,8 +6,8 @@ ${item.businessName} /${item.pathName}/${item.className}List.html
 #set ($i=0)
 #foreach($item in $!{tableList})
 {
-"menuName": "${item.businessName}",
-"url": "/${package}/${item.className}List.html",
-"menuflag": "${item.className}list"
-}
+	"menuName": "${item.businessName}",
+	"url": "${webPackage}/${item.className}List.html",
+	"menuflag": "${item.className}list"
+},
 #end

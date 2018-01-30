@@ -1,4 +1,5 @@
 var myPage;
+var viewMode;
 var query = {};
 query.pageNo=1;
 query.pageSize = 20;
@@ -12,29 +13,30 @@ function Node(obj) {
 #end
 }
 
-function doQueryActionSuccess(data){
-	var mappedTasks = ($).map(data.data, function(item) { return new Node(item) });  
-	self.${entityName}List(mappedTasks);
-	myPage = data.page;
-	bindPage();
-	    
-	$("table tbody td .tomodify").bind(function(){
-		ChangeUrl('.${webPackage}/${className}.html?action=Edit&id='+$(this).attr('data'));
-	});
-}
-
-function reloadDate(data){
-	myAjax("/${pathName}s", "GET", query, doQueryActionSuccess, true);
-}
 
 //定义ViewModel对象
 var ${className}ViewModel = function () {  
-	var self=this;
+	self=this;
     //添加动态监视数组对象
     self.${entityName}List = ko.observableArray([]);
+    
+    //重载数据
+    self.reloadData = function(){
+    	myAjax("/${pathName}s", "GET", query, function (data){
+			var mappedTasks = ($).map(data.data, function(item) { return new Node(item) });  
+			self.${entityName}List(mappedTasks);
+			myPage = data.page;
+			bindPage();
+			    
+			$("table tbody td .tomodify").bind(function(){
+				ChangeUrl('.${webPackage}/${className}.html?action=Edit&id='+$(this).attr('data'));
+			});
+		}, true);
+    };
+    
     	
-    //初始化数据
-    reloadDate(null);
+    //初始化数据--如何调用self.reloadData
+    self.reloadData();
 	
 	//搜索
 	self.search = function(obj) {
@@ -97,7 +99,8 @@ var ${className}ViewModel = function () {
 };
 
 $().ready(function(){
-    ko.applyBindings(new ${className}ViewModel());
+	viewMode = new ${className}ViewModel();
+    ko.applyBindings(viewMode);
 });
 
 var bindPage =function(){
@@ -107,8 +110,10 @@ var bindPage =function(){
         visiblePages: myPage.limit,
         currentPage: myPage.page,
         onPageChange: function (num, type) {
-        	query.pageNo=num;
-        	reloadDate(null);
+        	if(query.pageNo!=num){
+        		query.pageNo=num;
+        		viewMode.reloadData();
+        	}  
 //            if (type != 'init') {
 //            	ChangeUrl('.${webPackage}/${className}List.html?page=' + num);
 //            }
