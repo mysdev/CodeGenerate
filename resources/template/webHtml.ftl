@@ -38,7 +38,7 @@
 				<a href="${className}List.html" class="back"><i class="iconfont icon-up"></i><span>返回列表页</span></a>
 				<a href="../center.html"><i class="iconfont icon-home"></i><span>首页</span></a>
 				<i class="arrow iconfont icon-arrow-right"></i>
-				<a href="attribute_field_list.aspx"><span>${businessName}</span></a>
+				<a href=".${entityName}List.html"><span>${businessName}</span></a>
 				<i class="arrow iconfont icon-arrow-right"></i>
 				<span>编辑${businessName}</span>
 			</div>
