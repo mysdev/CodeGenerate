@@ -412,7 +412,7 @@ public class MainApplication {
 		List<Map<String, Object>> tList = null;
 		if(db.getDbtype().equals("mysql")){
 			tList= db.QueryTableToListMapObject("Select table_name tableName,TABLE_COMMENT tableComment from INFORMATION_SCHEMA.TABLES Where table_schema = '"
-					+db.getDbname()+"' and table_name like 'ts_%'  order by table_name asc");
+					+db.getDbname()+"' and table_name like 'tw_%'  order by table_name asc");
 		}
 		// TODO 暂时只实现了mysql
 		

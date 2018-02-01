@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 //import java.io.UnsupportedEncodingException;
 //import java.util.Enumeration;
 import java.util.Properties;
@@ -80,14 +81,14 @@ public class PropertiesUtil {
 			loadPropertiesInfo();
 		}
 		String ret = props.getProperty(key);
-//		try {
-//			//System.out.println("PU:"+ret);
-//			ret = new String(ret.getBytes("ISO8859_1"),"utf-8");
-//		}catch (UnsupportedEncodingException e) {
-//			log.error("获取配置参数"+key+"时转码出错："+e.getMessage());
-//		}catch(Exception e){
-//			log.error("获取配置参数"+key+"时出错："+e.getMessage());
-//		}
+		try {
+			System.out.println("PU:"+ret);
+			ret = new String(ret.getBytes("utf-8"),"utf-8");
+		}catch (UnsupportedEncodingException e) {
+			log.error("获取配置参数"+key+"时转码出错："+e.getMessage());
+		}catch(Exception e){
+			log.error("获取配置参数"+key+"时出错："+e.getMessage());
+		}
 		return ret==null?"":ret;
 	}
 	
