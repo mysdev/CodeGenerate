@@ -71,6 +71,7 @@ public class MainApplication {
 					if(t.length>1 && t[1]!=null && t[1].length()>0){
 						td.setBusinessName(t[1]);
 					}
+					tableList.add(td);
 				}
 			}
 		}		

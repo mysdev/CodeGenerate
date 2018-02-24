@@ -1,6 +1,5 @@
 package ${package}#if($!packageExt)${packageExt}#end;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
@@ -11,6 +10,8 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
+import com.jing.utils.BaseEntity;
+
 /**
  * @ClassName: ${className}
  * @Description: ${businessName}实体类
@@ -18,7 +19,7 @@ import org.hibernate.validator.constraints.Range;
  * @email: mailto:$!{email}
  * @date: ${datetime}
  */
-public class ${className} implements Serializable {
+public class ${className} extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 	
 #set ($i=0)

@@ -114,11 +114,11 @@ public class  ${className}ServiceImpl implements ${className}Service {
 		if(null!=sort && sort.length()>0){
 			pageBounds.setOrdersByJson(sort, ${className}.class);
 		}
-		if (!entityList.isEmpty()) {
-			PageList<${className}> pagelist = (PageList<${className}>) entityList;
-			returnMap.put(Constant.PAGELIST, entityList);
-			returnMap.put(Constant.PAGINATOR, pagelist.getPaginator());
-		}
+		
+		PageList<${className}> pagelist = (PageList<${className}>) entityList;
+		returnMap.put(Constant.PAGELIST, entityList);
+		returnMap.put(Constant.PAGINATOR, pagelist.getPaginator());
+		
 		return returnMap;
 	}
 	 
