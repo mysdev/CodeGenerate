@@ -45,7 +45,8 @@
 20190528更新
 去掉手工检测，交由公共代码处理
 新增返回数据附带ID
-更新DB中datetime对Date的关系映射				
+更新DB中datetime对Date的关系映射
+新增对mysql8的支持
 
 20171220更新
 表结构首字段按类型区别处理 int取下一自动增长值，string取UUID；
