@@ -10,10 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jing.utils.Constant;
-import com.jing.utils.paginator.domain.PageBounds;
-import com.jing.utils.paginator.domain.PageList;
-import com.jing.utils.paginator.domain.PageService;
+import com.hnzc.common.utils.paginator.Constant;
+import com.hnzc.common.utils.paginator.domain.PageBounds;
+import com.hnzc.common.utils.paginator.domain.PageList;
+import com.hnzc.common.utils.paginator.domain.PageService;
 #if($!{keyColumn.classType} == 'String')
 import java.util.UUID;
 #end

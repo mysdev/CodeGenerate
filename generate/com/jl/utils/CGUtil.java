@@ -118,6 +118,8 @@ public class CGUtil {
 				dataType = "Integer";
 		} else if (dataType.contains("decimal"))
 			dataType = "java.math.BigDecimal";
+		else if (dataType.contains("datetime"))
+			dataType = "Date";
 		else if (dataType.contains("date"))
 			dataType = "Date";
 		else if (dataType.contains("time"))

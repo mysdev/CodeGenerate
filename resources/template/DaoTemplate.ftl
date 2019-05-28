@@ -7,7 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.jing.utils.paginator.domain.PageBounds;
+import com.hnzc.common.utils.paginator.domain.PageBounds;
 import ${package}.model.entity.${className};
 
 /**

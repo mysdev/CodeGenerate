@@ -194,7 +194,13 @@ public class DBUtil {
 			Class.forName("oracle.jdbc.driver.OracleDriver")
 					.newInstance();
 		} else if (connstr.startsWith("jdbc:mysql")){
-			  Class.forName("com.mysql.jdbc.Driver").newInstance();
+			if (connstr.endsWith("&serverTimezone=GMT%2B8")) {
+				// 8+
+				Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+			} else {
+				// 8-
+				Class.forName("com.mysql.jdbc.Driver").newInstance();
+			}
 		}else if (connstr.startsWith("jdbc.sqlserver")){
 			Class.forName(
 					"com.microsoft.jdbc.sqlserver.SQLServerDriver")

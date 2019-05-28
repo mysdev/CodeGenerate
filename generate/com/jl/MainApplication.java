@@ -372,8 +372,11 @@ public class MainApplication {
 						cd.setColumnCharMaxLength(Long.parseLong(""+(java.math.BigInteger)map.get("data_length"))); 
 						//cd.setColumnCharMaxLength((Long)map.get("data_length"));
 					}else if(map.get("data_precision") instanceof Short){
-						//mssql
+						//mssql8
 						cd.setColumnCharMaxLength(0l+(Short)map.get("data_length"));
+					}else if(map.get("data_precision") instanceof Long){
+						//mssql8
+						cd.setColumnCharMaxLength((Long)map.get("data_length"));
 					}else {
 						//oracle
 						cd.setColumnCharMaxLength(Long.parseLong(""+(java.math.BigDecimal)map.get("data_length"))); 
@@ -413,7 +416,7 @@ public class MainApplication {
 		List<Map<String, Object>> tList = null;
 		if(db.getDbtype().equals("mysql")){
 			tList= db.QueryTableToListMapObject("Select table_name tableName,TABLE_COMMENT tableComment from INFORMATION_SCHEMA.TABLES Where table_schema = '"
-					+db.getDbname()+"' and table_name like 'tw_%'  order by table_name asc");
+					+db.getDbname()+"' order by table_name asc");
 		}
 		// TODO 暂时只实现了mysql
 		

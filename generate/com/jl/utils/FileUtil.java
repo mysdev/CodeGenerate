@@ -8,7 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -19,7 +18,7 @@ import java.util.regex.Pattern;
  */
 public class FileUtil {
 	
-	public static void main(String[] arg){	
+//	public static void main(String[] arg){	
 //		
 //		 List<String> fileList = readFileInDir("D:\\workspace\\CodeGenerate\\src\\clock\\model");
 //		 for (String f1 : fileList) { 
@@ -28,7 +27,7 @@ public class FileUtil {
 //		 replaceFileByLines(fileList.get(0), "(\\$)", "\\$");
 //		 
 //		 readFileByLines(fileList.get(0));
-	}
+//	}
 
 	public static List<String> readFileInDir(String fileDir) {  
         List<String> fileList = new ArrayList<String>();  
@@ -60,7 +59,7 @@ public class FileUtil {
         BufferedReader reader = null;  
         try {  
             System.out.println("以行为单位读取文件内容，一次读一整行：");  
-            reader = new BufferedReader(new FileReader(file));  
+            reader = new BufferedReader(new FileReader(fileName));  
             String tempString = null;  
             int line = 1;  
             // 一次读入一行，直到读入null为文件结束  

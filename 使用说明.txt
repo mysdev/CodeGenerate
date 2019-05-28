@@ -41,7 +41,11 @@
 				|----DBUtil.java 数据库连接及数据读取基本方法
 				|----PropertiesUtil.java 配置文件读取基本方法
 				|----VelocityEngineParser.java 输出文件生成核心类
-				
+
+20190528更新
+去掉手工检测，交由公共代码处理
+新增返回数据附带ID
+更新DB中datetime对Date的关系映射				
 
 20171220更新
 表结构首字段按类型区别处理 int取下一自动增长值，string取UUID；

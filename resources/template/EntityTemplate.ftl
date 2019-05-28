@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
-import com.jing.utils.BaseEntity;
+import java.io.Serializable;
 
 /**
  * @ClassName: ${className}
@@ -19,7 +19,7 @@ import com.jing.utils.BaseEntity;
  * @email: mailto:$!{email}
  * @date: ${datetime}
  */
-public class ${className} extends BaseEntity {
+public class ${className} implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 #set ($i=0)

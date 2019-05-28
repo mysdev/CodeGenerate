@@ -12,14 +12,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jing.config.web.exception.NotFoundException;
-import com.jing.config.web.exception.ParameterException;
+import com.hnzc.common.exception.NotFoundException;
+import com.hnzc.common.exception.ParameterException;
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
-import com.jing.config.validation.BeanValidator;
 import ${package}.model.entity.${className};
 import ${package}.service.${className}Service;
-import com.jing.utils.ClassUtil;
+import com.hnzc.common.utils.bean.ClassUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,9 +34,6 @@ import io.swagger.annotations.ApiParam;
 @RestController
 @Api(description="${businessName}")
 public class ${className}Controller{
-
-	@Autowired
-	BeanValidator beanValidator;
 	
 	@Autowired
 	private ${className}Service ${entityName}Service;
@@ -48,8 +44,7 @@ public class ${className}Controller{
 	public Object add${className}(HttpServletResponse response,
 			@ApiParam(value = "${entityName}") @RequestBody ${className} ${entityName}) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
 		${entityName}.set$!{keyColumn.classMethod}(null);
-		${entityName}Service.add${className}(${entityName});
-		return ${entityName};
+		return ${entityName}Service.add${className}(${entityName});
 	}
 	
 	
