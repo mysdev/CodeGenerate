@@ -1,9 +1,9 @@
 #set ($i=0)
 #foreach($item in $!{tableList})
-INSERT INTO ts_resource_info (`title`, `type`, `url`, `method`, `image`, `parent_id`, `is_display`, `sequence`, `enabled`, `note`, `created_by`) VALUES ('${item.businessName}-新增', 'ACTION', '/${item.pathName}', 'POST', NULL, NULL, 1, NULL, '0', '${item.businessName}-新增', 'admin');
-INSERT INTO ts_resource_info (`title`, `type`, `url`, `method`, `image`, `parent_id`, `is_display`, `sequence`, `enabled`, `note`, `created_by`) VALUES ('${item.businessName}-修订', 'ACTION', '/${item.pathName}/{}', 'PUT', NULL, NULL, 1, NULL, '0', '${item.businessName}-修订', 'admin');
-INSERT INTO ts_resource_info (`title`, `type`, `url`, `method`, `image`, `parent_id`, `is_display`, `sequence`, `enabled`, `note`, `created_by`) VALUES ('${item.businessName}-删除', 'ACTION', '/${item.pathName}/{}', 'DELETE', NULL, NULL, 1, NULL, '0', '${item.businessName}-删除', 'admin');
-INSERT INTO ts_resource_info (`title`, `type`, `url`, `method`, `image`, `parent_id`, `is_display`, `sequence`, `enabled`, `note`, `created_by`) VALUES ('${item.businessName}-标识查询', 'ACTION', '/${item.pathName}/{}', 'GET', NULL, NULL, 1, NULL, '0', '${item.businessName}-标识查询', 'admin');
-INSERT INTO ts_resource_info (`title`, `type`, `url`, `method`, `image`, `parent_id`, `is_display`, `sequence`, `enabled`, `note`, `created_by`) VALUES ('${item.businessName}-不分页列表', 'ACTION', '/${item.pathName}', 'GET', NULL, NULL, 1, NULL, '0', '${item.businessName}-不分页列表', 'admin');
-INSERT INTO ts_resource_info (`title`, `type`, `url`, `method`, `image`, `parent_id`, `is_display`, `sequence`, `enabled`, `note`, `created_by`) VALUES ('${item.businessName}-分页列表', 'ACTION', '/${item.pathName}s', 'GET', NULL, NULL, 1, NULL, '0', '${item.businessName}-分页列表', 'admin');
+INSERT INTO api_atom (`app_code`, `api_name`, `url`, `method`, `gmt_create`, `create_id`, `gmt_modified`, `modified_id`) VALUES ('os', '${item.businessName}-新增', '/${item.pathName}', 'POST', now(), 1, now(), 1 );
+INSERT INTO api_atom (`app_code`, `api_name`, `url`, `method`, `gmt_create`, `create_id`, `gmt_modified`, `modified_id`) VALUES ('os', '${item.businessName}-修订', '/${item.pathName}/{}', 'PUT', now(), 1, now(), 1 );
+INSERT INTO api_atom (`app_code`, `api_name`, `url`, `method`, `gmt_create`, `create_id`, `gmt_modified`, `modified_id`) VALUES ('os', '${item.businessName}-删除', '/${item.pathName}/{}', 'DELETE', now(), 1, now(), 1 );
+INSERT INTO api_atom (`app_code`, `api_name`, `url`, `method`, `gmt_create`, `create_id`, `gmt_modified`, `modified_id`) VALUES ('os', '${item.businessName}-标识查询', '/${item.pathName}/{}', 'GET', now(), 1, now(), 1 );
+INSERT INTO api_atom (`app_code`, `api_name`, `url`, `method`, `gmt_create`, `create_id`, `gmt_modified`, `modified_id`) VALUES ('os', '${item.businessName}-不分页列表', '/${item.pathName}', 'GET', now(), 1, now(), 1 );
+INSERT INTO api_atom (`app_code`, `api_name`, `url`, `method`, `gmt_create`, `create_id`, `gmt_modified`, `modified_id`) VALUES ('os', '${item.businessName}-分页列表', '/${item.pathName}s', 'GET', now(), 1, now(), 1 );
 #end

@@ -1,0 +1,320 @@
+﻿swagger: '2.0'
+
+info:
+  version: '0.1.0'
+  title: API
+  description: 接口说明
+
+host: www.zhongchuangs.com
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+  
+#数据返回的约定
+#1.获取列表接口无数据时响应码200，返回空列表和page信息。
+#2.获取单个信息接口无数据时响应码404，返回404错误信息。
+
+#必填字段约定
+#1.必填是指添加或修改信息时，该字段必须传值。
+#2.修改信息时必填字段可以不传，即为不修改。
+
+###############################################################################
+#                              API Information                            
+#
+###############################################################################
+paths:
+#foreach($item in!{tableList})
+  /${item.pathName}:
+    post:
+      tags:
+        -{item.businessName}
+      summary: 新增${item.businessName}
+      description: 操作 添加${item.businessName}信息
+      parameters:
+        - in: body
+          name:{item.entityName}
+          description:{item.businessName}
+          schema:
+           ref: '#/definitions/${item.className}'
+          required: true
+      responses:
+        200:
+          description: 添加成功
+          schema:
+           ref: '#/definitions/${item.className}'
+        400:
+         ref: '#/responses/ParametersErr'
+        500:
+         ref: '#/responses/InnerErr'
+          
+    get:
+      tags:
+        -{item.businessName}
+      summary: 查询${item.businessName}列表
+      description: 根据${item.businessName}属性查询${item.businessName}信息列表-全量不分页
+      parameters:
+        -ref: '#/definitions/${item.className}'
+      responses:
+        200:
+          description:{item.businessName}列表
+          schema:
+           ref: '#/definitions/${item.className}s'
+        400:
+         ref: '#/responses/ParametersErr'
+        500:
+         ref: '#/responses/InnerErr'
+          
+  /${item.pathName}s:
+    get:
+      tags:
+        -{item.businessName}
+      summary: 分页查询${item.businessName}信息列表
+      description: 根据${item.businessName}属性分页查询${item.businessName}信息列表-分页
+      parameters:
+        -ref: '#/parameters/_offset'
+        -ref: '#/parameters/_pageSize'
+        -ref: '#/parameters/_sort'
+        -ref: '#/definitions/${item.className}'
+      responses:
+        200:
+          description:{item.businessName}信息列表-分页信息
+          schema:
+            type:ref: '#/definitions/${item.className}s'
+        400:
+         ref: '#/responses/ParametersErr'
+        500:
+         ref: '#/responses/InnerErr'
+                  
+  /${item.pathName}/$!{item.keyColumn.classParam}:
+    get:
+      tags:
+        -{item.businessName}
+      summary: 查询 根据${item.businessName}标识查询${item.businessName}信息
+      description: 根据${item.businessName}标识查询${item.businessName}信息
+      parameters:
+        - name:!{item.keyColumn.classParam}
+          in: path
+          description:{item.businessName}标识
+          required: true
+          type:!{item.keyColumn.classType}
+          format:!{item.keyColumn.columnType}
+      responses:
+        200:
+          description:{item.businessName}
+          schema:
+           ref: '#/definitions/${item.className}'
+        400:
+         ref: '#/responses/ParametersErr'
+        404:
+         ref: '#/responses/NotFoundErr'
+        500:
+         ref: '#/responses/InnerErr'
+          
+    put:
+      tags:
+        -{item.businessName}
+      summary: 更新 根据${item.businessName}标识更新${item.businessName}信息
+      description: 根据${item.businessName}标识更新${item.businessName}信息
+      parameters:
+        - name:!{item.keyColumn.classParam}
+          in: path
+          description:{item.businessName}
+          required: true
+          type:!{item.keyColumn.classType}
+          format:!{item.keyColumn.columnType}
+        - in: body
+          name:{item.className}
+          description:{item.businessName}
+          required: true
+          schema:
+           ref: '#/definitions/${item.className}'
+      responses:
+        200:
+          description:{item.businessName}
+          schema:
+           ref: '#/definitions/${item.className}'
+        400:
+         ref: '#/responses/ParametersErr'
+        404:
+         ref: '#/responses/NotFoundErr'
+        500:
+         ref: '#/responses/InnerErr'
+          
+    delete:
+      tags:
+        -{item.businessName}
+      summary: 删除 根据${item.businessName}标识删除${item.businessName}信息
+      description: 根据${item.businessName}标识删除${item.businessName}信息
+      parameters:
+        - name:!{item.keyColumn.classParam}
+          in: path
+          description:{item.businessName}标识
+          required: true
+          type:!{item.keyColumn.classType}
+          format:!{item.keyColumn.columnType}
+      responses:
+        200:
+         ref: '#/responses/DeleteResp'
+        400:
+         ref: '#/responses/ParametersErr'
+        404:
+         ref: '#/responses/NotFoundErr'
+        500:
+         ref: '#/responses/InnerErr'
+#end
+
+################################################################################
+#                                 Responses                                  #
+################################################################################
+responses:
+  PutResp:
+    description: 修改成功
+    schema:
+     ref: '#/definitions/RowsResp'
+
+  DeleteResp:
+    description: 删除成功
+    schema:
+     ref: '#/definitions/RowsResp'
+
+  ParametersErr:
+    description: 参数异常
+    schema:
+     ref: '#/definitions/Error'
+
+  NotFoundErr:
+    description: 资源不存在
+    schema:
+     ref: '#/definitions/Error'
+
+  InnerErr:
+    description: 内部错误
+    schema:
+     ref: '#/definitions/Error'
+      
+################################################################################
+#                                 Parameters                                  #
+################################################################################
+parameters:
+  _offset:
+    name: _offset
+    in: query
+    description: 从哪里开始
+    required: false
+    type: integer
+    format: int32
+    minimum: 1
+    default: 1
+
+  _pageSize:
+    name: _pageSize
+    in: query
+    description: 需要的记录数
+    required: false
+    type: integer
+    format: int32
+    minimum: 1
+    maximum: 99999
+    default: 10
+
+  _sort:
+    name: _sort
+    in: query
+    description: 用分号分隔各字段，字段名后可带升降序指示，用逗号分隔
+    required: false
+    type: string
+    format: json
+
+  PartnerId:
+    name: partnerId
+    in: path
+    description: 合作伙伴id
+    required: true
+    type: integer
+    format: int32
+          
+################################################################################
+#                                 Definitions                                  #
+################################################################################
+definitions:
+#foreach($item in!{tableList})
+  ${item.className}:
+    type: object
+    properties:
+#foreach($item2 initem.columnList)
+      !${item2.classParam}:
+        type:!{item2.classType}
+        format:!{item2.columnType}
+#end
+#end
+
+  opResp:
+    type: boolean
+    description: true成功，false失败
+
+  RowsResp:
+    type: object
+    description: 修改/删除成功响应实体
+    properties:
+      rows:
+        type: integer
+        description: 影响行数
+
+  Page:
+    type: object
+    description: 分页信息数据定位信息
+    properties:
+      _offset:
+        type: integer
+        description: 从哪里开始，此值可以是序号
+      _pageSize:
+        type: integer
+        description: 需要的记录数
+      _totalCount:
+        type: integer
+        description: 总记录数
+      _firstPage:
+        type: boolean
+        description: 是否为首页
+      _lastPage:
+        type: boolean
+        description: 是否为尾页
+      _hasPrePage:
+        type: boolean
+        description: 是否有上一页
+      _hasNextPage:
+        type: boolean
+        description: 是否有下一页
+
+  Error:
+    type: object
+    description: 错误Bean
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+        description: 错误码
+      message:
+        type: string
+        description: 错误描述
+      errors:
+        type: array
+        description: 具体错误
+        items:
+         ref: '#/definitions/ErrorMsg'
+
+  ErrorMsg:
+    type: object
+    description: 错误消息详细信息
+    properties:
+      field:
+        type: string
+        description: 错误字段
+      message:
+        type: string
+        description: 错误原因

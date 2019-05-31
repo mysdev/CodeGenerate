@@ -94,7 +94,7 @@ public class MainApplication {
 		createServiceFile();
 		
 		//前台数据文件生成
-		createWebFile();
+		//createWebFile();
 		
 		log.info("***************   CODE GENERATE OVER   ********************");	
 	}

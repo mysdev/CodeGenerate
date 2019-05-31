@@ -29,7 +29,7 @@ public class CGConfig {
 	 * @fieldType: String
 	 * @Description: 业务类包目录-后台
 	 */
-	public static String business_package = "com.hnjing.code";
+	public static String business_package = "com.hnzc.code";
 	
 	/**
 	 * @fieldName: business_package
