@@ -9,146 +9,154 @@ import com.jl.utils.PropertiesUtil;
  * @date: 2017年6月20日 下午4:23:44
  */
 public class CGConfig {
-	
+
 	/**
 	 * @fieldName: system_encoding
 	 * @fieldType: String
 	 * @Description: 字符编码
 	 */
 	public static String system_encoding = "utf-8";
-	
+
 	/**
 	 * @fieldName: source_root_package
 	 * @fieldType: String
 	 * @Description: 代码根目录
 	 */
 	public static String source_root_package = "/src";
-	
+
 	/**
 	 * @fieldName: business_package
 	 * @fieldType: String
 	 * @Description: 业务类包目录-后台
 	 */
 	public static String business_package = "com.hnzc.code";
-	
+
 	/**
 	 * @fieldName: business_package
 	 * @fieldType: String
 	 * @Description: 业务类包目录-前台
 	 */
 	public static String business_package_web = "/web";
-	
+
 	/**
 	 * @fieldName: business_package_total
 	 * @fieldType: String
 	 * @Description: 业务类包目录-统计
 	 */
-	public static String business_package_total = "";	
-	
+	public static String business_package_total = "";
+
 	/**
 	 * @fieldName: template_path
 	 * @fieldType: String
 	 * @Description: 模板存放目录
 	 */
 	public static String template_path = "/resources/template";
-	
+
 	/**
 	 * @fieldName: insertCloumn
 	 * @fieldType: String
 	 * @Description: 新增时间字段
 	 */
 	public static String insertCloumn = "";
+
+	/**
+	 * @fieldName: insertUserCloumn
+	 * @fieldType: String
+	 * @Description: 新增用户字段
+	 */
+	public static String insertUserCloumn = "";
+
 	/**
 	 * @fieldName: updateCloumn
 	 * @fieldType: String
 	 * @Description: 修订时间字段
 	 */
 	public static String updateCloumn = "";
+	
+	/**
+	 * @fieldName: updateUserCloumn
+	 * @fieldType: String
+	 * @Description: 修订用户字段
+	 */
+	public static String updateUserCloumn = "";
+	
 	/**
 	 * @fieldName: baseCloumn
 	 * @fieldType: String
-	 * @Description: 基础字段定义- 
+	 * @Description: 基础字段定义-
 	 */
 	public static String baseCloumn = "";
-	
-	
+
 	public static String author = "";
 	public static String email = "";
-	
+
 	public static String table_info = "";
-	
+
 	public static String templateInfo = "";
 	public static String templateInfoWeb = "";
 	public static String templateInfoTotal = "";
-	
-	
-	
-	//初始化加载
+
+	// 初始化加载
 	static {
 		PropertiesUtil pu = PropertiesUtil.Util(null);
 		system_encoding = pu.readValue("system_encoding");
 		source_root_package = pu.readValue("source_root_package");
-		
-		business_package = pu.readValue("business_package");		
+
+		business_package = pu.readValue("business_package");
 		business_package_web = pu.readValue("business_package_web");
 		business_package_total = pu.readValue("business_package_total");
-		
+
 		insertCloumn = pu.readValue("insertCloumn");
+		insertUserCloumn = pu.readValue("insertUserCloumn");
 		updateCloumn = pu.readValue("updateCloumn");
+		updateUserCloumn = pu.readValue("updateUserCloumn");
 		baseCloumn = pu.readValue("baseCloumn");
-		
-		author=pu.readValue("author");
-		email=pu.readValue("email");
 
-		table_info=pu.readValue("table_info");
+		author = pu.readValue("author");
+		email = pu.readValue("email");
 
-		templateInfo=pu.readValue("template_info");
-		templateInfoWeb=pu.readValue("template_info_web");
-		templateInfoTotal=pu.readValue("template_info_total");
-		
-		
+		table_info = pu.readValue("table_info");
+
+		templateInfo = pu.readValue("template_info");
+		templateInfoWeb = pu.readValue("template_info_web");
+		templateInfoTotal = pu.readValue("template_info_total");
+
 	}
-	
-	/** 
-	* @Title: projectSystemPath 
-	* @Description: 系统路径
-	* @return  String    返回类型 
-	* @throws 
-	*/
+
+	/**
+	 * @Title: projectSystemPath @Description: 系统路径 @return String 返回类型 @throws
+	 */
 	public static String projectSystemPath() {
 		String path = System.getProperty("user.dir").replace("\\", "/");
 		return path;
 	}
-	
 
-	/** 
-	* @Title: getConfigAsJsonString 
-	* @Description: 以JSON格式返回配置
-	* @return  String    返回类型 
-	* @throws 
-	*/
-	public static String getConfigAsJsonString(){
+	/**
+	 * @Title: getConfigAsJsonString @Description: 以JSON格式返回配置 @return String
+	 * 返回类型 @throws
+	 */
+	public static String getConfigAsJsonString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("{");
 		sb.append("\"author\":\"").append(author).append("\",");
 		sb.append("\"email\":\"").append(email).append("\",");
 		sb.append("\"path\":\"").append(projectSystemPath()).append("\",");
 		sb.append("\"system_encoding\":\"").append(system_encoding).append("\",");
-		
+
 		sb.append("\"source_root_package\":\"").append(source_root_package).append("\",");
-		
+
 		sb.append("\"business_package\":\"").append(business_package).append("\",");
 		sb.append("\"business_package_web\":\"").append(business_package_web).append("\",");
 		sb.append("\"business_package_total\":\"").append(business_package_total).append("\",");
-		
+
 		sb.append("\"insertCloumn\":\"").append(insertCloumn).append("\",");
 		sb.append("\"updateCloumn\":\"").append(updateCloumn).append("\",");
 		sb.append("\"baseCloumn\":\"").append(baseCloumn).append("\",");
-		
+
 		sb.append("\"templateInfo\":\"").append(templateInfo).append("\",");
 		sb.append("\"templateInfoWeb\":\"").append(templateInfoWeb).append("\",");
 		sb.append("\"templateInfoTotal\":\"").append(templateInfoTotal).append("\",");
-		
+
 		sb.append("\"table_info\":\"").append(table_info).append("\"");
 		sb.append("}");
 		return sb.toString();

@@ -46,6 +46,19 @@ public class ColumnData {
 	 * @Description: 是否更新时间
 	 */
 	private Boolean isUpdateColumn = false;
+	
+	/**
+	 * @fieldName: isInsertUserColumn
+	 * @fieldType: Boolean
+	 * @Description: 是否写入人员
+	 */
+	private Boolean isInsertUserColumn = false;
+	/**
+	 * @fieldName: isUpdateUserColumn
+	 * @fieldType: Boolean
+	 * @Description: 是否更新人员
+	 */
+	private Boolean isUpdateUserColumn = false;
 	/**
 	 * @fieldName: isBaseColumn
 	 * @fieldType: Boolean
@@ -80,7 +93,9 @@ public class ColumnData {
 		this.setIsBaseColumn(CGUtil.isBaseCloumnCloumn(columnName));
 		//if(classType!=null && "Date".equals(classType)){
 			this.setIsInsertColumn(CGUtil.isInsertCloumn(columnName));
+			this.setIsInsertUserColumn(CGUtil.isInsertUserCloumn(columnName));
 			this.setIsUpdateColumn(CGUtil.isUpdateCloumn(columnName));
+			this.setIsUpdateUserColumn(CGUtil.isUpdateUserCloumn(columnName));
 		//}
 		checkValidationType(columnName);
 		classParam = CGUtil.underline2Camel(columnName);	
@@ -192,6 +207,22 @@ public class ColumnData {
 
 	public void setIsBaseColumn(Boolean isBaseColumn) {
 		this.isBaseColumn = isBaseColumn;
+	}
+
+	public Boolean getIsInsertUserColumn() {
+		return isInsertUserColumn;
+	}
+
+	public void setIsInsertUserColumn(Boolean isInsertUserColumn) {
+		this.isInsertUserColumn = isInsertUserColumn;
+	}
+
+	public Boolean getIsUpdateUserColumn() {
+		return isUpdateUserColumn;
+	}
+
+	public void setIsUpdateUserColumn(Boolean isUpdateUserColumn) {
+		this.isUpdateUserColumn = isUpdateUserColumn;
 	}
 	
 }

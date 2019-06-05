@@ -180,6 +180,20 @@ public class CGUtil {
 	}
 	
 	/** 
+	* @Title: isInsertUserCloumn 
+	* @Description: 是否新增用户字段
+	* @param cloumnName
+	* @return  boolean    返回类型 
+	* @throws 
+	*/
+	public static boolean isInsertUserCloumn(String cloumnName){
+		if(CGConfig.insertUserCloumn!=null && CGConfig.insertUserCloumn.length()>0 && CGConfig.insertUserCloumn.toLowerCase().equals(cloumnName.toLowerCase())){
+			return true;
+		}
+		return false;
+	}
+	
+	/** 
 	* @Title: isUpdateCloumnCloumn 
 	* @Description: 是否更新时间字段
 	* @param cloumnName
@@ -188,6 +202,20 @@ public class CGUtil {
 	*/
 	public static boolean isUpdateCloumn(String cloumnName){
 		if(CGConfig.updateCloumn!=null && CGConfig.updateCloumn.length()>0 && CGConfig.updateCloumn.toLowerCase().equals(cloumnName.toLowerCase())){
+			return true;
+		}
+		return false;
+	}
+	
+	/** 
+	* @Title: isUpdateUserCloumn 
+	* @Description: 是否更新用户字段
+	* @param cloumnName
+	* @return  boolean    返回类型 
+	* @throws 
+	*/
+	public static boolean isUpdateUserCloumn(String cloumnName){
+		if(CGConfig.updateUserCloumn!=null && CGConfig.updateUserCloumn.length()>0 && CGConfig.updateUserCloumn.toLowerCase().equals(cloumnName.toLowerCase())){
 			return true;
 		}
 		return false;

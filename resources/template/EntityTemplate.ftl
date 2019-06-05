@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
-import java.io.Serializable;
+import ${package}.model.BaseEntity;
 
 /**
  * @ClassName: ${className}
@@ -19,12 +19,12 @@ import java.io.Serializable;
  * @email: mailto:$!{email}
  * @date: ${datetime}
  */
-public class ${className} implements Serializable {
+public class ${className} extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 	
 #set ($i=0)
 #foreach($item in $!{columnList})
-#if(${item.columnName}!='created_date' && ${item.columnName}!='created_by' && ${item.columnName}!='updated_date' && ${item.columnName}!='updated_by')
+#if(!${item.isBaseColumn})
 
 #if(!${item.columnNullable} && $i!=0)
 #if($item.classType == 'String')
@@ -56,7 +56,7 @@ public class ${className} implements Serializable {
 
 
 #foreach($item in $!{columnList})
-#if(${item.columnName}!='created_date' && ${item.columnName}!='created_by' && ${item.columnName}!='updated_date' && ${item.columnName}!='updated_by')
+#if(!${item.isBaseColumn})
 	/**
 	* @DatabasetableColumnName: ${tableName}:${item.columnName}
 	* @Description: 获取属性        $!{item.columnComment}

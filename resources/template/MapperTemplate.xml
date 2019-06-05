@@ -74,7 +74,7 @@
 #if($i!=0)	
 #if($!{item.isUpdateColumn})
 		$!item.columnName = now(),
-#elseif($!{item.isInsertColumn})
+#elseif($!{item.isInsertColumn} or $!{item.isInsertUserColumn})
 #else
 		<if test="${item.classParam} != null"> $!item.columnName = #{${item.classParam}},</if>
 #end
