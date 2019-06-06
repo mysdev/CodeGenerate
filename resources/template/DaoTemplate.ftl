@@ -2,7 +2,6 @@ package ${package}#if($!packageExt)${packageExt}#end;
 
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -63,10 +62,12 @@ public interface ${className}Mapper {
 	 
 	 /**
 	  * @Title: query${className}ByProperty
-	  * @Description:根据属性查询${businessName}
+	  * @Description:根据实体属性查询${businessName}列表
+	  * @param sort 排序
+	  * @param ${className} 实体
 	  * @return List<${className}>
 	  */
-	 List<${className}> query${className}ByProperty(@Param("${entityName}") Map<String, Object> map);
+	 List<${className}> query${className}ByProperty(@Param("sort") String sort, @Param("${entityName}") ${className} ${entityName});
 	 
 	 
 	 

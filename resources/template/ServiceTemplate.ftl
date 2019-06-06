@@ -1,8 +1,6 @@
 package ${package}#if($!packageExt)${packageExt}#end;
 
-import java.util.List;
 import java.util.Map;
-
 
 import ${package}.model.entity.${className};
 
@@ -50,19 +48,12 @@ public interface ${className}Service {
 	/**
 	 * @Title: query${className}ForPage
 	 * @Description: 根据${businessName}属性与分页信息分页查询${businessName}信息
-	 * @param pagenum 页 
+	 * @param offset 起始位置
 	 * @param pagesize 页大小 
 	 * @param sort 排序
 	 * @param ${entityName} 实体
 	 * @return List<${className}>
 	 */
-	Map<String, Object> query${className}ForPage(Integer pagenum, Integer pagesize, String sort, ${className} ${entityName});
-	 
-	 /**
-	 * @Title: query${className}ByProperty
-	 * @Description:根据属性查询${businessName}
-	 * @return List<${className}>
-	 */
-	 List<${className}> query${className}ByProperty(Map<String, Object> map);	 
-	 
+	Map<String, Object> query${className}ForPage(Integer offset, Integer pagesize, String sort, ${className} ${entityName});
+		 
 }

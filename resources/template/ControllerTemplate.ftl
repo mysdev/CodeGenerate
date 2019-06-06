@@ -1,8 +1,5 @@
 package ${package}#if($!packageExt)${packageExt}#end;
 
-import java.util.Map;
-import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,12 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hnzc.common.exception.NotFoundException;
-import com.hnzc.common.exception.ParameterException;
-import java.beans.IntrospectionException;
-import java.lang.reflect.InvocationTargetException;
 import ${package}.model.entity.${className};
 import ${package}.service.${className}Service;
-import com.hnzc.common.utils.bean.ClassUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -86,21 +79,14 @@ public class ${className}Controller{
 		}
 		return ${entityName};
 	}
-	
-	@ApiOperation(value = "查询 根据${businessName}属性查询${businessName}信息列表", notes = "根据${businessName}属性查询${businessName}信息列表")
-	@RequestMapping(value = "/${pathName}", method = RequestMethod.GET)
-	public Object query${className}List(HttpServletResponse response,
-			${className} ${entityName}) throws IntrospectionException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {		
-		return ${entityName}Service.query${className}ByProperty(ClassUtil.transBean2Map(${entityName}, false));
-	}
-	
-	@ApiOperation(value = "查询分页 根据${businessName}属性分页查询${businessName}信息列表", notes = "根据${businessName}属性分页查询${businessName}信息列表")
+		
+	@ApiOperation(value = "查询${businessName}信息列表", notes = "根据${businessName}属性查询${businessName}信息列表 *注 当offset与pageSize均为空时返回全量数据")
 	@RequestMapping(value = "/${pathName}s", method = RequestMethod.GET)
 	public Object query${className}Page(HttpServletResponse response,
-			@RequestParam(value = "pageNo", required = false) Integer pagenum,
-			@RequestParam(value = "pageSize", required = false) Integer pagesize, 
-			@RequestParam(value = "sort", required = false) String sort, ${className} ${entityName}) {				
-		return ${entityName}Service.query${className}ForPage(pagenum, pagesize, sort, ${entityName});
+			@RequestParam(value = "_offset", required = false) Integer _offset,
+			@RequestParam(value = "_pageSize", required = false) Integer _pagesize, 
+			@RequestParam(value = "_sort", required = false) String _sort, ${className} ${entityName}) {
+			    return ${entityName}Service.query${className}ForPage(_offset, _pagesize, _sort, ${entityName});
 	}
 
 }

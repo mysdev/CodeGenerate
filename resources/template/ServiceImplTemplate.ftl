@@ -14,6 +14,8 @@ import com.hnzc.common.utils.paginator.Constant;
 import com.hnzc.common.utils.paginator.domain.PageBounds;
 import com.hnzc.common.utils.paginator.domain.PageList;
 import com.hnzc.common.utils.paginator.domain.PageService;
+import com.hnzc.common.utils.character.StringUtil;
+
 #if($!{keyColumn.classType} == 'String')
 import java.util.UUID;
 #end
@@ -99,21 +101,23 @@ public class  ${className}ServiceImpl implements ${className}Service {
 	/**
 	 * @Title: query${className}ForPage
 	 * @Description: 根据${businessName}属性与分页信息分页查询${businessName}信息
-	 * @param pagenum 页 
+	 * @param offset 起始位置
 	 * @param pagesize 页大小 
 	 * @param sort 排序
 	 * @param ${entityName} 实体
 	 * @return List<${className}>
 	 */
 	@Override
-	public Map<String, Object> query${className}ForPage(Integer pagenum, Integer pagesize, String sort, ${className} ${entityName}){
+	public Map<String, Object> query${className}ForPage(Integer offset, Integer pagesize, String sort, ${className} ${entityName}){
 		HashMap<String, Object> returnMap = new HashMap<String, Object>();
-		PageBounds pageBounds = pageService.getPageBounds(pagenum, pagesize, null, true, false);
-		pageBounds.setOrdersByJson(sort, ${className}.class);
-		List<${className}> entityList = ${entityName}Mapper.query${className}ForPage(pageBounds, ${entityName});
-		if(null!=sort && sort.length()>0){
-			pageBounds.setOrdersByJson(sort, ${className}.class);
+		if(offset==null && pagesize==null) {
+			returnMap.put("data", ${entityName}Mapper.query${className}ByProperty(StringUtil.reqSortToMysqlSort(sort), ${entityName}));
 		}
+		PageBounds pageBounds = pageService.getPageBounds(offset, pagesize, null, true, false);
+		if(null!=sort && sort.length()>0){
+			pageBounds.setOrdersByJson(sort);
+		}
+		List<${className}> entityList = ${entityName}Mapper.query${className}ForPage(pageBounds, ${entityName});
 		
 		PageList<${className}> pagelist = (PageList<${className}>) entityList;
 		returnMap.put(Constant.PAGELIST, entityList);
@@ -122,15 +126,5 @@ public class  ${className}ServiceImpl implements ${className}Service {
 		return returnMap;
 	}
 	 
-	/**
-	 * @Title: query${className}ByProperty
-	 * @Description:根据属性查询${businessName}
-	 * @return List<${className}>
-	 */
-	@Override
-	public List<${className}> query${className}ByProperty(Map<String, Object> map){
-		return ${entityName}Mapper.query${className}ByProperty(map);
-	}
-
 
 }

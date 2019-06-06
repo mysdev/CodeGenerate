@@ -34,21 +34,27 @@ paths:
       summary: 新增${item.businessName}
       description: 操作 添加${item.businessName}信息
       parameters:
+        - name: empID
+          in: header
+          description: empID
+          required: true
+          type: integer
+          format: bigint
         - in: body
           name: ${item.entityName}
           description: ${item.businessName}
           schema:
-           $ref: '#/definitions/${item.className}'
+            $ref: '#/definitions/${item.className}'
           required: true
       responses:
         200:
           description: 添加成功
           schema:
-           $ref: '#/definitions/${item.className}'
+            $ref: '#/definitions/${item.className}'
         400:
-         $ref: '#/responses/ParametersErr'
+          $ref: '#/responses/ParametersErr'
         500:
-         $ref: '#/responses/InnerErr'
+          $ref: '#/responses/InnerErr'
           
     get:
       tags:
@@ -84,9 +90,9 @@ paths:
           schema:
             $ref: '#/definitions/${item.className}s'
         400:
-         $ref: '#/responses/ParametersErr'
+          $ref: '#/responses/ParametersErr'
         500:
-         $ref: '#/responses/InnerErr'
+          $ref: '#/responses/InnerErr'
                   
   /${item.pathName}/{$!{item.keyColumn.classParam}}:
     get:
@@ -105,13 +111,13 @@ paths:
         200:
           description: ${item.businessName}
           schema:
-           $ref: '#/definitions/${item.className}'
+            $ref: '#/definitions/${item.className}'
         400:
-         $ref: '#/responses/ParametersErr'
+          $ref: '#/responses/ParametersErr'
         404:
-         $ref: '#/responses/NotFoundErr'
+          $ref: '#/responses/NotFoundErr'
         500:
-         $ref: '#/responses/InnerErr'
+          $ref: '#/responses/InnerErr'
           
     put:
       tags:
@@ -119,6 +125,12 @@ paths:
       summary: 更新 根据${item.businessName}标识更新${item.businessName}信息
       description: 操作 根据${item.businessName}标识更新${item.businessName}信息
       parameters:
+        - name: empID
+          in: header
+          description: empID
+          required: true
+          type: integer
+          format: bigint
         - name: $!{item.keyColumn.classParam}
           in: path
           description: ${item.businessName}标识
@@ -137,11 +149,11 @@ paths:
           schema:
            $ref: '#/definitions/${item.className}'
         400:
-         $ref: '#/responses/ParametersErr'
+          $ref: '#/responses/ParametersErr'
         404:
-         $ref: '#/responses/NotFoundErr'
+          $ref: '#/responses/NotFoundErr'
         500:
-         $ref: '#/responses/InnerErr'
+          $ref: '#/responses/InnerErr'
           
     delete:
       tags:
@@ -149,6 +161,12 @@ paths:
       summary: 删除 根据${item.businessName}标识删除${item.businessName}信息
       description: 操作 根据${item.businessName}标识删除${item.businessName}信息
       parameters:
+        - name: empID
+          in: header
+          description: empID
+          required: true
+          type: integer
+          format: bigint
         - name: $!{item.keyColumn.classParam}
           in: path
           description: ${item.businessName}标识
@@ -157,13 +175,13 @@ paths:
           format: $!{item.keyColumn.columnType}
       responses:
         200:
-         $ref: '#/responses/DeleteResp'
+          $ref: '#/responses/DeleteResp'
         400:
-         $ref: '#/responses/ParametersErr'
+          $ref: '#/responses/ParametersErr'
         404:
-         $ref: '#/responses/NotFoundErr'
+          $ref: '#/responses/NotFoundErr'
         500:
-         $ref: '#/responses/InnerErr'
+          $ref: '#/responses/InnerErr'
 #end
 
 ################################################################################
@@ -321,7 +339,7 @@ definitions:
         type: array
         description: 具体错误
         items:
-         $ref: '#/definitions/ErrorMsg'
+          $ref: '#/definitions/ErrorMsg'
 
   ErrorMsg:
     type: object
