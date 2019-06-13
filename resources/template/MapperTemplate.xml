@@ -35,7 +35,7 @@
    
 <!-- 插入 ${businessName} -->
 <insert id="add${className}" parameterType="${package}.model.entity.${className}" >
-#if($!{keyColumn.classType} == 'Integer')
+#if($!{keyColumn.classType} == 'Integer' or $!{keyColumn.classType} == 'Long')
 	<selectKey keyProperty="$!{keyColumn.classParam}" order="AFTER" resultType="java.lang.${keyColumn.classType}">
 		SELECT LAST_INSERT_ID()
 	</selectKey>
@@ -97,19 +97,8 @@
 	FROM ${tableName} WHERE ${keyColumn.columnName} = #{${keyColumn.classParam}}
 </select>
 
-<!-- 根据属性查询${businessName} -->
-<select id="query${className}ByProperty"  resultMap="${className}ResultMap" parameterType="java.util.Map">
-	SELECT 
-	<include refid="sql_${entityName}_item"/>
-	FROM ${tableName} 
-	<where>
-		<include refid="sql_${entityName}_query_nowhere"/>
-	</where>
-	<if test="sort != null">order by #{sort}</if>
-</select>
-
-<!-- 根据${businessName}属性与分页信息分页查询${businessName}信息 -->
-<select id="query${className}ForPage"  resultMap="${className}ResultMap" > 
+<!-- 根据${businessName}属性与分页信息查询${businessName}信息 -->
+<select id="query${className}s"  resultMap="${className}ResultMap" > 
 	SELECT 
 	<include refid="sql_${entityName}_item"/>
 	FROM ${tableName} 

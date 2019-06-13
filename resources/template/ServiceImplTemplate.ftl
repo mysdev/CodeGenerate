@@ -38,7 +38,7 @@ public class  ${className}ServiceImpl implements ${className}Service {
 	private static final Logger logger = LoggerFactory.getLogger(${className}ServiceImpl.class);
 	
 	@Autowired
-    private ${className}Mapper ${entityName}Mapper;   
+	private ${className}Mapper ${entityName}Mapper;   
     
 	@Autowired
 	private PageService pageService; // 分页器
@@ -53,6 +53,7 @@ public class  ${className}ServiceImpl implements ${className}Service {
 	@Override
 	@Transactional(readOnly = false)
 	public ${className} add${className}(${className} ${entityName}){
+		${entityName}.set$!{keyColumn.classMethod}(null);
 #if($!{keyColumn.classType} == 'String')
 		${entityName}.set$!{keyColumn.classMethod}(UUID.randomUUID().toString().replaceAll("-", "").toUpperCase());
 #end
@@ -78,7 +79,7 @@ public class  ${className}ServiceImpl implements ${className}Service {
 	/**
 	 * @Title: drop${className}By${keyColumn.classMethod}
 	 * @Description:删除${businessName}
-	 * @param ${keyColumn.classParam} 实体标识
+	 * @param ${keyColumn.classParam} ${businessName}标识
 	 * @return Integer
 	 */
 	@Override
@@ -90,39 +91,35 @@ public class  ${className}ServiceImpl implements ${className}Service {
 	/**
 	 * @Title: query${className}By${keyColumn.classMethod}
 	 * @Description:根据实体标识查询${businessName}
-	 * @param ${keyColumn.classParam} 实体标识
+	 * @param ${keyColumn.classParam} ${businessName}标识
 	 * @return ${className}
 	 */
 	@Override
 	public ${className} query${className}By${keyColumn.classMethod}(${keyColumn.classType} ${keyColumn.classParam}){
 		return ${entityName}Mapper.query${className}By${keyColumn.classMethod}(${keyColumn.classParam});
-	}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+	}
 	 
 	/**
-	 * @Title: query${className}ForPage
-	 * @Description: 根据${businessName}属性与分页信息分页查询${businessName}信息
+	 * @Title: query${className}s
+	 * @Description: 根据${businessName}属性查询${businessName}信息 *offset与pagesize为空时查询全量
 	 * @param offset 起始位置
-	 * @param pagesize 页大小 
+	 * @param pagesize 数据大小
 	 * @param sort 排序
 	 * @param ${entityName} 实体
 	 * @return List<${className}>
 	 */
 	@Override
-	public Map<String, Object> query${className}ForPage(Integer offset, Integer pagesize, String sort, ${className} ${entityName}){
+	public Map<String, Object> query${className}s(Integer offset, Integer pagesize, String sort, ${className} ${entityName}){
 		HashMap<String, Object> returnMap = new HashMap<String, Object>();
-		if(offset==null && pagesize==null) {
-			returnMap.put("data", ${entityName}Mapper.query${className}ByProperty(StringUtil.reqSortToMysqlSort(sort), ${entityName}));
-		}
 		PageBounds pageBounds = pageService.getPageBounds(offset, pagesize, null, true, false);
 		if(null!=sort && sort.length()>0){
 			pageBounds.setOrdersByJson(sort);
 		}
-		List<${className}> entityList = ${entityName}Mapper.query${className}ForPage(pageBounds, ${entityName});
+		List<${className}> entityList = ${entityName}Mapper.query${className}s(pageBounds, ${entityName});
 		
 		PageList<${className}> pagelist = (PageList<${className}>) entityList;
 		returnMap.put(Constant.PAGELIST, entityList);
-		returnMap.put(Constant.PAGINATOR, pagelist.getPaginator());
-		
+		returnMap.put(Constant.PAGINATOR, pagelist.getPaginator());		
 		return returnMap;
 	}
 	 
