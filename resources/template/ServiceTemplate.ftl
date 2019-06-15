@@ -33,10 +33,10 @@ public interface ${className}Service {
 	 * @Title: drop${className}By${keyColumn.classMethod}
 	 * @Description:删除${businessName}
 	 * @param ${keyColumn.classParam} ${businessName}标识
-	 * @param empID 操作人员标识
+	 * @param userID 操作人员标识
 	 * @return Integer
 	 */
-	Integer drop${className}By${keyColumn.classMethod}(${keyColumn.classType} ${keyColumn.classParam}, Long empID);
+	Integer drop${className}By${keyColumn.classMethod}(${keyColumn.classType} ${keyColumn.classParam}, Long userID);
 	
 	/**
 	 * @Title: query${className}By${keyColumn.classMethod}

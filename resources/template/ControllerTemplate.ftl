@@ -38,35 +38,35 @@ public class ${className}Controller{
 	
 	@ApiOperation(value = "新增 添加${businessName}信息", notes = "添加${businessName}信息")
 	@RequestMapping(value = "/${pathName}", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public ${className} add${className}(HttpServletResponse response, @RequestHeader("empID") Long empID,
+	public ${className} add${className}(HttpServletResponse response, @RequestHeader("user-id") Long userID,
 			@ApiParam(value = "${entityName}") @RequestBody ${className} ${entityName}){		
-		${entityName}.setCreateId(empID);
-		${entityName}.setModifiedId(empID);
+		${entityName}.setCreateId(userID);
+		${entityName}.setModifiedId(userID);
 		return ${entityName}Service.add${className}(${entityName});
 	}
 	
 	
 	@ApiOperation(value = "更新 根据${businessName}标识更新${businessName}信息", notes = "根据${businessName}标识更新${businessName}信息")
 	@RequestMapping(value = "/${pathName}/{$!{keyColumn.classParam}:.+}", method = RequestMethod.PUT)
-	public RowsResp modify${className}ById(HttpServletResponse response, @RequestHeader("empID") Long empID,
+	public RowsResp modify${className}ById(HttpServletResponse response, @RequestHeader("user-id") Long userID,
 			@PathVariable $!{keyColumn.classType} $!{keyColumn.classParam},	@ApiParam(value = "${entityName}", required = true) @RequestBody ${className} ${entityName}	){
 		${className} temp${className} = ${entityName}Service.query${className}By${keyColumn.classMethod}($!{keyColumn.classParam});
 		${entityName}.set$!{keyColumn.classMethod}($!{keyColumn.classParam});
 		if(null == temp${className}){
 			throw new NotFoundException("${businessName}");
 		}
-		${entityName}.setModifiedId(empID);
+		${entityName}.setModifiedId(userID);
 		return new RowsResp(${entityName}Service.modify${className}(${entityName}));
 	}
 
 	@ApiOperation(value = "删除 根据${businessName}标识删除${businessName}信息", notes = "根据${businessName}标识删除${businessName}信息")
 	@RequestMapping(value = "/${pathName}/{$!{keyColumn.classParam}:.+}", method = RequestMethod.DELETE)
-	public RowsResp drop${className}By${keyColumn.classMethod}(HttpServletResponse response,  @RequestHeader("empID") Long empID, @PathVariable $!{keyColumn.classType} $!{keyColumn.classParam}) {
+	public RowsResp drop${className}By${keyColumn.classMethod}(HttpServletResponse response, @RequestHeader("user-id") Long userID, @PathVariable $!{keyColumn.classType} $!{keyColumn.classParam}) {
 		${className} ${entityName} = ${entityName}Service.query${className}By${keyColumn.classMethod}($!{keyColumn.classParam});
 		if(null == ${entityName}){
 			throw new NotFoundException("${businessName}");
 		}
-		return new RowsResp(${entityName}Service.drop${className}By${keyColumn.classMethod}($!{keyColumn.classParam}, empID));
+		return new RowsResp(${entityName}Service.drop${className}By${keyColumn.classMethod}($!{keyColumn.classParam}, userID));
 	}
 		
 	@ApiOperation(value = "查询${businessName}信息列表", notes = "根据${businessName}属性查询${businessName}信息列表 *注 当offset与pageSize均为空时返回全量数据")

@@ -80,12 +80,12 @@ public class  ${className}ServiceImpl implements ${className}Service {
 	 * @Title: drop${className}By${keyColumn.classMethod}
 	 * @Description:删除${businessName}
 	 * @param ${keyColumn.classParam} ${businessName}标识
-	 * @param empID 操作人员标识
+	 * @param userID 操作人员标识
 	 * @return Integer
 	 */
 	@Override
 	@Transactional(readOnly = false)
-	public Integer drop${className}By${keyColumn.classMethod}(${keyColumn.classType} ${keyColumn.classParam}, Long empID){
+	public Integer drop${className}By${keyColumn.classMethod}(${keyColumn.classType} ${keyColumn.classParam}, Long userID){
 		return ${entityName}Mapper.drop${className}By${keyColumn.classMethod}(${keyColumn.classParam});
 	}
 	
