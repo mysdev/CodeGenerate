@@ -29,7 +29,7 @@ import io.swagger.annotations.ApiParam;
  * @date: ${datetime}
  */
 @RestController
-@Api(description="${businessName}")
+@Api(tags="${className}")
 public class ${className}Controller{
 	
 	@Autowired
@@ -49,9 +49,7 @@ public class ${className}Controller{
 	@ApiOperation(value = "更新 根据${businessName}标识更新${businessName}信息", notes = "根据${businessName}标识更新${businessName}信息")
 	@RequestMapping(value = "/${pathName}/{$!{keyColumn.classParam}:.+}", method = RequestMethod.PUT)
 	public RowsResp modify${className}ById(HttpServletResponse response, @RequestHeader("empID") Long empID,
-			@PathVariable $!{keyColumn.classType} $!{keyColumn.classParam},
-			@ApiParam(value = "${entityName}", required = true) @RequestBody ${className} ${entityName}
-			){
+			@PathVariable $!{keyColumn.classType} $!{keyColumn.classParam},	@ApiParam(value = "${entityName}", required = true) @RequestBody ${className} ${entityName}	){
 		${className} temp${className} = ${entityName}Service.query${className}By${keyColumn.classMethod}($!{keyColumn.classParam});
 		${entityName}.set$!{keyColumn.classMethod}($!{keyColumn.classParam});
 		if(null == temp${className}){
@@ -68,7 +66,7 @@ public class ${className}Controller{
 		if(null == ${entityName}){
 			throw new NotFoundException("${businessName}");
 		}
-		return new RowsResp(${entityName}Service.drop${className}By${keyColumn.classMethod}($!{keyColumn.classParam}));
+		return new RowsResp(${entityName}Service.drop${className}By${keyColumn.classMethod}($!{keyColumn.classParam}, empID));
 	}
 		
 	@ApiOperation(value = "查询${businessName}信息列表", notes = "根据${businessName}属性查询${businessName}信息列表 *注 当offset与pageSize均为空时返回全量数据")
