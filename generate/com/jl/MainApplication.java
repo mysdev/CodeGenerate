@@ -310,7 +310,7 @@ public class MainApplication {
 			sql = "select column_name ,data_type,column_comment,0 as data_precision,0 as data_scale, is_nullable as nullable, character_maximum_length as data_length from information_schema.columns where UPPER(table_name) =  '"
 					+ tableName + "' ";
 			if(db.getDbname()!=null && db.getDbname().length()>0){
-				sql +=( "and table_schema =  '" + db.getDbname() + "'");
+				sql +=( "and table_schema =  '" + db.getDbname() + "' order by ORDINAL_POSITION asc");
 			}
 		}else if("oracle".equals(db.getDbtype())){
 			sql = "SELECT T1.COLUMN_NAME,T1.DATA_TYPE,T2.COMMENTS as column_comment,T1.DATA_PRECISION,T1.DATA_SCALE,T1.DATA_LENGTH,T1.NULLABLE"+

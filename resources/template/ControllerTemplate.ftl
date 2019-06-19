@@ -53,10 +53,21 @@ public class ${className}Controller{
 		${className} temp${className} = ${entityName}Service.query${className}By${keyColumn.classMethod}($!{keyColumn.classParam});
 		${entityName}.set$!{keyColumn.classMethod}($!{keyColumn.classParam});
 		if(null == temp${className}){
-			throw new NotFoundException("${businessName}");
+			throw new NotFoundException("${businessName}末找到");
 		}
 		${entityName}.setModifiedId(userID);
 		return new RowsResp(${entityName}Service.modify${className}(${entityName}));
+	}
+	
+	@ApiOperation(value = "查询 根据${businessName}标识查询${businessName}信息", notes = "根据${businessName}标识查询${businessName}信息")
+	@RequestMapping(value = "/${pathName}/{$!{keyColumn.classParam}:.+}", method = RequestMethod.GET)
+	public ${className} query${className}ById(HttpServletResponse response,
+			@PathVariable $!{keyColumn.classType} $!{keyColumn.classParam}){
+		${className} temp${className} = ${entityName}Service.query${className}By${keyColumn.classMethod}($!{keyColumn.classParam});		
+		if(null == temp${className}){
+			throw new NotFoundException("${businessName}末找到");
+		}		
+		return temp${className};
 	}
 
 	@ApiOperation(value = "删除 根据${businessName}标识删除${businessName}信息", notes = "根据${businessName}标识删除${businessName}信息")
@@ -64,7 +75,7 @@ public class ${className}Controller{
 	public RowsResp drop${className}By${keyColumn.classMethod}(HttpServletResponse response, @RequestHeader("user-id") Long userID, @PathVariable $!{keyColumn.classType} $!{keyColumn.classParam}) {
 		${className} ${entityName} = ${entityName}Service.query${className}By${keyColumn.classMethod}($!{keyColumn.classParam});
 		if(null == ${entityName}){
-			throw new NotFoundException("${businessName}");
+			throw new NotFoundException("${businessName}末找到");
 		}
 		return new RowsResp(${entityName}Service.drop${className}By${keyColumn.classMethod}($!{keyColumn.classParam}, userID));
 	}

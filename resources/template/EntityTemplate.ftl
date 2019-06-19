@@ -15,7 +15,7 @@ public class ${className} extends BaseEntity {
 #set ($i=0)
 #foreach($item in $!{columnList})
 #if(!${item.isBaseColumn})
-	private ${item.classType} ${item.classParam};	//${tableName}:${item.columnName}  $!{item.columnComment}  
+	private ${item.classType} ${item.classParam};	//${tableName}:${item.columnName}  $!{item.columnComment}
 #end
 #set($i=$i+1)
 #end
