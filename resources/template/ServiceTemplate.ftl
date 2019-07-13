@@ -1,6 +1,7 @@
 package ${package}#if($!packageExt)${packageExt}#end;
 
 import java.util.Map;
+import java.util.List;
 
 import ${package}.model.entity.${className};
 
@@ -56,5 +57,25 @@ public interface ${className}Service {
 	 * @return List<${className}>
 	 */
 	Map<String, Object> query${className}s(Integer offset, Integer pagesize, String sort, ${className} ${entityName});
-		 
+	
+#foreach($item in $!{linkList})
+#if(!${item.isBaseColumn})
+
+  /**
+	 * @Title: query${className}By${item.classMethod}
+	 * @Description:根据${item.columnComment}查询${businessName}
+	 * @param ${item.classParam} ${item.columnComment}
+	 * @return List<${className}>
+	 */
+	List<${className}> query${className}By${item.classMethod}(${item.classType} ${item.classParam});
+	
+	/**
+	 * @Title: drop${className}By${item.classMethod}
+	 * @Description:根据${item.columnComment}删除${businessName}
+	 * @param ${item.classParam} ${item.columnComment}
+	 * @return Integer
+	 */
+	Integer drop${className}By${item.classMethod}(${item.classType} ${item.classParam});
+#end
+#end
 }

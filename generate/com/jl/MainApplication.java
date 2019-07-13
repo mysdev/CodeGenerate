@@ -224,6 +224,7 @@ public class MainApplication {
 		if(CGConfig.templateInfoTotal!=null && CGConfig.templateInfoTotal.length()>5 && tableList.size()>0){
 			VelocityContext context = new VelocityContext();
 			context.put("tableList", tableList);
+			context.put("dividingline", "##############################################################################");
 			String webPackage = CGConfig.business_package_web;
 			if(webPackage!=null && webPackage.length()>0 && !webPackage.startsWith("/")){
 				webPackage = "/"+webPackage;
@@ -260,7 +261,8 @@ public class MainApplication {
 			//全局参数映射
 			context.put("datetime", format.format(System.currentTimeMillis()));
 			context.put("author", CGConfig.author);
-			context.put("email", CGConfig.email);			
+			context.put("email", CGConfig.email);
+			
 			//表格属性自动反射映射
 			try {
 				Map<String, Object> tmap = ClassUtil.transBean2Map(table, true);
@@ -284,8 +286,17 @@ public class MainApplication {
 	private static void loadTableColumnFromDB() {
 		for(int i=tableList.size()-1; i>=0; i--){
 			 List<ColumnData> colData = getColumnByTableName(tableList.get(i).getTableName());
+			 List<ColumnData> linkData = new ArrayList<ColumnData>();
 			 if(colData!=null && colData.size()>0){
 				 tableList.get(i).setColumnList(colData);
+				 for(ColumnData col : colData) {
+					 if(col.getColumnName()!=null && !(tableList.get(i).getTableName().toLowerCase()+"_id").contains(col.getColumnName().toLowerCase()) && col.getColumnName().toLowerCase().endsWith("_id")) {
+						 linkData.add(col); //为根据Id查询作准备
+					 }
+				 }
+				 if(linkData!=null && linkData.size()>0) {
+					 tableList.get(i).setLinkList(linkData);
+				 }
 			 }else{
 				 log.error("error: can not read table column from ->"+tableList.get(i).getTableName());
 				 tableList.remove(i);
@@ -416,7 +427,7 @@ public class MainApplication {
 		List<Map<String, Object>> tList = null;
 		if(db.getDbtype().equals("mysql")){
 			tList= db.QueryTableToListMapObject("Select table_name tableName,TABLE_COMMENT tableComment from INFORMATION_SCHEMA.TABLES Where table_schema = '"
-					+db.getDbname()+"' order by table_name asc");
+					+db.getDbname()+"' and table_name like 'tb_dict%' order by table_name asc");
 		}
 		// TODO 暂时只实现了mysql
 		

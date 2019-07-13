@@ -21,10 +21,9 @@ produces:
 #1.必填是指添加或修改信息时，该字段必须传值。
 #2.修改信息时必填字段可以不传，即为不修改。
 
-###############################################################################
-#                              API Information                            
-#
-###############################################################################
+$!{dividingline}
+#                              API Information                               #
+$!{dividingline}
 paths:
 #foreach($item in $!{tableList})
   /${item.pathName}:
@@ -33,10 +32,11 @@ paths:
         - ${item.businessName}
       summary: 新增${item.businessName}
       description: 操作 添加${item.businessName}信息
+      operationId: add${item.className}
       parameters:
-        - name: empID
+        - name: user-id
           in: header
-          description: empID
+          description: user-id当前登录用户ID、网关统一添加
           required: true
           type: integer
           format: bigint
@@ -44,7 +44,7 @@ paths:
           name: ${item.entityName}
           description: ${item.businessName}
           schema:
-            $ref: '#/definitions/${item.className}'
+            $ref: '#/definitions/${item.className}ReqPost'
           required: true
       responses:
         200:
@@ -56,50 +56,35 @@ paths:
         500:
           $ref: '#/responses/InnerErr'
           
-    get:
-      tags:
-        - ${item.businessName}
-      summary: 查询${item.businessName}列表
-      description: 查询 根据${item.businessName}属性查询${item.businessName}信息列表-全量不分页
-      parameters:
-        - $ref: '#/definitions/${item.className}'
-      responses:
-        200:
-          description: ${item.businessName}列表
-          schema:
-           $ref: '#/definitions/${item.className}s'
-        400:
-         $ref: '#/responses/ParametersErr'
-        500:
-         $ref: '#/responses/InnerErr'
-          
   /${item.pathName}s:
     get:
       tags:
         - ${item.businessName}
-      summary: 分页查询${item.businessName}信息列表
-      description: 查询 根据${item.businessName}属性分页查询${item.businessName}信息列表-分页
+      summary: 查询${item.businessName}信息列表
+      description: 查询 根据${item.businessName}属性查询${item.businessName}信息列表- 传入_offset或_limit时分页，均无时查询全量
+      operationId: query${item.className}s
       parameters:
         - $ref: '#/parameters/_offset'
-        - $ref: '#/parameters/_pageSize'
+        - $ref: '#/parameters/_limit'
         - $ref: '#/parameters/_sort'
         - $ref: '#/definitions/${item.className}'
       responses:
         200:
-          description: ${item.businessName}信息列表-分页信息
+          description: ${item.businessName}信息列表-信息
           schema:
             $ref: '#/definitions/${item.className}s'
         400:
           $ref: '#/responses/ParametersErr'
         500:
           $ref: '#/responses/InnerErr'
-                  
+
   /${item.pathName}/{$!{item.keyColumn.classParam}}:
     get:
       tags:
         - ${item.businessName}
       summary: 查询 根据${item.businessName}标识查询${item.businessName}信息
       description: 查询 根据${item.businessName}标识查询${item.businessName}信息
+      operationId: query${item.className}By${item.keyColumn.classMethod}
       parameters:
         - name: $!{item.keyColumn.classParam}
           in: path
@@ -124,10 +109,11 @@ paths:
         - ${item.businessName}
       summary: 更新 根据${item.businessName}标识更新${item.businessName}信息
       description: 操作 根据${item.businessName}标识更新${item.businessName}信息
+      operationId: modify${item.className}
       parameters:
-        - name: empID
+        - name: user-id
           in: header
-          description: empID
+          description: user-id当前登录用户ID、网关统一添加
           required: true
           type: integer
           format: bigint
@@ -142,12 +128,12 @@ paths:
           description: ${item.businessName}
           required: true
           schema:
-           $ref: '#/definitions/${item.className}'
+            $ref: '#/definitions/${item.className}'
       responses:
         200:
           description: ${item.businessName}
           schema:
-           $ref: '#/definitions/${item.className}'
+            $ref: '#/definitions/${item.className}'
         400:
           $ref: '#/responses/ParametersErr'
         404:
@@ -160,10 +146,11 @@ paths:
         - ${item.businessName}
       summary: 删除 根据${item.businessName}标识删除${item.businessName}信息
       description: 操作 根据${item.businessName}标识删除${item.businessName}信息
+      operationId: drop${item.className}
       parameters:
-        - name: empID
+        - name: user-id
           in: header
-          description: empID
+          description: user-id当前登录用户ID、网关统一添加
           required: true
           type: integer
           format: bigint
@@ -184,9 +171,10 @@ paths:
           $ref: '#/responses/InnerErr'
 #end
 
-################################################################################
+
+$!{dividingline}
 #                                 Responses                                  #
-################################################################################
+$!{dividingline}
 responses:
   PutResp:
     description: 修改成功
@@ -213,9 +201,9 @@ responses:
     schema:
      $ref: '#/definitions/Error'
       
-################################################################################
-#                                 Parameters                                  #
-################################################################################
+$!{dividingline}
+#                                 Parameters                                 #
+$!{dividingline}
 parameters:
   _offset:
     name: _offset
@@ -225,10 +213,9 @@ parameters:
     type: integer
     format: int32
     minimum: 1
-    default: 1
 
-  _pageSize:
-    name: _pageSize
+  _limit:
+    name: _limit
     in: query
     description: 需要的记录数
     required: false
@@ -236,7 +223,6 @@ parameters:
     format: int32
     minimum: 1
     maximum: 99999
-    default: 10
 
   _sort:
     name: _sort
@@ -245,27 +231,29 @@ parameters:
     required: false
     type: string
     format: json
-
-  PartnerId:
-    name: partnerId
-    in: path
-    description: 合作伙伴id
-    required: true
-    type: integer
-    format: int32
           
-################################################################################
-#                                 Definitions                                  #
-################################################################################
+$!{dividingline}
+#                                 Definitions                                #
+$!{dividingline}
 definitions:
 #foreach($item in $!{tableList})
   ${item.className}:
     type: object
+    description: ${item.businessName}
     properties:
 #foreach($item2 in ${item.columnList})
       ${item2.classParam}:
         type: ${item2.classType}
         format: ${item2.columnType}
+        description: ${item2.columnComment}
+#if($item2.classType == 'String')
+#if(${item2.columnNullable})
+        minLength: 1
+#end
+#if($item2.columnCharMaxLength)
+        maxLength: ${item2.columnCharMaxLength}
+#end
+#end
 #end
 #end
 
@@ -283,6 +271,24 @@ definitions:
         items: 
           $ref: '#/definitions/${item.className}'
 #end
+
+#set ($i=0)
+#foreach($item in $!{tableList})
+  ${item.className}ReqPost:
+    type: object
+    description: ${item.businessName}添加实体
+    required:
+#foreach($item2 in ${item.columnList})
+#if(!${item2.columnNullable} && !${item2.isBaseColumn} && $i>0)
+      - ${item2.classParam}
+#end
+#set($i=$i+1)
+#end
+    allOf:
+      - $ref: '#/definitions/${item.className}'
+#end
+
+
 
   opResp:
     type: boolean
@@ -303,24 +309,12 @@ definitions:
       _offset:
         type: integer
         description: 从哪里开始，此值可以是序号
-      _pageSize:
+      _limit:
         type: integer
         description: 需要的记录数
       _totalCount:
         type: integer
         description: 总记录数
-      _firstPage:
-        type: boolean
-        description: 是否为首页
-      _lastPage:
-        type: boolean
-        description: 是否为尾页
-      _hasPrePage:
-        type: boolean
-        description: 是否有上一页
-      _hasNextPage:
-        type: boolean
-        description: 是否有下一页
 
   Error:
     type: object

@@ -106,5 +106,20 @@
 		<include refid="sql_${entityName}_query_nowhere"/>
 	</where>
 </select>
+#foreach($item in $!{linkList})
+#if(!${item.isBaseColumn})
 
+<!-- 根据${item.columnComment}查询${businessName} -->
+<select id="query${className}By${item.classMethod}" resultMap="${className}ResultMap" parameterType="java.lang.${item.classType}">
+	SELECT 
+	<include refid="sql_${entityName}_item"/>
+	FROM ${tableName} where ${item.columnName} = #{${item.classParam}}
+</select>
+
+<!-- 根据${item.columnComment}删除${businessName} -->
+<select id="drop${className}By${item.classMethod}" parameterType="java.lang.${item.classType}">
+	DELETE FROM ${tableName} where ${item.columnName} = #{${item.classParam}}
+</select>
+#end
+#end
 </mapper>   

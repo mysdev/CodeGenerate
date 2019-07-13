@@ -1,6 +1,6 @@
 package ${package}#if($!packageExt)${packageExt}#end;
 
-import ${package}.model.BaseEntity;
+import com.hnzc.common.utils.BaseEntity;
 
 /**
  * @ClassName: ${className}

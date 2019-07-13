@@ -60,5 +60,24 @@ public interface ${className}Mapper {
 	 */
 	List<${className}> query${className}s(PageBounds pageBounds, @Param("${entityName}") ${className} ${entityName});
 	 
-	 
+#foreach($item in $!{linkList})
+#if(!${item.isBaseColumn})
+
+  /**
+	 * @Title: query${className}By${item.classMethod}
+	 * @Description:根据${item.columnComment}查询${businessName}
+	 * @param ${item.classParam} ${item.columnComment}
+	 * @return List<${className}>
+	 */
+	List<${className}> query${className}By${item.classMethod}(${item.classType} ${item.classParam});
+	
+	/**
+	 * @Title: drop${className}By${item.classMethod}
+	 * @Description:根据${item.columnComment}删除${businessName}
+	 * @param ${item.classParam} ${item.columnComment}
+	 * @return Integer
+	 */
+	Integer drop${className}By${item.classMethod}(${item.classType} ${item.classParam});
+#end
+#end
 }

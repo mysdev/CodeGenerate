@@ -14,7 +14,6 @@ import com.hnzc.common.utils.paginator.Constant;
 import com.hnzc.common.utils.paginator.domain.PageBounds;
 import com.hnzc.common.utils.paginator.domain.PageList;
 import com.hnzc.common.utils.paginator.domain.PageService;
-import com.hnzc.common.utils.character.StringUtil;
 
 #if($!{keyColumn.classType} == 'String')
 import java.util.UUID;
@@ -121,5 +120,31 @@ public class  ${className}ServiceImpl implements ${className}Service {
 		return returnMap;
 	}
 	 
+#foreach($item in $!{linkList})
+#if(!${item.isBaseColumn})
 
+	/**
+	 * @Title: query${className}By${item.classMethod}
+	 * @Description:根据${item.columnComment}查询${businessName}
+	 * @param ${item.classParam} ${item.columnComment}
+	 * @return List<${className}>
+	 */
+	@Override
+	public List<${className}> query${className}By${item.classMethod}(${item.classType} ${item.classParam}){
+		return ${entityName}Mapper.query${className}By${item.classMethod}(${item.classParam});
+	}
+	
+	/**
+	 * @Title: drop${className}By${item.classMethod}
+	 * @Description:根据${item.columnComment}删除${businessName}
+	 * @param ${item.classParam} ${item.columnComment}
+	 * @return Integer
+	 */
+	@Override
+	@Transactional(readOnly = false)
+	public Integer drop${className}By${item.classMethod}(${item.classType} ${item.classParam}){
+		return ${entityName}Mapper.drop${className}By${item.classMethod}(${item.classParam});
+	}
+#end
+#end
 }

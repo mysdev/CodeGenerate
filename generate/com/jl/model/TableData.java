@@ -21,6 +21,8 @@ public class TableData {
 	private List<ColumnData> columnList;	//列信息
 	private ColumnData keyColumn; //列的第一行
 	
+	private List<ColumnData> linkList; //外链列表
+	
 	private String columnItem;
 	
 	public String getTableName() {
@@ -95,5 +97,11 @@ public class TableData {
 	}
 	public void setColumnItem(String columnItem) {
 		this.columnItem = columnItem;
+	}
+	public List<ColumnData> getLinkList() {
+		return linkList;
+	}
+	public void setLinkList(List<ColumnData> linkList) {
+		this.linkList = linkList;
 	}
 }
