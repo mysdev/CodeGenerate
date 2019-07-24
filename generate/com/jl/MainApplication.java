@@ -289,10 +289,12 @@ public class MainApplication {
 			 List<ColumnData> linkData = new ArrayList<ColumnData>();
 			 if(colData!=null && colData.size()>0){
 				 tableList.get(i).setColumnList(colData);
+				 int j =0;
 				 for(ColumnData col : colData) {
-					 if(col.getColumnName()!=null && !(tableList.get(i).getTableName().toLowerCase()+"_id").contains(col.getColumnName().toLowerCase()) && col.getColumnName().toLowerCase().endsWith("_id")) {
+					 if(j!=0 && col.getColumnName()!=null && col.getColumnName().toLowerCase().endsWith("_id")) {
 						 linkData.add(col); //为根据Id查询作准备
 					 }
+					 j++;
 				 }
 				 if(linkData!=null && linkData.size()>0) {
 					 tableList.get(i).setLinkList(linkData);
@@ -427,7 +429,7 @@ public class MainApplication {
 		List<Map<String, Object>> tList = null;
 		if(db.getDbtype().equals("mysql")){
 			tList= db.QueryTableToListMapObject("Select table_name tableName,TABLE_COMMENT tableComment from INFORMATION_SCHEMA.TABLES Where table_schema = '"
-					+db.getDbname()+"' and table_name like 'tb_dict%' order by table_name asc");
+					+db.getDbname()+"' order by table_name asc");
 		}
 		// TODO 暂时只实现了mysql
 		

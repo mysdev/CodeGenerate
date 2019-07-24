@@ -24,7 +24,7 @@
 	<trim prefix=" " prefixOverrides="AND|OR">
 #foreach($item in $!{columnList})
 #if($!item.classType == 'String')
-		<if test="${entityName}.${item.classParam} != null">AND $!item.columnName like concat(#{${entityName}.${item.classParam}}, '%') </if>
+		<if test="${entityName}.${item.classParam} != null and ${entityName}.${item.classParam}.length>0">AND $!item.columnName like concat(#{${entityName}.${item.classParam}}, '%') </if>
 #end
 #if($!item.classType == 'Integer')
 		<if test="${entityName}.${item.classParam} != null">AND $!item.columnName = #{${entityName}.${item.classParam}} </if>
