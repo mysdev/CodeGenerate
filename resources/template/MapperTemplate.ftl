@@ -116,10 +116,6 @@
 	FROM ${tableName} where ${item.columnName} = #{${item.classParam}}
 </select>
 
-<!-- 根据${item.columnComment}删除${businessName} -->
-<select id="drop${className}By${item.classMethod}" parameterType="java.lang.${item.classType}">
-	DELETE FROM ${tableName} where ${item.columnName} = #{${item.classParam}}
-</select>
 #end
 #end
 </mapper>   

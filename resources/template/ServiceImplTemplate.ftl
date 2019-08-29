@@ -133,18 +133,7 @@ public class  ${className}ServiceImpl implements ${className}Service {
 	public List<${className}> query${className}By${item.classMethod}(${item.classType} ${item.classParam}){
 		return ${entityName}Mapper.query${className}By${item.classMethod}(${item.classParam});
 	}
-	
-	/**
-	 * @Title: drop${className}By${item.classMethod}
-	 * @Description:根据${item.columnComment}删除${businessName}
-	 * @param ${item.classParam} ${item.columnComment}
-	 * @return Integer
-	 */
-	@Override
-	@Transactional(readOnly = false)
-	public Integer drop${className}By${item.classMethod}(${item.classType} ${item.classParam}){
-		return ${entityName}Mapper.drop${className}By${item.classMethod}(${item.classParam});
-	}
+
 #end
 #end
 }

@@ -70,14 +70,7 @@ public interface ${className}Mapper {
 	 * @return List<${className}>
 	 */
 	List<${className}> query${className}By${item.classMethod}(${item.classType} ${item.classParam});
-	
-	/**
-	 * @Title: drop${className}By${item.classMethod}
-	 * @Description:根据${item.columnComment}删除${businessName}
-	 * @param ${item.classParam} ${item.columnComment}
-	 * @return Integer
-	 */
-	Integer drop${className}By${item.classMethod}(${item.classType} ${item.classParam});
+
 #end
 #end
 }

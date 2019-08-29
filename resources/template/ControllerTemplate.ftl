@@ -65,7 +65,7 @@ public class ${className}Controller{
 		${className} temp${className} = ${entityName}Service.query${className}By${keyColumn.classMethod}($!{keyColumn.classParam});
 		${entityName}.set$!{keyColumn.classMethod}($!{keyColumn.classParam});
 		if(null == temp${className}){
-			throw new NotFoundException("${businessName}末找到");
+			throw new NotFoundException("${businessName}未找到");
 		}
 		${entityName}.setModifiedId(userID);
 		return new RowsResp(${entityName}Service.modify${className}(${entityName}));
@@ -82,7 +82,7 @@ public class ${className}Controller{
 			@PathVariable $!{keyColumn.classType} $!{keyColumn.classParam}){
 		${className} temp${className} = ${entityName}Service.query${className}By${keyColumn.classMethod}($!{keyColumn.classParam});		
 		if(null == temp${className}){
-			throw new NotFoundException("${businessName}末找到");
+			throw new NotFoundException("${businessName}未找到");
 		}		
 		return temp${className};
 	}
@@ -98,7 +98,7 @@ public class ${className}Controller{
 	public RowsResp drop${className}By${keyColumn.classMethod}(HttpServletResponse response, @RequestHeader("user-id") Long userID, @PathVariable $!{keyColumn.classType} $!{keyColumn.classParam}) {
 		${className} ${entityName} = ${entityName}Service.query${className}By${keyColumn.classMethod}($!{keyColumn.classParam});
 		if(null == ${entityName}){
-			throw new NotFoundException("${businessName}末找到");
+			throw new NotFoundException("${businessName}未找到");
 		}
 		return new RowsResp(${entityName}Service.drop${className}By${keyColumn.classMethod}($!{keyColumn.classParam}, userID));
 	}
